@@ -74,5 +74,4 @@ const newApiMap: ProcessedApiMap = Object.fromEntries(
     return [fileKey, processedContent];
   })
 );
-// console.log("newApiMap", newApiMap)
 export default newApiMap;

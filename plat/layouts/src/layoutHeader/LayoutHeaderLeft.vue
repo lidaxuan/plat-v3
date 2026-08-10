@@ -67,12 +67,10 @@ const getFirst = (nomalMenu: any[]): string | undefined => {
 }
 
 const handleSelect = (key: string) => {
-  console.log(key)
   const findItem = nomalMenu.value.find((item: any) => item.code === key)
   // 修复：不再包数组，直接传对象数组，找不到直接return，防止 push('/undefined')
   if (!findItem) return
   const menuItem = getFirst([findItem])
-  console.log("menuItem", menuItem)
   if (!menuItem) return
   router.push('/' + menuItem)
 }

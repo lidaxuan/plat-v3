@@ -15,9 +15,9 @@
       class="pt-10 overflow-y-a overflow-x-h"
       :collapse-transition="false"
       @select="handleSelect"
-      :collapse="isCollapse"
+      :collapse="props.isCollapse"
     >
-      <LayoutSideItem :menuData="menuList" :is-collapse="isCollapse" :class="isCollapse ? 'el-menu--collapse' : ''" />
+      <LayoutSideItem :menuData="menuList" :is-collapse="props.isCollapse" :class="props.isCollapse ? 'el-menu--collapse' : ''" />
     </el-menu>
   </div>
 </template>

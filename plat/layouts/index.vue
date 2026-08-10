@@ -9,7 +9,7 @@
 
 <template>
   <div class="layout flex jc-between position-r" height="100%">
-{{appConfig}}
+    {{ appConfig }}
     <el-container v-if="$route.meta && $route.meta.fullScreen" class="overflow-y-a position-r layout-container position-a" :style="styleObj" width="100%" height="100%">
       <transition name="left-to-right" mode="out-in" appear>
         <keep-alive>
@@ -54,7 +54,10 @@
         <div class="layout-aside-collapse position-a" v-if="systemConfig.layoutConfig.menuLayout == 0" @click="collapseChage">
           <div class="w-27 h-27 flex jc-center ai-center layout-aside-collapseBtn">
             <el-button round size="mini">
-              <i font-weight="600" :class="isCollapse ? 'el-icon-arrow-right' : 'el-icon-arrow-left'"></i>
+              <el-icon>
+                <ArrowRightBold v-if="isCollapse"/>
+                <ArrowLeftBold v-else/>
+              </el-icon>
             </el-button>
           </div>
         </div>
@@ -106,9 +109,9 @@ import colorSetting from './layoutColorSetting.js'
 
 
 import {useSystemConfig} from "../store/systemConfig";
+
 const systemConfig = useSystemConfig();
 
-console.log(12313, systemConfig.appConfig)
 const appConfig = computed(() => systemConfig.appConfig)
 
 let isCollapse = ref(systemConfig.layoutConfig.sideCollapse)

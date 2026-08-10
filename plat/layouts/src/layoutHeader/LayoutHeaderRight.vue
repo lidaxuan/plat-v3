@@ -79,28 +79,26 @@
 <script setup lang="ts">
 import {ref, computed, onMounted} from 'vue'
 import {useUserStore} from '../../../store/useUserStore'
-import {useAppConfigStore} from '../../../store/useAppConfigStore'
-// import auth from '../../../utils/auth'
-// import screenfull from 'screenfull'
 import UpdatePassword from './UpdatePassword.vue'
 import EWebPlat from '../../../index'
 import LayoutSetting from '../layoutSetting/index.vue'
+import {useSystemConfig} from "../../../store/systemConfig";
 
 const userStore = useUserStore()
-const appConfigStore = useAppConfigStore()
+const systemConfig = useSystemConfig()
 
-const userMsg = computed(() => userStore.userMsg)
-const appConfig = computed(() => appConfigStore.appConfig || appConfigStore)
+const userMsg = computed(() => systemConfig.userMsg)
+const appConfig = computed(() => systemConfig.appConfig)
 const settingLayout = ref(false)
 
 
 const getUserName = computed(() => {
-  if (userMsg.value && (userMsg.value as any).userName) {
-    return (userMsg.value as any).userName
+  if (userMsg.value && (userMsg.value as any).realName) {
+    return (userMsg.value as any).realName
   }
-  if (EWebPlat.platConfig?.obtainUserName) {
-    return EWebPlat.platConfig.obtainUserName(userMsg.value) || '--'
-  }
+  // if (EWebPlat.platConfig?.obtainUserName) {
+  //   return EWebPlat.platConfig.obtainUserName(userMsg.value) || '--'
+  // }
   return ''
 })
 
@@ -134,11 +132,11 @@ const getDropdownList = (list: any[] = []) => {
 }
 
 const isScreenFull = () => {
-  if (!screenfull.isEnabled) {
-    return false
-  }
-  screenfull.toggle()
-  isFullscreen.value = screenfull.isFullscreen
+  // if (!screenfull.isEnabled) {
+  //   return false
+  // }
+  // screenfull.toggle()
+  // isFullscreen.value = screenfull.isFullscreen
 }
 
 const settingFun = () => {
@@ -164,10 +162,10 @@ const handleCommand = (command: string) => {
 }
 
 onMounted(() => {
-  ;(window as any).EWebPlat.updateDropdownList = (list: any) => {
+  (window as any).EWebPlat.updateDropdownList = (list: any) => {
     getDropdownList(list || userStore.logoutBtns)
   }
-  ;(window as any).EWebPlat.setLoginStatus = (status: number) => {
+  (window as any).EWebPlat.setLoginStatus = (status: number) => {
     const obj: Record<number, string> = {
       1: 'userStatusOnline',
       2: 'userStatusBusy',
@@ -175,7 +173,7 @@ onMounted(() => {
     }
     loginStatus.value = obj[status]
   }
-  ;(window as any).EWebPlat.windowLogout = () => {
+  (window as any).EWebPlat.windowLogout = () => {
     // auth.jumpLogin({type: 'first'})
   }
   getDropdownList(userStore.logoutBtns)

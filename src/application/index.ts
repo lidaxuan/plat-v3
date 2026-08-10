@@ -62,7 +62,7 @@ pinia.use(piniaPluginPersistedstate)
 import IconClass from "plat@/components/icon/IconClass.vue";
 import IconSvg from "plat@/components/icon/IconSvg.vue";
 const app = createApp(App)
-import apiMap from "../api/index.ts";
+
 import {responseError, requestSuccess, responseSuccess} from "./serviceExpand.js";
 
 // 如果您正在使用CDN引入，请删除下面一行。
@@ -84,13 +84,11 @@ app.mount('#app')
 import { useMenusStore } from 'plat@/store/useMenusStore'
 import utils from "plat@/utils/index.ts"
 
-
+import apiMap from "../api/index.ts";
 async function createAppFn(accountEnv = "test") {
     // const apiMap = import.meta.glob('../api/index.ts', { eager: true });
     // const modules = import.meta.glob('../api/*', { eager: true });
     window["xxxxxApiMap"] = apiMap;
-    console.log(apiMap.authEupms.getPerUserMenus)
-    // console.log(apiMap)
     // const apiMap = require("../api");
     // const files = require.context("../store/modules", false, /\.js$/);
     const baseUrl = {
@@ -101,6 +99,8 @@ async function createAppFn(accountEnv = "test") {
         "group2-prd2": "/webcall/view/",
         "group-prd1": "/webcall/view/",
         "group-prd5": "/im-gateway/webcall/view/"
+    } as {
+        [_: string]: string
     };
     const config = {
         appConfig: {
@@ -115,8 +115,8 @@ async function createAppFn(accountEnv = "test") {
         },
         iconLink:  iconLinkArr,
         apiMap: {
-            navEnums: apiMap.authEupms.getPerUserMenus,
-            // userInfo: apiMap.default.im.getUserInfo
+            userEnums: apiMap.authEupms!.getPerUserMenus,
+            userInfo: apiMap.im!.getUserInfo
         },
         customerMenus: menusQunfeng,
         serviceConfig: {

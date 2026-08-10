@@ -269,12 +269,9 @@ createRouter(config: {
 
 #### 4.4 状态管理 — Pinia Stores
 
-| Store | 职责 |
-|-------|------|
-| `useUserStore` | Token、用户信息、登录状态、退出登录 |
-| `useMenusStore` | 菜单树、面包屑、标签页、权限码、侧边菜单 |
-| `useAppStore` | 应用名称、Logo、appId、jumpContext |
-| `useSettingStore` | 主题色、布局模式、表格设置、tag/breadcrumb 开关 |
+| Store             | 职责                                                                         |
+|-------------------|----------------------------------------------------------------------------|
+| `systemStore`     | Token、用户信息、登录状态、退出登录  主题色、布局模式、表格设置、tag/breadcrumb 开关   应用名称、Logo、appId、jumpContext  菜单树、面包屑、标签页、权限码、侧边菜单 |
 
 每个 Store 默认开启 `persist` 持久化（sessionStorage）。
 

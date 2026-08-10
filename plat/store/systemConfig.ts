@@ -17,65 +17,69 @@ export interface LayoutSetting {
 }
 
 export const useSystemConfig = defineStore('systemConfig', () => {
-        const token = ref("" as string | null);
-        const setToken = (val: string | null = null) => {
-            token.value = val;
-        };
+    const token = ref("" as string | null);
+    const setToken = (val: string | null = null) => {
+        token.value = val;
+    };
 
-        const appConfig = ref({} as Record<string, any>);
-        const setAppConfig = (val: any) => {
-            appConfig.value = Object.assign({}, val.appConfig);
-        }
+    const userMsg = ref({} as Record<string, unknown>);
+    const setUserMsg = (val: Record<string, unknown> = {}) => {
+        userMsg.value = Object.assign({}, val);
+    };
 
-        const layoutConfig = reactive({
-            showBreadcrumb: true,
-            showTag: true,
-            themeLayout: 0, // 0 1 2 3
-            themeColor: '#409eff',
-            menuLayout: 0, // 0: 默认布局 1: 顶部菜单
-            sideCollapse: false,
-            pointList: ['#FF5750', '#FFBD2E', '#29CC41'],
-            themeColorList: [
-                {color: '#6359CA', opacity: 1},
-                {color: '#2F54EB', opacity: 1},
-                {color: '#3585FB', opacity: 1},
-                {color: '#05C3D9', opacity: 1},
-                {color: '#2FB7AA', opacity: 1},
-                {color: '#4BBD13', opacity: 1},
-                {color: '#FF9E44', opacity: 1},
-                {color: '#FF6602', opacity: 1},
-                {color: '#F5212D', opacity: 1},
-                {color: '#F04DAB', opacity: 1},
-            ],
-            tableRowHeight: "small", // small   mini   medium
-            tableStyle: "minimalist", // minimalist  border  stripe
-        });
-        const setLayoutConfig = (key: string, val: any) => {
-            layoutConfig[key] = val;
-        };
-
-        const menusConfig = reactive({
-            leftMenus: [],
-            topMenus: [],
-            activeMenuCode: "",
-            authCodeArr: [] as string[],
-        });
-
-        const setMenusConfig = (key: string, val: any) => {
-            menusConfig[key] = val;
-        };
-
-        return {
-            appConfig, setAppConfig,
-            token, setToken,
-            layoutConfig, setLayoutConfig,
-            menusConfig, setMenusConfig
-        };
-    },
-    {
-        persist: true
+    const appConfig = ref({} as Record<string, any>);
+    const setAppConfig = (val: any) => {
+        appConfig.value = Object.assign({}, val.appConfig);
     }
-);
+
+    const layoutConfig = reactive({
+        showBreadcrumb: true,
+        showTag: true,
+        themeLayout: 0, // 0 1 2 3
+        themeColor: '#3585FB',
+        menuLayout: 0, // 0: 默认布局 1: 顶部菜单
+        sideCollapse: false,
+        pointList: ['#FF5750', '#FFBD2E', '#29CC41'],
+        themeColorList: [
+            {color: '#6359CA', opacity: 1},
+            {color: '#2F54EB', opacity: 1},
+            {color: '#3585FB', opacity: 1},
+            {color: '#05C3D9', opacity: 1},
+            {color: '#2FB7AA', opacity: 1},
+            {color: '#4BBD13', opacity: 1},
+            {color: '#FF9E44', opacity: 1},
+            {color: '#FF6602', opacity: 1},
+            {color: '#F5212D', opacity: 1},
+            {color: '#F04DAB', opacity: 1},
+        ],
+        tableRowHeight: "small", // small   mini   medium
+        tableStyle: "minimalist", // minimalist  border  stripe
+    });
+    const setLayoutConfig = (key: keyof typeof layoutConfig, val: any) => {
+        (layoutConfig as Record<string, any>)[key] = val;
+    };
+
+    const menusConfig = reactive({
+        leftMenus: [],
+        topMenus: [],
+        activeMenuCode: "",
+        authCodeArr: [] as string[],
+    });
+
+    const setMenusConfig = (key: keyof typeof menusConfig, val: any) => {
+        (menusConfig as Record<string, any>)[key] = val;
+    };
+
+    return {
+        appConfig, setAppConfig,
+        userMsg, setUserMsg,
+        token, setToken,
+        layoutConfig, setLayoutConfig,
+        menusConfig, setMenusConfig
+    };
+}, {
+    persist: true
+});
 
 /*persist: {
   key: 'my-counter',              // 自定义 key，默认是 store id

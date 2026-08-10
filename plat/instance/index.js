@@ -10,7 +10,7 @@ import {createService, platCreateService} from '../service/index.js';
 // import {platIconLink} from './baseConfig.js';
 import utils, {isGoToLogin} from '../utils/index.ts';
 // import {useSystemConfig} from "plat@/store/systemConfig.ts";
-import {loadMenus} from "../utils/auth.ts";
+import {loadMenus, loadUserInfo} from "../utils/auth.ts";
 import {useSystemConfig} from "../store/systemConfig.js";
 
 
@@ -29,6 +29,7 @@ export function initMixin(EWebPlat) {
 
   EWebPlat.prototype.init = function (platConfig) {
     loadMenus(platConfig)
+    loadUserInfo(platConfig)
 
 
     // this.service = createService(platConfig.serviceConfig);
@@ -39,25 +40,7 @@ export function initMixin(EWebPlat) {
     // if (ModulesList) {
     //   this.loadResources(JSON.parse(ModulesList));
     // }
-    // // --------------------------------
-    //
-    // //初始化平台默认路由、存储和apiservice
-    // this.router = createRouter(platConfig);
-    //
-    // // 初始化 Pinia stores
-    // this.userStore = useUserStore();
-    // this.menusStore = useMenusStore();
-    // this.appConfigStore = useAppConfigStore();
-    // this.homeStore = useHomeStore();
-    //
-    // // 兼容旧代码的 store 引用
-    // this.store = {
-    //   userStore: this.userStore,
-    //   menusStore: this.menusStore,
-    //   appConfigStore: this.appConfigStore,
-    //   homeStore: this.homeStore,
-    // };
-    //
+
 
     // this.app = createApp(this);
     //
@@ -81,7 +64,6 @@ export function initMixin(EWebPlat) {
 
   // 原型上绑定  axios 动态API
   EWebPlat.prototype.platService = (api, params, otherParams) => {
-    console.log(444, platBaseConfig)
     return platCreateService(api, params, otherParams, platBaseConfig.serviceConfig);
   }
 

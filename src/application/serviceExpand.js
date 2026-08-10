@@ -12,6 +12,8 @@
 
 // import {jumpLogin} from "./loginConfig";
 
+import {useSystemConfig} from "../../plat/store/systemConfig.js";
+
 export function storageFun(msg) {
   ELEMENT.MessageBox.alert(msg, window.ELCONFIG.TipText, {
     confirmButtonText: window.ELCONFIG.ConfirmText,
@@ -29,18 +31,18 @@ export function responseSuccess(res) {
     default:
       break;
   }
-  if (window.ELBaseUtils && window.ELBaseUtils.xssSanitizePayload) {
-    return window.ELBaseUtils.xssSanitizePayload(res.data || "");
-  }
+  // if (window.ELBaseUtils && window.ELBaseUtils.xssSanitizePayload) {
+  //   return window.ELBaseUtils.xssSanitizePayload(res.data || "");
+  // }
   return res.data;
 }
 
 export function responseError(err) {
   let data = err.response.data;
-  if (window.$CONFIG.lang == "en") {
-    data.msg = window.ELCONFIG.serviceCode[data.code] || data.msg;
-    err.response.data = data;
-  }
+  // if (window.$CONFIG.lang == "en") {
+  //   data.msg = window.ELCONFIG.serviceCode[data.code] || data.msg;
+  //   err.response.data = data;
+  // }
   if (err.response.status === 401) {
     if (data.code != 90003) {
       storageFun(data.msg || window.ELCONFIG.serviceCode["401"]);
@@ -50,11 +52,12 @@ export function responseError(err) {
 }
 
 export function requestSuccess(config) {
-  if (EWebPlat.store.getters.token) {
-    config.headers["Authorization"] = EWebPlat.store.state.user.token;
+  const systemConfig = useSystemConfig();
+  if (systemConfig.token) {
+    config.headers["Authorization"] = systemConfig.token;
   }
-  if (window.EWebPlat.injectSystemApiParams) {
-    window.EWebPlat.injectSystemApiParams(config);
-  }
+  // if (window.EWebPlat.injectSystemApiParams) {
+  //   window.EWebPlat.injectSystemApiParams(config);
+  // }
   return config;
 }

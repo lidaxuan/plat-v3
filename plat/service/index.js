@@ -87,7 +87,6 @@ export function createService(config) {
 
 // 新版 封装
 export function platCreateService(apiObj, params, otherParams,  serviceConfig) {
-  // console.log(33333, serviceConfig);
   // return
   const apiOpt = Object.assign({}, {...apiObj});
   if (Object.prototype.toString.call(params) != '[object FormData]') {

@@ -11,7 +11,7 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
         let res: any = {}
         try {
             res = await platCreateService(
-                platConfig.apiMap.navEnums,
+                platConfig.apiMap.userEnums,
                 {appId: platConfig.appConfig.appId},
                 {},
                 platConfig.serviceConfig,
@@ -21,8 +21,8 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
             return
         }
         if (res.code) {
-            ;(this as any).$message.error(res.msg)
-            return
+            (this as any).$message.error(res.msg);
+            return;
         }
         const formatterMenu =
             platConfig.menuConfig?.formatterMenu || function (data: any) {
@@ -47,7 +47,7 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
 
     // 取第一个菜单，递归找到最后一个子级的 code 作为默认激活菜单
     const activeMenuCode = getLastChildCode(menuTree);
-    systemConfig.setMenusConfig('activeMenuCode',  activeMenuCode);
+    systemConfig.setMenusConfig('activeMenuCode', activeMenuCode);
 }
 
 const codeArrFormat = (treeData: any[]): string[] => {
@@ -115,4 +115,21 @@ const formatMenuTree = (menuData: any[], parentItem?: any, ppid?: string | null)
     }
 
     return result
+}
+
+
+export const loadUserInfo = async (platConfig: Record<string, any>) => {
+    const systemConfig = useSystemConfig()
+    let res: any = {}
+    try {
+        res = await platCreateService(platConfig.apiMap.userInfo, {appId: platConfig.appConfig.appId}, {}, platConfig.serviceConfig,)
+    } catch (error) {
+        console.error(error)
+        return
+    }
+    if (res.code) {
+        (this as any).$message.error(res.msg);
+        return
+    }
+    systemConfig.setUserMsg(res.data || {})
 }
