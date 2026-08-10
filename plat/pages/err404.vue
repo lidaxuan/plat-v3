@@ -2,7 +2,7 @@
  * @Description:
  * @Author: 李大玄
  * @Date: 1985-10-26 16:15:00
- * @FilePath: /data-web-view/node_modules/el-ui/commonPage/err404.vue
+ * @FilePath: /data-web-view/node_modules/el-ui/pages/err404.vue
  * @LastEditors: 李大玄
  * @LastEditTime: 2022-08-08 15:03:48
 -->

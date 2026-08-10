@@ -14,6 +14,10 @@ export function isGoToLogin(appConfig, callback) {
         // history.replaceState(null, '', newUrl);
         return;
     }
+    if (systemConfig.token) {
+        callback();
+        return;
+    }
     // entrySystem(routePath, next, query) {
     //   if (!routePath) {
     //     routePath = "/" + this.getFirstPermission();

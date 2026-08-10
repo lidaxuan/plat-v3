@@ -8,83 +8,21 @@
 -->*/
 // __webpack_public_path__ = window.static_url || window.url || "";
 
-// import Vue from "vue";
-// import "./watchError.js";
-// import getters from "@/store/getters";
+import EWebPlat from "plat@/index.ts"
+window.EWebPlat = EWebPlat;
 
-// import {routes} from "@/router";
-// import utils from "plat@/src/utils";
-// import {fotmatterEnum} from "./enums";
-
-// import "../static/css/system-dropdown.scss";
-// import "../static/css/en-system.scss";
-// import "../static/css/el-theme.css";
-// import ELCONFIG from "@/utils/config/lang/index";
-// import initConfig from "@/utils/config/initConfig";
-// import menusQunfeng from "./enums-qunfeng";
-// import ScrollUp from "@/utils/directive/scrollUp";
-// import WheelX from "@/utils/directive/wheelX";
-// import RightKey from "@/utils/directive/rightKey";
-// import CloseOnScroll from "@/utils/directive/close-on-scroll";
-// import {mixinProto} from '@/utils/mixinProto';
-// import {loginUrl} from "./loginConfig";
-
+import menusQunfeng from "./enums.ts";
+import {responseError, requestSuccess, responseSuccess} from "./serviceExpand.js";
+import apiMap from "../api/index.ts";
+import {resetRouterBeforeEach, routerChildren} from "@/router";
 const iconLinkArr = [
     "//at.alicdn.com/t/c/font_2735677_jf1lwq8yzk8.js", //   BEACON基础库
     "//at.alicdn.com/t/c/font_2735677_jf1lwq8yzk8.css", //   BEACON基础库
     "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.css", // 群峰重点项目 font_4313697_lk2jjwwvd38
     "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.js", // 群峰重点项目
 ];
+// routerChildren
 
-// window.ELCONFIG = ELCONFIG;
-import EWebPlat from "plat@/index.ts"
-window.EWebPlat = EWebPlat;
-
-
-// 网页直接入口,没有嵌iframe
-// const urlParams = parseUrlParams(window.location.href) || {};
-// // 简化核心逻辑：有参数就覆盖存储，无则不处理
-// if (urlParams.accountEnv) {
-//     sessionStorage.setItem('accountEnv', urlParams.accountEnv);
-// }
-
-import "plat@/assets/base/reset/index.scss";
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-import App from '../App.vue'
-import router from '../router'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import menusQunfeng from "./enums-qunfeng";
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-import IconClass from "plat@/components/icon/IconClass.vue";
-import IconSvg from "plat@/components/icon/IconSvg.vue";
-const app = createApp(App)
-
-import {responseError, requestSuccess, responseSuccess} from "./serviceExpand.js";
-
-// 如果您正在使用CDN引入，请删除下面一行。
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
-}
-
-app.component("icon-svg", IconSvg);
-app.component("icon-class", IconClass);
-app.use(pinia)
-app.use(router)
-app.use(ElementPlus)
-app.mount('#app')
-
-
-
-import { useMenusStore } from 'plat@/store/useMenusStore'
-import utils from "plat@/utils/index.ts"
-
-import apiMap from "../api/index.ts";
 async function createAppFn(accountEnv = "test") {
     // const apiMap = import.meta.glob('../api/index.ts', { eager: true });
     // const modules = import.meta.glob('../api/*', { eager: true });
@@ -126,13 +64,13 @@ async function createAppFn(accountEnv = "test") {
             responseError,
             requestSuccess
         },
-
+        routes: routerChildren,
+        resetRouterBeforeEach,
         // directives:  // 指令 如果项目需要可以传入, 没有既不需要传
         // 菜单 如果需要菜单配置 就不会走接口请求
         /*routes: [],
         loginUrl: '',
         storeConfig: {
-            // modules: utils.readFile(files), getters,
             // plugins: [
             //   createPersistedState({
             //     key: "xasxaxaxsa",

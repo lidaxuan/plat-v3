@@ -6,23 +6,50 @@
  * @LastEditors: 李大玄
  * @LastEditTime: 2025-01-02 10:34:55
  */
+import { createApp } from 'vue'
+import App from '../pages/App.vue'
 import {createService, platCreateService} from '../service/index.js';
-// import {platIconLink} from './baseConfig.js';
+
+
+
 import utils, {isGoToLogin} from '../utils/index.ts';
-// import {useSystemConfig} from "plat@/store/systemConfig.ts";
 import {loadMenus, loadUserInfo} from "../utils/auth.ts";
 import {useSystemConfig} from "../store/systemConfig.js";
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import ElementPlus from "element-plus";
+import IconClass from "../components/icon/IconClass.vue";
+import IconSvg from "../components/icon/IconSvg.vue";
+import {createPinia} from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import "../assets/base/reset/index.scss";
+import 'element-plus/dist/index.css'
+import {createRouter} from "plat@/router/index.ts";
 
 
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 export function initMixin(EWebPlat) {
   let platBaseConfig = {};
   EWebPlat.prototype.beforeInit = (config) => {
+    const app = createApp(App)
+
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      app.component(key, component)
+    }
+    app.use(pinia)
+
+    const router = createRouter(config);
+
+    app.component("icon-svg", IconSvg);
+    app.component("icon-class", IconClass);
+    app.use(router)
+    app.use(ElementPlus)
+    app.mount('#app')
     const systemConfig = useSystemConfig();
     platBaseConfig = config;
     systemConfig.setAppConfig(config);
     utils.addLinkArr(config.iconLink)
     isGoToLogin(config.appConfig, () => {
-      // this.init(config);
       EWebPlat.prototype.init(config);
     });
   }

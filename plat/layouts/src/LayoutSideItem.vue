@@ -7,7 +7,7 @@
           <div :class="['dom' + menu.level, 'mr-10', ]" height="100%">
             <icon-class :class="{'p-7': menu.icon ? true: false}" :icon-class="menu.icon || ''" font="18" color="var(--layoutSideMenuColor7E84A3)"/>
             <span class="ellipsis w-120 d-inline-block" :class="[systemConfig.layoutConfig.menuLayout == 1 ? 'pl-17' : 'pl-7']">{{ menu.name }}</span>
-            <div class="line d-i"></div>
+            <div class="line"></div>
           </div>
         </template>
         <!--  递归-->
@@ -16,9 +16,9 @@
       <el-menu-item :key="menu.id" :index="menu.code" v-else :disabled="menu.disabled" :class="['item' + menu.level]">
         <div :class="['itemDom' + menu.level, (menu.level == '0' && systemConfig.layoutConfig.menuLayout == 1)  ? 'pl-29' : 'pl-19']" height="100%">
           <icon-class :class="{'p-7': menu.icon ? true: false}" v-if="menu.icon" :icon-class="menu.icon || ''" font="18"/>
-          <span class="ellipsis w-120 d-i" :class="[(systemConfig.layoutConfig.menuLayout == 1 && menu.level == 2) ? 'pl-17' : '']">{{ menu.name }}</span>
+          <span class="ellipsis w-120" :class="[(systemConfig.layoutConfig.menuLayout == 1 && menu.level == 2) ? 'pl-17' : '']">{{ menu.name }}</span>
         </div>
-        <div class="line d-i"></div>
+        <div class="line"></div>
       </el-menu-item>
     </template>
   </div>
@@ -131,16 +131,9 @@ onMounted(() => {
   @include com($step);
 }
 
-::v-deep .el-menu {
-  background: none;
-}
 
 .menutree {
   background-color: var(--layoutSideMenuBg);
-
-  .el-menu-item * {
-    // vertical-align: top;
-  }
 
   ::v-deep .el-submenu__title,
   ::v-deep .el-menu-item {
@@ -167,15 +160,8 @@ onMounted(() => {
     min-width: 183px;
     border-radius: 0 14px 14px 0;
 
-    .itemDom0 {
-
-    }
-
     .itemDom1 {
       padding-left: 0; // 有个小差距
-      span {
-        // margin-left: 14px;
-      }
     }
 
     .itemDom2 {
@@ -188,13 +174,8 @@ onMounted(() => {
       background: var(--layoutSideMenuSelected) !important;
       margin-right: 10px;
 
-      span {
-        margin-top: -3px !important;
-        color: var(--layoutSideMenuColorFFF) !important;
-        font-weight: 600;
-      }
-
-      .line {
+      &:after {
+        content: " ";
         width: 2px;
         height: 20px;
         position: absolute;

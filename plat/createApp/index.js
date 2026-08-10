@@ -13,7 +13,7 @@
 // import "ui@/assets/base/common/layoutColor.scss";
 // import 'ui@/assets/base/common/index.scss';
 // import 'ui@/assets/base/common/color.scss';
-// import AppView from 'ui@/commonPage/App.vue';
+// import AppView from 'ui@/pages/App.vue';
 // import IconClass from "ui@/components/icon/IconClass";
 // import IconSvg from "ui@/components/icon/IconSvg";
 // import { mixinProto, mixinUse } from './mixin.js';

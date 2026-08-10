@@ -10,12 +10,7 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
     } else {
         let res: any = {}
         try {
-            res = await platCreateService(
-                platConfig.apiMap.userEnums,
-                {appId: platConfig.appConfig.appId},
-                {},
-                platConfig.serviceConfig,
-            )
+            res = await platCreateService(platConfig.apiMap.userEnums, {appId: platConfig.appConfig.appId}, {}, platConfig.serviceConfig)
         } catch (error) {
             console.error(error)
             return
@@ -24,10 +19,7 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
             (this as any).$message.error(res.msg);
             return;
         }
-        const formatterMenu =
-            platConfig.menuConfig?.formatterMenu || function (data: any) {
-                return data
-            }
+        const formatterMenu = platConfig.menuConfig?.formatterMenu || function (data: any) {return data}
         data = [].concat(formatterMenu([].concat(res.data || [])) || [])
     }
 

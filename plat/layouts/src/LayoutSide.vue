@@ -12,7 +12,7 @@
       :default-active="defaultActiveMenu"
       :unique-opened="true"
       height="100%"
-      class="pt-10 overflow-y-a overflow-x-h"
+      class="pt-10 overflow-y-a"
       :collapse-transition="false"
       @select="handleSelect"
       :collapse="props.isCollapse"
