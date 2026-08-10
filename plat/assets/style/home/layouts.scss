@@ -1,0 +1,68 @@
+@import "../../base/common/index.scss";
+.layout {
+    min-width: 1366px;
+
+    &-main {
+        overflow: auto;
+        background: #eff1f4;
+    }
+
+    &-routeView {
+        // height: calc(100% - 74px);
+    }
+
+    &-nav {
+        background:var(--layoutTopMenuBg);
+        box-shadow: 0px 4px 4px 0px  rgba(21, 34, 50, 0.08);
+        width: 100%;
+        z-index: 1;
+
+    }
+
+    &-menu {
+        height: calc(100% - 38px);
+    }
+
+
+    &-aside {
+        &-collapse {
+            top: 53px;
+            right: -12px;
+            z-index: 2;
+
+            &Btn {
+                border-radius: 50%;
+                background: $-color-F1F4FA;
+            }
+        }
+
+        & {
+            height: 100%;
+
+            &-box {
+                background: var(--layoutBeaconBg);
+                color: var(--layoutBeaconCol);
+                &Icon {
+                    border-bottom: 1px solid rgba(21, 34, 50, 0.08);
+                    border-right: 1px solid rgba(21, 34, 50, 0.08);
+
+                }
+            }
+
+        }
+    }
+
+    &-client {
+        background: $-color-323237;
+        box-sizing: border-box;
+        right: 0;
+        z-index: 1;
+    }
+
+}
+.el-button--mini.is-round {
+    color: $-color-ffffff;
+    background-color:var(--layoutMain-6359CA);
+    padding: 4px;
+    border: none;
+}

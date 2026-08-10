@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite App</title>
+    <script rel="preload" src="https://views.easyliao.com/el-base-utils/view/v1.0.0/elBaseUtils.min.js"></script>
+    <script>
+      window.ReferEnv = 'test'; // test pre  prod group5
+      window.isLocal = true;
+      window.__sso = 'test';
+      // window._baseEnv = 'prd19'
+      window.__envList = ["group-prd1", "group2-prd2", "group-prd3", "group2-prd4", "group-prd5", "pre"]
+      window._baseEnv = 'test';
+      window.$CONFIG = {
+        lang: "cn",
+        projectName: "applet-console",
+        version: "2023年11月29日09:46:48",
+        suffixText: "Config"
+      };
+      window.envLoginUrl = {
+        testLoginUrl: "https://test-prd18.easyliao.net/auth-sso/oauth/web/login/view",
+        preLoginUrl: "https://pre-auth.easyliao.net/auth-sso/oauth/web/login/view",
+        group5LoginUrl: "https://group5-auth.easyliao.com/auth-sso/oauth/web/login/view",
+        group6LoginUrl: "https://group6-auth.easyliao.com/auth-sso/oauth/web/login/view",
+        prodLoginUrl: "https://tencent-auth2.easyliao.com/auth-sso/oauth/web/login/view"
+        // testLoginUrl: "//test-prd18.easyliao.net/login/view/index.html",
+        // preLoginUrl: "//pre-views.easyliao.com/login-view/index.html",
+        // prodLoginUrl: "//views.easyliao.com/login/view/index.html",
+        // prdLoginUrl: "//views.easyliao.com/login/view/index.html"
+      };
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+<!--    <script type="module" src="/src/main.ts"></script>-->
+    <script type="module" src="/src/application/index.ts"></script>
+  </body>
+</html>
