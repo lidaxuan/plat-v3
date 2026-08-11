@@ -24,6 +24,31 @@ import "../assets/base/reset/index.scss";
 import 'element-plus/dist/index.css'
 import {createRouter} from "plat@/router/index.ts";
 import {useRouter} from 'vue-router';
+import _ from "lodash";
+
+/*Vue.prototype.$hasAuthority = function (sourceStr) {
+  let authorities = '';
+  const reg = new RegExp(/[`:_.~!@#$%^&*() \+ =<>?"{}|, \/ ;' \\ [ \] ·~！@#￥%……&*（）—— \+ ={}|《》？：“”【】、；‘’，。、]/, 'g');
+  authorities = sourceStr.replace(reg, '');
+  authorities = authorities.toLowerCase();
+  let authCodeArr = store.getters.authCodeArr;
+  authCodeArr = authCodeArr.map((item) => {
+    return item.toLowerCase();
+  });
+
+  return authorities.split(',').some((itemS) => {
+    let code = itemS
+      .split(':')
+      .map((item, index) => {
+        if (index > 0) {
+          item = _.capitalize(item)
+        }
+        return item;
+      })
+      .join('');
+    return authCodeArr.includes(code);
+  });
+};*/
 
 
 export function initMixin(EWebPlat) {

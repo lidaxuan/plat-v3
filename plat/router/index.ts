@@ -2,7 +2,7 @@ import {createRouter as createVueRouter, createWebHashHistory, type RouteLocatio
 import {useSystemConfig} from 'plat@/store/systemConfig.ts'
 import {loadMenus, loadUserInfo} from 'plat@/utils/auth'
 import {isGoToLogin} from 'plat@/utils/index'
-import overAll from './overAll';
+import overAll from './overAll.js';
 export const createRouter = function (platConfig: Record<string, any>) {
   const systemConfig = useSystemConfig()
   const router = createVueRouter({
