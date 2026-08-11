@@ -14,8 +14,20 @@ export interface LayoutSetting {
   tableSetting: { rowHeight: string; tableStyle: string }
 }
 
+interface UserState {
+  userMsg: Record<string, unknown>
+  token: string | null
+  messList: unknown[]
+  messNum: number
+  chromeNotify: boolean
+  loginStatus: string
+  loginTrust: string
+  logoutBtns: unknown[]
+  layoutSetting: LayoutSetting
+}
+
 export const useUserStore = defineStore('user', {
-  state: () => ({
+  state: (): UserState => ({
     userMsg: {} as Record<string, unknown>,
     token: null as string | null,
     messList: [] as unknown[],
@@ -24,6 +36,14 @@ export const useUserStore = defineStore('user', {
     loginStatus: '',
     loginTrust: '',
     logoutBtns: [] as unknown[],
+    layoutSetting: {
+      tag: { value: '0', disabled: false },
+      breadcrumb: { value: '0', disabled: false },
+      themeLayout: { value: '' },
+      color: { value: '', pickerColor: '' },
+      layout: { value: '' },
+      tableSetting: { rowHeight: '', tableStyle: '' },
+    } as LayoutSetting,
   }),
 
   actions: {
@@ -33,18 +53,18 @@ export const useUserStore = defineStore('user', {
     setUserMsg(userMsg: Record<string, unknown> = {}) {
       this.userMsg = userMsg
     },
-    setLayoutSetting(layoutSetting: LayoutSetting) {
-      this.layoutSetting = layoutSetting
+    setLayoutSetting(layoutSetting: Partial<LayoutSetting>) {
+      this.layoutSetting = Object.assign({}, this.layoutSetting, layoutSetting)
     },
-    setNotify(chromeNotify = false) {
+    setNotify(chromeNotify: boolean = false) {
       this.chromeNotify = chromeNotify
     },
-    setTableSetting(tableSetting: Record<string, unknown>) {
+    setTableSetting(tableSetting: Partial<LayoutSetting['tableSetting']>) {
       this.layoutSetting.tableSetting = Object.assign(
         {},
         this.layoutSetting.tableSetting,
-        tableSetting
-      ) as LayoutSetting['tableSetting']
+        tableSetting,
+      )
     },
     setLoginStatus(data: string) {
       this.loginStatus = data

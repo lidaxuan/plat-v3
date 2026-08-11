@@ -199,7 +199,7 @@
 }
 
 //清除浮动;
-@mixin clear() {
+/*@mixin clear() {
     *zoom: 1;
     &:after {
         content: "";
@@ -209,7 +209,7 @@
         visibility: hidden;
         overflow: hidden;
     }
-}
+}*/
 
 //打包默认样式;
 @mixin base() {
@@ -219,9 +219,9 @@
     @include backGauge();
     @include wh();
     /* 默认浮动 */
-    .clear {
-        @include clear;
-    }
+    //.clear {
+    //    @include clear;
+    //}
     .ellipsis {
         @include ellipsis;
     }

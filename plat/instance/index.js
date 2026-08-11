@@ -6,10 +6,9 @@
  * @LastEditors: 李大玄
  * @LastEditTime: 2025-01-02 10:34:55
  */
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from '../pages/App.vue'
 import {createService, platCreateService} from '../service/index.js';
-
 
 
 import utils, {isGoToLogin} from '../utils/index.ts';
@@ -24,25 +23,27 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import "../assets/base/reset/index.scss";
 import 'element-plus/dist/index.css'
 import {createRouter} from "plat@/router/index.ts";
+import {useRouter} from 'vue-router';
 
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
 export function initMixin(EWebPlat) {
   let platBaseConfig = {};
+  const pinia = createPinia()
+  pinia.use(piniaPluginPersistedstate)
+  const app = createApp(App)
   EWebPlat.prototype.beforeInit = (config) => {
-    const app = createApp(App)
 
     for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
       app.component(key, component)
     }
+    app.component("icon-svg", IconSvg);
+    app.component("icon-class", IconClass);
+
     app.use(pinia)
 
     const router = createRouter(config);
-
-    app.component("icon-svg", IconSvg);
-    app.component("icon-class", IconClass);
     app.use(router)
+
     app.use(ElementPlus)
     app.mount('#app')
     const systemConfig = useSystemConfig();
@@ -50,13 +51,15 @@ export function initMixin(EWebPlat) {
     systemConfig.setAppConfig(config);
     utils.addLinkArr(config.iconLink)
     isGoToLogin(config.appConfig, () => {
-      EWebPlat.prototype.init(config);
+      EWebPlat.prototype.init(config, router);
     });
   }
 
-  EWebPlat.prototype.init = function (platConfig) {
-    loadMenus(platConfig)
-    loadUserInfo(platConfig)
+  EWebPlat.prototype.init = async function (config, router) {
+    await loadMenus(config)
+    const systemConfig = useSystemConfig();
+    router.push("/" + systemConfig.menusConfig.activeMenuCode);
+    loadUserInfo(config)
 
 
     // this.service = createService(platConfig.serviceConfig);

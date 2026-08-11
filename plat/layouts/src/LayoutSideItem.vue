@@ -1,3 +1,11 @@
+<!--
+ * @Description:
+ * @Author: lidaxuan
+ * @Date: 2026-08-11 09:59:24
+ * @FilePath: plat/layouts/src/LayoutSideItem.vue
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-08-11 09:59:24
+-->
 <template>
   <!--    el-menu--collapse类要判断  不然功能会缺失-->
   <div class="menutree">
@@ -51,6 +59,8 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+/* ==================== 全局样式（非 scoped） ==================== */
+
 .el-menu--popup {
   box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.08);
   border-radius: 0px !important;
@@ -64,10 +74,68 @@ onMounted(() => {
   background: none !important;
 }
 </style>
+
 <style lang="scss" scoped>
 @import "../../assets/base/common/index";
 
-@mixin step() {
+/* ==================== 变量 ==================== */
+
+$menu-item-radius: 0 14px 14px 0;
+$icon-radius: 8px;
+
+/* ==================== Mixins ==================== */
+
+// 右侧竖线指示器
+@mixin line-indicator($right: 0px, $color: var(--layoutSideMenuSelected)) {
+  content: " ";
+  width: 2px;
+  height: 20px;
+  position: absolute;
+  right: $right;
+  top: 12px;
+  background-color: $color;
+}
+
+// 图标圆角
+@mixin icon-rounded {
+  border-radius: $icon-radius;
+}
+
+// 图标悬停底色
+@mixin icon-hover-bg {
+  @include icon-rounded;
+  background: var(--layoutSideMenuColorF9F8FD) !important;
+}
+
+// 图标选中色
+@mixin icon-selected {
+  color: var(--layoutSideMenuSelected) !important;
+}
+
+// 图标选中 + 圆角
+@mixin icon-selected-rounded {
+  @include icon-selected;
+  @include icon-rounded;
+}
+
+// 收起态图标悬停
+@mixin icon-collapse-hover {
+  @include icon-selected;
+  @include icon-rounded;
+  background: var(--layoutSideMenuColorF9F8FD-rgba) !important;
+}
+
+// 文字悬停态
+@mixin text-hover {
+  color: var(--layoutSideMenuColor344563);
+  span {
+    color: var(--layoutSideMenuColor344563) !important;
+    font-weight: 600 !important;
+  }
+}
+
+// 子菜单标题文字颜色
+@mixin submenu-title-color {
   ::v-deep .el-submenu__title {
     span,
     i {
@@ -80,57 +148,55 @@ onMounted(() => {
     &:hover i {
       color: var(--layoutSideMenuColor344563);
     }
+  }
+}
 
-    &:focus,
-    &:hover {
-      // background-color: var(--layoutSideMenuColorFFF) !important;
+// 各级菜单项 hover/focus 通用样式
+@mixin level-hover {
+  &:focus {
+    background: none;
+  }
+
+  &:hover {
+    @include text-hover;
+    background: none !important;
+
+    .iconfont {
+      @include icon-hover-bg;
     }
   }
 }
 
-@mixin com($step) {
+// 为指定层级生成完整样式
+@mixin level-styles($step) {
   .level#{$step} {
-    @include step();
+    @include submenu-title-color;
   }
+
   .itemDom#{$step} {
     padding-left: 3px;
   }
+
   .dom#{$step},
   .item#{$step},
   .itemDom#{$step} {
-    &:focus {
-      background: none;
-    }
-
-    &:hover {
-      color: var(--layoutSideMenuColor344563);
-      background: none !important;
-
-      span {
-        color: var(--layoutSideMenuColor344563) !important;
-        font-weight: 600 !important;
-      }
-
-      .iconfont {
-        // color: var(--layoutSideMenuSelected) !important;
-        background-color: var(--layoutSideMenuColorF9F8FD) !important;
-        border-radius: 8px;
-      }
-    }
+    @include level-hover;
   }
 }
 
-/*多级选中展开时*/
+/* ==================== 多级菜单缩进（level1-5） ==================== */
+
 @for $step from 1 through 5 {
   .level#{$step} {
     .dom#{$step},
     .item#{$step} {
-      padding-left: $step * 20+23px;
+      padding-left: $step * 20 + 23px;
     }
   }
-  @include com($step);
+  @include level-styles($step);
 }
 
+/* ==================== 菜单树容器 ==================== */
 
 .menutree {
   background-color: var(--layoutSideMenuBg);
@@ -142,46 +208,33 @@ onMounted(() => {
     line-height: 44px;
   }
 
-  /*收起时 隐藏二级菜单中第一个*/
   .el-menu--inline .is-disabled {
     display: none;
   }
 
   .el-submenu span,
   .el-menu-item span {
-    // padding-left: 10px;
     color: var(--layoutSideMenuColor7E84A3);
     font-weight: 500;
   }
+
+  // ===== 菜单项通用 =====
 
   ::v-deep .el-menu-item {
     padding: 0;
     transition: none;
     min-width: 183px;
-    border-radius: 0 14px 14px 0;
+    border-radius: $menu-item-radius;
 
-    .itemDom1 {
-      padding-left: 0; // 有个小差距
-    }
-
-    .itemDom2 {
-      span {
-        margin-left: 7px;
-      }
-    }
+    .itemDom1 { padding-left: 0; }
+    .itemDom2 span { margin-left: 7px; }
 
     &.is-active {
       background: var(--layoutSideMenuSelected) !important;
       margin-right: 10px;
 
       &:after {
-        content: " ";
-        width: 2px;
-        height: 20px;
-        position: absolute;
-        right: -10px;
-        top: 12px;
-        background-color: var(--layoutSideMenuSelected);
+        @include line-indicator(-10px);
       }
     }
 
@@ -204,21 +257,20 @@ onMounted(() => {
       i {
         color: var(--layoutSideMenuColor344563);
       }
-
       span {
         font-weight: 600;
         color: var(--layoutSideMenuSelected) !important;
       }
-
       .iconfont {
-        color: var(--layoutSideMenuSelected) !important;
+        @include icon-selected;
+        @include icon-rounded;
         background: none;
-        border-radius: 8px;
       }
     }
   }
 
-  /*初始边距*/
+  // ===== 一级菜单（有子级） =====
+
   .level0 {
     margin-bottom: 10px;
 
@@ -230,30 +282,18 @@ onMounted(() => {
       color: var(--layoutSideMenuColorArrow);
     }
 
-    .dom0 {
-      &:hover {
-        color: var(--layoutSideMenuSelected) !important;
+    .dom0:hover {
+      color: var(--layoutSideMenuSelected) !important;
 
-        .line {
-          width: 2px;
-          height: 20px;
-          position: absolute;
-          right: 0px;
-          top: 12px;
-          background-color: var(--layoutSideMenuColorF9F8FD-rgba);
-        }
+      .line {
+        @include line-indicator(0px, var(--layoutSideMenuColorF9F8FD-rgba));
       }
     }
 
-    /*选中展开时*/
     &.is-active,
     &.is-active.is-opened {
-      .dom0 {
-        span {
-          color: var(--layoutSideMenuSelected);
-        }
-
-
+      .dom0 span {
+        color: var(--layoutSideMenuSelected);
       }
 
       .el-submenu__title {
@@ -270,28 +310,17 @@ onMounted(() => {
       }
 
       ::v-deep .el-submenu__title .iconfont {
-        color: var(--layoutSideMenuSelected) !important;
-        border-radius: 8px;
+        @include icon-selected-rounded;
       }
-
-      // ::v-deep .el-submenu__title {
-      //   span,
-      //   i,
-      //   &:hover span,
-      //   &:focus span,
-      //   &:hover i,
-      //   &:focus i {
-      //     // color: var(--layoutSideMenuColorFFF);
-      //   }
-      // }
     }
   }
 
-  /*没有子级的第一级*/
+  // ===== 一级菜单（无子级） =====
+
   .item0 {
     padding-left: 0px !important;
     margin-bottom: 10px;
-    // 因为有个问题 层级问题
+
     span {
       padding-left: 7px !important;
     }
@@ -302,7 +331,7 @@ onMounted(() => {
 
     &:hover {
       background-color: var(--layoutSideMenuColorF9F8FD-rgba);
-      border-radius: 0 14px 14px 0;
+      border-radius: $menu-item-radius;
       margin-right: 10px !important;
 
       span,
@@ -315,45 +344,34 @@ onMounted(() => {
       }
 
       .iconfont {
-        color: var(--layoutSideMenuSelected) !important;
-        border-radius: 8px;
+        @include icon-selected-rounded;
       }
     }
 
-    // 展开 一级 没有二级图标颜色
-    .itemDom0 {
-      i {
-        color: var(--layoutSideMenuColor7E84A3) !important;
-      }
+    .itemDom0 i {
+      color: var(--layoutSideMenuColor7E84A3) !important;
     }
 
     &.is-active {
       .itemDom0 {
-        border-radius: 0 14px 14px 0;
+        border-radius: $menu-item-radius;
         background-color: var(--layoutSideMenuSelected);
 
-        // 展开图标颜色
         span,
         i {
           color: var(--layoutSideMenuColorFFF) !important;
-          // color: pink !important;
         }
 
         .line {
-          width: 2px;
-          height: 20px;
-          position: absolute;
-          right: 0px;
-          top: 12px;
-          background-color: var(--layoutSideMenuSelected);
+          @include line-indicator(0px);
         }
       }
     }
   }
 }
 
-/*收起*/
-/*顺序不能乱*/
+/* ==================== 收起状态 ==================== */
+
 .el-menu--collapse {
   width: 66px;
 
@@ -365,9 +383,7 @@ onMounted(() => {
       &:hover {
         .iconfont,
         i {
-          color: var(--layoutSideMenuSelected) !important;
-          background: var(--layoutSideMenuColorF9F8FD-rgba) !important;
-          border-radius: 8px;
+          @include icon-collapse-hover;
         }
       }
     }
@@ -377,23 +393,21 @@ onMounted(() => {
       .el-submenu__title {
         span,
         i {
-          color: var(--layoutSideMenuSelected) !important;
+          @include icon-selected;
         }
 
         .dom0 {
           background: none !important;
           min-width: 183px;
-          // 收起 鼠标移入
-          &:hover {
-            .iconfont {
-              border-radius: 8px;
-            }
+
+          &:hover .iconfont {
+            @include icon-rounded;
           }
         }
       }
 
       ::v-deep .el-submenu__title .iconfont {
-        border-radius: 8px;
+        @include icon-rounded;
       }
     }
   }
@@ -403,14 +417,12 @@ onMounted(() => {
       padding-left: 0px !important;
     }
   }
-  /*没有子集*/
+
   .item0 {
     &:hover {
       .iconfont,
       i {
-        color: var(--layoutSideMenuSelected) !important;
-        background: var(--layoutSideMenuColorF9F8FD-rgba) !important;
-        border-radius: 8px;
+        @include icon-collapse-hover;
       }
     }
 
@@ -418,30 +430,32 @@ onMounted(() => {
       .itemDom0 {
         span,
         i {
-          color: var(--layoutSideMenuSelected) !important;
           color: var(--layoutSideMenuColorFFF) !important;
         }
 
         .iconfont {
+          @include icon-rounded;
           background: var(--layoutSideMenuSelected) !important;
-          border-radius: 8px;
         }
       }
     }
   }
 }
 
+/* ==================== 垂直弹出菜单 ==================== */
+
 .el-menu--vertical {
   @for $step from 1 through 4 {
     .dom#{$step} {
       padding-left: 20px !important;
     }
+
     .itemDom#{$step} {
       padding-left: 0px !important;
 
       &:hover {
         background-color: $-color-F9F8FD;
-        border-radius: 0 14px 14px 0;
+        border-radius: $menu-item-radius;
         margin-right: 10px;
       }
     }

@@ -1,14 +1,44 @@
 import {useSystemConfig} from '../store/systemConfig'
 import {platCreateService} from '../service/index'
 
-export const loadMenus = async (platConfig: Record<string, any>) => {
+// ==================== 类型声明 ====================
+
+/** 原始菜单项（来自接口） */
+interface RawMenuItem {
+    id: number | string
+    code: string
+    productId: string
+    name: string
+    uri: string
+    score: number
+    iconUrl: string | null
+    type: number
+    children?: RawMenuItem[]
+    srcName?: string
+}
+
+/** 格式化后的菜单项 */
+interface FormattedMenuItem {
+    id: string
+    icon: string | null
+    path?: string
+    name: string
+    code: string
+    children: FormattedMenuItem[] | null
+    disabled?: boolean
+    countId?: string
+    srcName?: string
+}
+
+// ==================== 导出函数 ====================
+export const loadMenus = async (platConfig: Record<string, any>): Promise<void> => {
     const systemConfig = useSystemConfig()
-    let data: any[] = []
+    let data: RawMenuItem[] = []
 
     if (!platConfig.customerMenus && platConfig.customerMenus?.length) {
         data = platConfig.customerMenus
     } else {
-        let res: any = {}
+        let res: Record<string, any> = {}
         try {
             res = await platCreateService(platConfig.apiMap.userEnums, {appId: platConfig.appConfig.appId}, {}, platConfig.serviceConfig)
         } catch (error) {
@@ -19,7 +49,7 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
             (this as any).$message.error(res.msg);
             return;
         }
-        const formatterMenu = platConfig.menuConfig?.formatterMenu || function (data: any) {return data}
+        const formatterMenu = platConfig.menuConfig?.formatterMenu || function (data: RawMenuItem[]) {return data}
         data = [].concat(formatterMenu([].concat(res.data || [])) || [])
     }
 
@@ -28,7 +58,7 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
     }
 
     // 格式化菜单树「格式化数据格式，且仅筛选出菜单数据（不包含按钮）」
-    const menuTree = formatMenuTree(structuredClone(data)).map((item: any, index: number) => {
+    const menuTree = formatMenuTree(structuredClone(data)).map((item: FormattedMenuItem, index: number) => {
         item.countId = index.toString()
         return item
     });
@@ -42,7 +72,9 @@ export const loadMenus = async (platConfig: Record<string, any>) => {
     systemConfig.setMenusConfig('activeMenuCode', activeMenuCode);
 }
 
-const codeArrFormat = (treeData: any[]): string[] => {
+// ==================== 内部函数 ====================
+
+const codeArrFormat = (treeData: RawMenuItem[]): string[] => {
     let codes: string[] = []
     treeData.forEach((item) => {
         codes = [...codes, formatMenuCode(item.uri), ...codeArrFormat(item.children ?? [])]
@@ -56,7 +88,7 @@ const formatMenuCode = (code: string): string => {
 }
 
 // 取第一个菜单，递归找到最后一个子级的 code
-const getLastChildCode = (menuTree: any[]): string => {
+const getLastChildCode = (menuTree: FormattedMenuItem[]): string => {
     if (!menuTree || menuTree.length === 0) return ''
     const first = menuTree[0]
     if (!first.children || first.children.length === 0) {
@@ -66,12 +98,12 @@ const getLastChildCode = (menuTree: any[]): string => {
 }
 
 // 格式化菜单树「格式化数据格式，且仅筛选出菜单数据（不包含按钮）」
-const formatMenuTree = (menuData: any[], parentItem?: any, ppid?: string | null): any[] | 2 => {
+const formatMenuTree = (menuData: RawMenuItem[], parentItem?: RawMenuItem, ppid?: string | null): FormattedMenuItem[] | 2 => {
     if (!(menuData && menuData.length)) {
         return []
     }
 
-    const result: any[] = []
+    const result: FormattedMenuItem[] = []
 
     if (parentItem && !ppid) {
         result.push({
@@ -110,9 +142,9 @@ const formatMenuTree = (menuData: any[], parentItem?: any, ppid?: string | null)
 }
 
 
-export const loadUserInfo = async (platConfig: Record<string, any>) => {
+export const loadUserInfo = async (platConfig: Record<string, any>): Promise<void> => {
     const systemConfig = useSystemConfig()
-    let res: any = {}
+    let res: Record<string, any> = {}
     try {
         res = await platCreateService(platConfig.apiMap.userInfo, {appId: platConfig.appConfig.appId}, {}, platConfig.serviceConfig,)
     } catch (error) {

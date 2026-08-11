@@ -23,7 +23,7 @@ const iconLinkArr = [
 ];
 // routerChildren
 
-async function createAppFn(accountEnv = "test") {
+async function createAppFn(accountEnv: string = "test"): Promise<void> {
     // const apiMap = import.meta.glob('../api/index.ts', { eager: true });
     // const modules = import.meta.glob('../api/*', { eager: true });
     window["xxxxxApiMap"] = apiMap;
@@ -88,7 +88,7 @@ async function createAppFn(accountEnv = "test") {
         },
         // uiDropdown: initConfig.uiDropdown,
         menuConfig: { // 用来格式化获取到的菜单 后续功能在增加
-            formatterMenu: (val) => {
+            formatterMenu: (val: any[]) => {
                 // if (window.$CONFIG.lang == "cn") {
                 //     const codeList = ["channel"];
                 //
@@ -107,27 +107,29 @@ async function createAppFn(accountEnv = "test") {
                 return menusQunfeng;
             }
         },
-        obtainUserName(val) {
+        obtainUserName(val: Record<string, any>): string {
             // if (window.$CONFIG.lang == "cn") {
             //     return val.nickName + "(" + val.userId + ")";
             // } else if (window.$CONFIG.lang == "en") {
             //     return val.realName; // val.userId;
             // }
             // return val.nickName + "(" + val.userId + ")";
+            return ''
         },
-        obtainCompanyName(val) {
+        obtainCompanyName(val: Record<string, any>): string {
             // if (window.$CONFIG.lang == "cn") {
             //     return "公司ID: " + val.companyId;
             // } else if (window.$CONFIG.lang == "en") {
             //     return "companyID: " + val.companyId;
             // }
+            return ''
         },
         // userInfo: {
         //   userName: "李大玄",
         //   userId: "110"
         // },
 
-        init(vm) {
+        init(vm: any) {
             // const layoutSetting = vm.store.state.user.layoutSetting;
             // layoutSetting.color.value = "#3585FB";
             // vm.store.dispatch("setLayoutSetting", Object.assign({}, layoutSetting));

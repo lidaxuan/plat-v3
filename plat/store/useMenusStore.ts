@@ -42,13 +42,13 @@ export const useMenusStore = defineStore('layoutMenus', {
     setNomalMenu(nomalMenu: MenuItem[] = []) {
       this.nomalMenu = nomalMenu
     },
-    setDefaultActiveMenu(defaultActiveMenu = '') {
+    setDefaultActiveMenu(defaultActiveMenu: string = '') {
       this.defaultActiveMenu = defaultActiveMenu
     },
-    setRemoveCurrentTagId(removeCurrentTagId = '') {
+    setRemoveCurrentTagId(removeCurrentTagId: string = '') {
       this.removeCurrentTagId = removeCurrentTagId
     },
-    setDefaultActiveHorizontalMenu(defaultActiveHorizontalMenu = '') {
+    setDefaultActiveHorizontalMenu(defaultActiveHorizontalMenu: string = '') {
       this.defaultActiveHorizontalMenu = defaultActiveHorizontalMenu
     },
     setAuthCodeArr(authCodeArr: string[] = []) {
@@ -60,10 +60,10 @@ export const useMenusStore = defineStore('layoutMenus', {
     setLayoutTagId(layoutTagId: unknown[] = []) {
       let layoutTag = this.layoutTag
       const index = layoutTag.findIndex(
-        (item: any) => item.id === this.removeCurrentTagId
+        (item: any) => (item as any).id === this.removeCurrentTagId,
       )
       layoutTag = layoutTag.filter(
-        (item: any) => item.id !== this.removeCurrentTagId
+        (item: any) => (item as any).id !== this.removeCurrentTagId,
       )
       if (layoutTag.length > 0) {
         this.layoutTag = layoutTag

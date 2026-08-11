@@ -77,16 +77,11 @@ const getMenuModuleMenu = () => {
 }
 
 const handleSelect = (key: string) => {
-  const obj = findData.getParentId(menuList.value, key)
-  if (obj.path || obj.code || obj.uri) {
-    router.push(obj.path || obj.code || obj.uri)
-  }
-  systemConfig.setMenusConfig('activeMenuCode', obj.code);
+  router.push('/'+key);
 }
 </script>
 
 <style lang="scss" scoped>
-//@import '../../assets/base/common/index';
 .el-menu {
   border-right: none;
   box-shadow: 2px 4px 4px 0px rgba(21, 34, 50, 0.08);

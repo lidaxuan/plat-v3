@@ -3,13 +3,16 @@
     <el-tabs v-model="valueCode" type="card" closable @tab-remove="removeTab" @tab-click="tabClick">
       <el-tab-pane v-for="(item, index) in layoutTag" :key="index" :label="item.name" :name="item.code"/>
     </el-tabs>
+<!--    {{layoutTag}}-->
     <div class="tags-close-box">
       <el-tooltip class="item" effect="dark" content="设置" placement="bottom">
         <el-dropdown @command="handleTags" trigger="click">
           <icon-class class="cursor-p" icon-class="icon-D1-B2" font="24" :color="'#7E84A3'"/>
-          <el-dropdown-menu size="small" slot="dropdown" class="tags">
-            <el-dropdown-item v-for="item in dropdownArr" :key="item.command" :icon="item.icon" :command="item.command">{{ item.name }}</el-dropdown-item>
-          </el-dropdown-menu>
+          <template #dropdown>
+            <el-dropdown-menu size="small" slot="dropdown" class="tags">
+              <el-dropdown-item v-for="item in dropdownArr" :key="item.command" :icon="item.icon" :command="item.command">{{ item.name }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
         </el-dropdown>
       </el-tooltip>
     </div>
@@ -28,10 +31,10 @@ const menusStore = useMenusStore()
 const layoutTag = computed(() => menusStore.layoutTag)
 
 const dropdownArr = [
-  {command: 'l', name: '关闭左侧', icon: 'el-icon-back'},
-  {command: 'r', name: '关闭右侧', icon: 'el-icon-right'},
-  {command: 'c', name: '关闭当前', icon: 'el-icon-close'},
-  {command: 'o', name: '关闭其他', icon: 'el-icon-files'}
+  {command: 'l', name: '关闭左侧', icon: 'Back'},
+  {command: 'r', name: '关闭右侧', icon: 'Right'},
+  {command: 'c', name: '关闭当前', icon: 'Close'},
+  {command: 'o', name: '关闭其他', icon: 'Files'}
 ]
 
 const valueCode = ref('')
@@ -43,8 +46,7 @@ const getValueCode = () => {
 
 watch(() => route, () => {
           valueCode.value = getValueCode()
-        },
-        {deep: true, immediate: true}
+        }, {deep: true, immediate: true}
 )
 
 const removeTab = (val: string) => {
@@ -124,7 +126,7 @@ const handleTags = (command: string) => {
   display: flex;
   align-items: center;
   overflow: hidden;
-  padding: 0px 55px 0px 5px;
+  //padding: 0px 55px 0px 5px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: #ffffff;
   box-shadow: 0px 4px 4px 0px rgba(21, 34, 50, 0.08);
@@ -230,8 +232,8 @@ const handleTags = (command: string) => {
     justify-content: left;
     align-content: center;
     width: 44px;
-    height: 38px;
-    line-height: 38px;
+    //height: 38px;
+    //line-height: 38px;
     z-index: 10;
 
     .el-icon-refresh {

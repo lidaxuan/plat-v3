@@ -6,16 +6,29 @@
  * @LastEditors: chunxu.Zhao
  * @LastEditTime: 2023-11-21 11:17:03
  */
-export default [
+
+export interface MenuItem {
+  id: number
+  code: string
+  productId: string
+  name: string
+  uri: string
+  score: number
+  iconUrl: string | null
+  type: number
+  children?: MenuItem[]
+}
+
+const menus: MenuItem[] = [
   {
-    "id": 17371238,
-    "code": "reportBuilderPage",
-    "productId": "10000",
-    "name": "BI 报表",
-    "uri": "reportBuilderPage",
-    "score": 1,
-    "iconUrl": "icon-BI-report-manage",
-    "type": 1
+    id: 17371238,
+    code: 'reportBuilderPage',
+    productId: '10000',
+    name: 'BI 报表',
+    uri: 'reportBuilderPage',
+    score: 1,
+    iconUrl: 'icon-BI-report-manage',
+    type: 1,
   },
   {
     "id": 17378,
@@ -158,3 +171,5 @@ export default [
     "type": 1
   },
 ];
+
+export default menus

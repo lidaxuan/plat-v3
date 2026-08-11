@@ -1,8 +1,8 @@
-import {createRouter as createVueRouter, createWebHashHistory} from 'vue-router'
+import {createRouter as createVueRouter, createWebHashHistory, type RouteLocationNormalized, type NavigationGuardNext} from 'vue-router'
 import {useSystemConfig} from 'plat@/store/systemConfig.ts'
 import {loadMenus, loadUserInfo} from 'plat@/utils/auth'
 import {isGoToLogin} from 'plat@/utils/index'
-
+import overAll from './overAll';
 export const createRouter = function (platConfig: Record<string, any>) {
   const systemConfig = useSystemConfig()
   const router = createVueRouter({
@@ -12,12 +12,12 @@ export const createRouter = function (platConfig: Record<string, any>) {
         path: '/',
         name: 'home',
         component: () => import(/* webpackChunkName: "entry" */ 'plat@/layouts/index.vue'),
-        children: platConfig.routes,
+         children: [].concat(overAll,  platConfig.routes || []),
       },
     ],
   })
 
-  const routerBeforeEach = async (to, _from, next) => {
+  const routerBeforeEach = async (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> => {
     // 一、登录流程：地址存在 token，从统一登录页跳转过来
     if (to.query['access_token']) {
       systemConfig.setToken(to.query['access_token'] as string)

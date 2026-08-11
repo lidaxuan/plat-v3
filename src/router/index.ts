@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, type RouteLocationNormalized, type NavigationGuardNext } from 'vue-router'
 import { useSystemConfig } from 'plat@/store/systemConfig.ts';
 import { loadMenus, loadUserInfo } from 'plat@/utils/auth'
 import { isGoToLogin } from 'plat@/utils/index'
@@ -22,7 +22,7 @@ export const routerChildren = [
 ]
 
 
-export const resetRouterBeforeEach =  (to, _from, next) => {
+export const resetRouterBeforeEach = (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
   const systemConfig = useSystemConfig()
 
   // 一、登录流程：地址存在 token，从统一登录页跳转过来

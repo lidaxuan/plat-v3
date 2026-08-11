@@ -3,7 +3,7 @@
 
 import {useSystemConfig} from "plat@/store/systemConfig.ts";
 
-export function isGoToLogin(appConfig, callback) {
+export function isGoToLogin(appConfig: Record<string, any>, callback: () => void): void {
     const systemConfig = useSystemConfig();
     const access_token = getQueryString("access_token");
     if (access_token) {
@@ -62,8 +62,8 @@ function getUrlParams(): Record<string, string> {
 }
 
 
-function parseUrlParams(url) {
-    const paramsObj = {};
+function parseUrlParams(url: string): Record<string, string> {
+    const paramsObj: Record<string, string> = {};
     (url.split('?')[1] || '').split('&').forEach(param => {
         const [key, value] = param.split('=');
         if (key) paramsObj[decodeURIComponent(key)] = decodeURIComponent(value || '');
@@ -92,7 +92,7 @@ function getUrlPathBeforeQuestion(): string {
 }
 
 //获取url指定参数值
-export function getQueryString(param) {
+export function getQueryString(param: string): string | null {
     const regex = new RegExp('[?&]' + param + '(=([^&#]*)|&|#|$)');
     const results = regex.exec(window.location.href);
     if (!results) {
@@ -106,203 +106,180 @@ export function getQueryString(param) {
 
 class Utils {
     // 全局设置
-    serRootStyle(root, val, style) {
-        let roots = document.querySelector(":" + root);
-        return roots.style.setProperty(val, style);
+    serRootStyle(root: string, val: string, style: string): void {
+        const roots = document.querySelector(':' + root) as HTMLElement
+        roots.style.setProperty(val, style)
     }
 
     // 锚点初始化
-    goAnchorInit() {
-        var layoutMain = document.getElementById("layout-main");
-        if (layoutMain.scrollTop != null) layoutMain.scrollTop = 0;
+    goAnchorInit(): void {
+        const layoutMain = document.getElementById('layout-main')
+        if (layoutMain && layoutMain.scrollTop != null) layoutMain.scrollTop = 0
     }
 
     // 锚点
-    goAnchor(selector) {
-        this.goAnchorInit();
-        var anchor = document.querySelector(selector);
-        // anchor.scrollIntoView({
-        //   block: "end",
-        //   behavior: "smooth",
-        // });
+    goAnchor(selector: string): void {
+        this.goAnchorInit()
+        document.querySelector(selector)
     }
 
     // 唯一id
-    guid() {
-        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+    guid(): string {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
             /[xy]/g,
             function (c) {
-                var r = (Math.random() * 16) | 0,
-                    v = c == "x" ? r : (r & 0x3) | 0x8;
-                return v.toString(16);
-            }
-        );
+                const r = (Math.random() * 16) | 0,
+                    v = c == 'x' ? r : (r & 0x3) | 0x8
+                return v.toString(16)
+            },
+        )
     }
 
     // js电话号码正则校验--座机和手机号
-    // 移动 134(1349除外）135 136 137 138 139
-    // 联通： 130 131 132 155 156 185 186  145
-    // 电信：133 153 177 180 181 189
-    // 固话 400-1001-1111： /^([0-9]{3,4}-)?[0-9]{3,4}-[0-9]{3,4}$/
-    // 固话 0379-10011111：/^([0-9]{3,4}-)?[0-9]{7,8}$/
-    checkTel(value) {
-        var isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
-        var isMob =
-            /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+    checkTel(value: string): boolean {
+        const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/
+        const isMob =
+            /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/
         if (isMob.test(value) || isPhone.test(value)) {
-            return true;
+            return true
         } else {
-            return false;
+            return false
         }
     }
 
-    getModule(ks, value, modules, i, len) {
-        modules = modules || {};
+    getModule(ks: string[], value: unknown, modules: Record<string, any> = {}, i: number = 0, len?: number): Record<string, any> {
+        if (len === undefined) len = ks.length
         if (i < len) {
             if (i == len - 1) {
-                // 最后一层，赋值
-                modules[ks[len - 1]] = value;
+                modules[ks[len - 1]] = value
             } else {
-                let m = {};
-                // 在父级模块，是否存在对象
-                if (modules[ks[i]] && modules[ks[i]]["modules"]) {
-                    m = modules[ks[i]]["modules"];
+                let m: Record<string, any> = {}
+                if (modules[ks[i]] && modules[ks[i]]['modules']) {
+                    m = modules[ks[i]]['modules']
                 } else if (modules[ks[i]]) {
-                    let pm = modules[ks[i]];
-                    m = pm["modules"];
-                    pm["namespaced"] = true;
+                    const pm = modules[ks[i]]
+                    m = pm['modules']
+                    pm['namespaced'] = true
                 } else {
-                    let pm = modules[ks[i]] || {};
-                    modules[ks[i]] = pm;
-                    pm["modules"] = m;
-                    pm["namespaced"] = true;
+                    const pm = modules[ks[i]] || {}
+                    modules[ks[i]] = pm
+                    pm['modules'] = m
+                    pm['namespaced'] = true
                 }
-
-                i++;
-
-                this.getModule(ks, value, m, i, len);
+                i++
+                this.getModule(ks, value, m, i, len)
             }
         }
-        return modules;
+        return modules
     }
 
     // 判断icon后缀css、js
-    addLinkArr(srcArr, flag = true) {
-        let arr = srcArr;
+    addLinkArr(srcArr: string[], flag = true): void {
+        const arr = srcArr
         arr.forEach((item) => {
-            if (item.indexOf(".css") != -1) {
-                this.addCssByLink(item);
-            } else if (item.indexOf(".js") != -1) {
-                this.addJsByScript(item, flag);
+            if (item.indexOf('.css') != -1) {
+                this.addCssByLink(item)
+            } else if (item.indexOf('.js') != -1) {
+                this.addJsByScript(item, flag)
             }
-        });
+        })
     }
 
-    addCssByLink(url) {
-        var doc = document;
-        var link = doc.createElement("link");
-        link.setAttribute("rel", "stylesheet");
-        link.setAttribute("type", "text/css");
-        link.setAttribute("href", url);
-        var heads = doc.getElementsByTagName("head");
-        if (heads.length) heads[0].appendChild(link);
-        else doc.documentElement.appendChild(link);
+    addCssByLink(url: string): void {
+        const doc = document
+        const link = doc.createElement('link')
+        link.setAttribute('rel', 'stylesheet')
+        link.setAttribute('type', 'text/css')
+        link.setAttribute('href', url)
+        const heads = doc.getElementsByTagName('head')
+        if (heads.length) heads[0].appendChild(link)
+        else doc.documentElement.appendChild(link)
     }
 
-    addJsByScript(url, flag = true) {
-        const s = document.createElement("script");
-        s.src = url;
+    addJsByScript(url: string, flag = true): void {
+        const s = document.createElement('script')
+        s.src = url
         if (flag) {
-            document.body.appendChild(s);
+            document.body.appendChild(s)
         } else {
-            var heads = document.getElementsByTagName('head');
+            const heads = document.getElementsByTagName('head')
             if (heads.length) {
-                heads[0].appendChild(s);
+                heads[0].appendChild(s)
             }
         }
     }
 
     // 读取文件  正则后缀
-    readFile(modulesFiles) {
-        const modules = {};
-        modulesFiles.keys().map((name) => {
-            // 获取文件配置
-            const componentConfig = modulesFiles(name);
-            // 将被注册的组件名字,对获取的文件名进行处理
+    readFile(modulesFiles: Record<string, any>): Record<string, any> {
+        const modules: Record<string, any> = {}
+        modulesFiles.keys().map((name: string) => {
+            const componentConfig = modulesFiles(name)
             const componentName = name
-                .replace(/^\.\/_/, "")
-                .replace(/\.\w+$/, "")
-                .split("./")
-                .join("");
-            modules[componentName] = componentConfig.default || componentConfig;
-        });
-        return modules;
+                .replace(/^\.\/_/, '')
+                .replace(/\.\w+$/, '')
+                .split('./')
+                .join('')
+            modules[componentName] = componentConfig.default || componentConfig
+        })
+        return modules
     }
 
-    mergeExport(vueFiles) {
-        let obj = {};
-        Object.values(this.readFile(vueFiles)).map((item) => {
-            obj = {...obj, ...item};
-        });
-        return obj;
+    mergeExport(vueFiles: Record<string, any>): Record<string, any> {
+        let obj: Record<string, any> = {}
+        Object.values(this.readFile(vueFiles)).map((item: any) => {
+            obj = { ...obj, ...item }
+        })
+        return obj
     }
 
-    getMenuItem(menuTree, menuCode, menuModules) {
+    getMenuItem(menuTree: any[], menuCode: string, menuModules: string[] = []): { menuModules: string[]; menuItem: any } | undefined {
         if (!menuTree || menuTree.length === 0) {
-            return;
+            return
         }
-        let result;
+        let result: any
         for (let i = 0; i < menuTree.length; i++) {
-            const item = menuTree[i];
+            const item = menuTree[i]
             if (item.code === menuCode) {
-                menuModules.unshift(item.name);
-                result = item.name;
-                break;
+                menuModules.unshift(item.name)
+                result = item.name
+                break
             }
-            const childrenItem = this.getMenuItem(item.children, menuCode, menuModules);
+            const childrenItem = this.getMenuItem(item.children, menuCode, menuModules)
             if (childrenItem && childrenItem.menuItem) {
-                menuModules.unshift(item.name);
-                result = childrenItem.menuItem;
-                break;
+                menuModules.unshift(item.name)
+                result = childrenItem.menuItem
+                break
             }
         }
-        return {menuModules, menuItem: result};
+        return { menuModules, menuItem: result }
     }
 
-    exportFile(name, res, suffix) {
-        let str = moment(new Date()).format("YYYY-MM-DD HH:ss");
-        // 处理下载
-        let elink = document.createElement("a");
-        elink.download = `${name}${str}${suffix || '.xlsx'}`;
-        elink.style.display = "none";
-        let blob = new Blob([res]);
-        elink.href = URL.createObjectURL(blob);
-        document.body.appendChild(elink);
-        elink.click();
-        document.body.removeChild(elink);
+    exportFile(name: string, res: BlobPart, suffix?: string): void {
+        const str = moment(new Date()).format('YYYY-MM-DD HH:ss')
+        const elink = document.createElement('a')
+        elink.download = `${name}${str}${suffix || '.xlsx'}`
+        elink.style.display = 'none'
+        const blob = new Blob([res])
+        elink.href = URL.createObjectURL(blob)
+        document.body.appendChild(elink)
+        elink.click()
+        document.body.removeChild(elink)
     }
 
     // 获取不同项目的id
-    getProductId(enums, idArr = []) {
-        let srcNameList = idArr;
+    getProductId(enums: any[], idArr: string[] = []): string[] {
+        const srcNameList = idArr
         for (let i = 0; i < enums.length; i++) {
-            // 如果是本项目的  不管
-            // if (appId != enums[i].productId) {
-            //   //  如果不存在在往数组里面添加
-            //   if (!srcNameList.includes(enums[i].productId)) {
-            //     srcNameList.push(enums[i].productId);
-            //   }
-            // }
             if (enums[i].srcName) {
                 if (!srcNameList.includes(enums[i].srcName)) {
-                    srcNameList.push(enums[i].srcName);
+                    srcNameList.push(enums[i].srcName)
                 }
             }
             if (enums[i].children && enums[i].children.length) {
-                this.getProductId(enums[i].children, srcNameList);
+                this.getProductId(enums[i].children, srcNameList)
             }
         }
-        return srcNameList;
+        return srcNameList
     }
 }
 
