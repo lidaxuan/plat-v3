@@ -6,7 +6,7 @@
  * @LastEditors: 李大玄
  * @LastEditTime: 2024-08-19 09:50:10
  */
-import { initMixin } from './instance/index.js';
+import { initMixin } from './instance';
 
 // ==================== 类型声明 ====================
 
@@ -24,7 +24,7 @@ interface AppConfig {
 /** 平台初始化配置 */
 interface PlatConfig {
   appConfig?: AppConfig;
-  routes?: unknown[];
+  routers?: unknown[];
   navEnums?: unknown[];
   storeKey?: string;
   storeConfig?: Record<string, unknown>;
@@ -48,7 +48,7 @@ interface PlatConfig {
 class EWebPlat {
   app: unknown = '';
   router: unknown = '';
-  routes: unknown[] = [];
+  routers: unknown[] = [];
   store: Record<string, unknown> = {};
   userStore: Record<string, unknown> & { setToken: (token?: string | null) => void; setUserMsg: (userMsg?: Record<string, unknown>) => void; setLayoutSetting: (setting: unknown) => void; setLoginStatus: (data: string) => void; setLoginTrust: (data: string) => void; setLogoutBtns: (list?: unknown[]) => void; setNotify: (chromeNotify?: boolean) => void; setTableSetting: (tableSetting: Record<string, unknown>) => void; token: string | null; layoutSetting: Record<string, unknown>; userMsg: Record<string, unknown>; loginStatus: string; loginTrust: string; logoutBtns: unknown[]; messList: unknown[]; messNum: number; chromeNotify: boolean } = {} as any;
   menusStore: Record<string, unknown> & { setNomalMenu: (nomalMenu?: unknown[]) => void; setAuthCodeArr: (authCodeArr?: string[]) => void; setLayoutTag: (layoutTag?: unknown[]) => void; setDefaultActiveMenu: (defaultActiveMenu?: string) => void; setDefaultActiveHorizontalMenu: (defaultActiveHorizontalMenu?: string) => void; setBreadcrumb: (breadcrumb?: unknown[]) => void; setSideMenu: (sideMenu?: unknown[]) => void; setLayoutTagId: (layoutTagId?: unknown[]) => void; setRemoveCurrentTagId: (removeCurrentTagId?: string) => void; nomalMenu: unknown[]; authCodeArr: string[]; layoutTag: unknown[]; defaultActiveMenu: string; defaultActiveHorizontalMenu: string; breadcrumb: unknown[]; sideMenu: unknown[]; layoutTagId: unknown[]; removeCurrentTagId: string } = {} as any;
@@ -69,7 +69,7 @@ class EWebPlat {
 
   init!: (platConfig: PlatConfig) => void;
   registerMoudle!: (module: { init?: (plat: EWebPlat) => void }) => void;
-  addMoudleRoutes!: (routes: unknown[]) => void;
+  addMoudleRoutes!: (routers: unknown[]) => void;
   addMoudleService!: (servicesConfig: unknown) => void;
   addMoudleStore!: (storeConfig: unknown) => void;
   loadResources!: (modules?: { src: string }[]) => void;

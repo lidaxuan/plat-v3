@@ -10,9 +10,9 @@ export const createRouter = function (platConfig: Record<string, any>) {
     routes: [
       {
         path: '/',
-        name: 'home',
+        name: 'Entry',
         component: () => import(/* webpackChunkName: "entry" */ 'plat@/layouts/index.vue'),
-         children: [].concat(overAll,  platConfig.routes || []),
+         children: [].concat(overAll,  platConfig.routers || []),
       },
     ],
   })

@@ -78,6 +78,7 @@ const getMenuModuleMenu = () => {
 
 const handleSelect = (key: string) => {
   router.push('/'+key);
+  systemConfig.setMenusConfig('activeMenuCode', key);
 }
 </script>
 

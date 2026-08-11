@@ -60,7 +60,8 @@ export default defineConfig(({mode}) => {
       plugins: [vue(), vueJsx()],
       build: {
         lib: {
-          entry: fileURLToPath(new URL('./plat/index.ts', import.meta.url)),
+          // entry: fileURLToPath(new URL('./plat/index.ts', import.meta.url)),
+          entry: fileURLToPath(new URL('./src/application/lib.ts', import.meta.url)),
           name: 'PlatV3',
           formats: ['es', 'umd'],
           fileName: (format) => `plat-v3.${format}.js`,

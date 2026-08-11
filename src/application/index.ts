@@ -8,9 +8,11 @@
 -->*/
 // __webpack_public_path__ = window.static_url || window.url || "";
 
-import EWebPlat from "plat@/index.ts"
-window.EWebPlat = EWebPlat;
+import EWebPlat from "plat@/index.ts";
 
+// @ts-ignore
+window.EWebPlat = EWebPlat;
+// console.log("window.EWebPlat", window.EWebPlat);
 import menusQunfeng from "./enums.ts";
 import {responseError, requestSuccess, responseSuccess} from "./serviceExpand.js";
 import apiMap from "../api/index.ts";
@@ -64,7 +66,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
             responseError,
             requestSuccess
         },
-        routes: routerChildren,
+        routers: routerChildren,
         resetRouterBeforeEach,
         // directives:  // 指令 如果项目需要可以传入, 没有既不需要传
         // 菜单 如果需要菜单配置 就不会走接口请求
@@ -83,8 +85,8 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
         storeKey: initConfig.storeKey,
         */
         layoutSetting: {
-            tag: false,
-            breadcrumb: true
+            showTag: false,
+            showBreadcrumb: true
         },
         // uiDropdown: initConfig.uiDropdown,
         menuConfig: { // 用来格式化获取到的菜单 后续功能在增加

@@ -23,10 +23,11 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import "../assets/base/reset/index.scss";
 import 'element-plus/dist/index.css'
 import {createRouter} from "plat@/router/index.ts";
-import {useRouter} from 'vue-router';
+import {useRouter, useRoute} from 'vue-router';
 import _ from "lodash";
+import {baseLayoutConfig} from "plat@/baseConfig.js";
 
-/*Vue.prototype.$hasAuthority = function (sourceStr) {
+const hasAuthority = function (sourceStr: string) {
   let authorities = '';
   const reg = new RegExp(/[`:_.~!@#$%^&*() \+ =<>?"{}|, \/ ;' \\ [ \] ·~！@#￥%……&*（）—— \+ ={}|《》？：“”【】、；‘’，。、]/, 'g');
   authorities = sourceStr.replace(reg, '');
@@ -48,7 +49,7 @@ import _ from "lodash";
       .join('');
     return authCodeArr.includes(code);
   });
-};*/
+};
 
 
 export function initMixin(EWebPlat) {
@@ -57,7 +58,7 @@ export function initMixin(EWebPlat) {
   pinia.use(piniaPluginPersistedstate)
   const app = createApp(App)
   EWebPlat.prototype.beforeInit = (config) => {
-
+    app.config.globalProperties.$hasAuthority = hasAuthority;
     for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
       app.component(key, component)
     }
@@ -74,47 +75,37 @@ export function initMixin(EWebPlat) {
     const systemConfig = useSystemConfig();
     platBaseConfig = config;
     systemConfig.setAppConfig(config);
+    utils.addLinkArr(["http://localhost:9998/plat-v3.umd.js"])
     utils.addLinkArr(config.iconLink)
     isGoToLogin(config.appConfig, () => {
       EWebPlat.prototype.init(config, router);
     });
   }
 
-  EWebPlat.prototype.init = async function (config, router) {
-    await loadMenus(config)
+  EWebPlat.prototype.init = async function (config: any, router: ReturnType<typeof createRouter>) {
     const systemConfig = useSystemConfig();
-    router.push("/" + systemConfig.menusConfig.activeMenuCode);
-    loadUserInfo(config)
+    // 仅在首次登录时加载菜单和用户信息，刷新时复用 localStorage 缓存
+    if (!systemConfig.menusConfig.leftMenus.length) {
+      await loadMenus(config)
+      loadUserInfo(config)
+      const systemConfig = useSystemConfig();
+      router.push("/" + systemConfig.menusConfig.activeMenuCode);
+    }
 
+    console.log("router", router );
 
-    // this.service = createService(platConfig.serviceConfig);
-    // this.LoadModulesStoreKey = `${window._baseEnvDT || window.ReferEnv}-${platConfig.storeKey}-loadModulesList`;
-    // this.setData(platConfig);
+    this.LoadModulesStoreKey = `${window.__sso}-${config.appConfig.packageName}-loadModulesList`;
     // --------------------------------
-    // const ModulesList = localStorage.getItem(this.LoadModulesStoreKey);
-    // if (ModulesList) {
-    //   this.loadResources(JSON.parse(ModulesList));
-    // }
+    const ModulesList = localStorage.getItem(this.LoadModulesStoreKey);
+    if (ModulesList) {
+      this.loadResources(JSON.parse(ModulesList));
+    }
 
+    if (config.layoutSetting) {
+      const obj = Object.assign({}, baseLayoutConfig, config.layoutSetting || {});
+      systemConfig.resetLayoutConfig(obj);
+    }
 
-    // this.app = createApp(this);
-    //
-    // // 存储 appConfig 到 Pinia store
-    // this.appConfigStore.setAppConfig(platConfig.appConfig);
-    //
-    // // 存储 layoutSetting 到 Pinia store
-    // if (platConfig.layoutSetting) {
-    //   const currentSetting = { ...this.userStore.layoutSetting };
-    //   if (platConfig.layoutSetting.tag !== undefined) {
-    //     currentSetting.tag.value = String(platConfig.layoutSetting.tag);
-    //   }
-    //   if (platConfig.layoutSetting.breadcrumb !== undefined) {
-    //     currentSetting.breadcrumb.value = String(platConfig.layoutSetting.breadcrumb);
-    //   }
-    //   this.userStore.setLayoutSetting(currentSetting);
-    // }
-    //
-    // platConfig.init && platConfig.init(this);
   }
 
   // 原型上绑定  axios 动态API
@@ -124,20 +115,17 @@ export function initMixin(EWebPlat) {
 
 
   EWebPlat.prototype.registerMoudle = function (module) { //模块工程代码加载完，主动调用此接口，平台再回设模块的init方法，完成模块的初始化
-    module.init && module.init(this);
+    console.log("registerMoudle", module);
+    // module.init && module.init(this);
     // this.platConfig = Object.assign({}, this.platConfig || {}, module || {});
+    EWebPlat.prototype.addMoudleRoutes(module.routers || []);
   }
 
   //模块的init初始化方法中，调用些方法 动态添加router路由
-  EWebPlat.prototype.addMoudleRoutes = function (routes) {
-    //调用router动态添加路由
-    const oldRoutes = this.router.options.routes;
-    for (let i = 0; i < oldRoutes.length; i++) {
-      if (oldRoutes[i].path == '/') {
-        oldRoutes[i].children = oldRoutes[i].children.concat(routes);
-      }
+  EWebPlat.prototype.addMoudleRoutes = function (routers: unknown[]) {
+    for (const route of routers) {
+      this.router.addRoute('Entry', route);
     }
-    this.router.addRoutes([].concat(oldRoutes || []));
   }
 
   //模块的init初始化方法中，调用此方法，动态注册api 服务
@@ -153,9 +141,7 @@ export function initMixin(EWebPlat) {
 
   // 动态创建连接 加载资源
   EWebPlat.prototype.loadResources = function (modules = []) {
-    const linkArr = modules.map(item => {
-      return item.src;
-    });
+    const linkArr = modules.map(item => item.src);
     utils.addLinkArr(linkArr, true);
   }
 

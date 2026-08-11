@@ -19,6 +19,27 @@ export const routerChildren = [
     name: 'homeIndex/chatRecord',
     component: () => import('../views/AboutView.vue'),
   },
+  {
+    path: '/test1',
+    name: 'test1',
+    component: () => import('../views/test1.vue'),
+  },
+  {
+    path: '/test2',
+    name: 'test2',
+    component: () => import('../views/test2.vue'),
+  },
+  {
+    path: '/test3',
+    name: 'test3',
+    component: () => import('../views/test3.vue'),
+  },
+  {
+    path: '/test333',
+    name: 'test333',
+    meta: {fullScreen: true, keepAlive: true},
+    component: () => import('../views/test3.vue'),
+  },
 ]
 
 

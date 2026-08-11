@@ -9,7 +9,7 @@
 
 <template>
   <div class="layout flex jc-between position-r" height="100%">
-    {{ appConfig }}
+
     <el-container v-if="$route.meta && $route.meta.fullScreen" class="overflow-y-a position-r layout-container position-a" :style="styleObj" width="100%" height="100%">
       <transition name="left-to-right" mode="out-in" appear>
         <keep-alive>

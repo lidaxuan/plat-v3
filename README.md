@@ -336,7 +336,7 @@ import apiMap from './api'
 
 const app = createPlatApp({
   appConfig: { appName: 'XX系统', appId: 10001 },
-  routes,
+  routers,
   apiMap,
   loginUrl: '/login',
 })
