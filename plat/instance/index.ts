@@ -56,7 +56,8 @@ export function initMixin(EWebPlat) {
   let platBaseConfig = {};
   const pinia = createPinia()
   pinia.use(piniaPluginPersistedstate)
-  const app = createApp(App)
+  const app = createApp(App);
+  let router = null;
   EWebPlat.prototype.beforeInit = (config) => {
     app.config.globalProperties.$hasAuthority = hasAuthority;
     for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -67,7 +68,7 @@ export function initMixin(EWebPlat) {
 
     app.use(pinia)
 
-    const router = createRouter(config);
+    router = createRouter(config);
     app.use(router)
 
     app.use(ElementPlus)
@@ -124,7 +125,7 @@ export function initMixin(EWebPlat) {
   //模块的init初始化方法中，调用些方法 动态添加router路由
   EWebPlat.prototype.addMoudleRoutes = function (routers: unknown[]) {
     for (const route of routers) {
-      this.router.addRoute('Entry', route);
+      router.addRoute('Entry', route);
     }
   }
 

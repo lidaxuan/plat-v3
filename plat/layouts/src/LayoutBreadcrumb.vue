@@ -7,7 +7,7 @@
  * @FilePath: /data-config-view/node_modules/el-ui/components/layouts/src/LayoutBreadcrumb.vue
 -->
 <template>
-  <div>
+  <div class="breadcrumb">
     <el-breadcrumb separator="/" class="mt-0">
       <el-breadcrumb-item v-for="(parent, index) in breadcrumb.menuModules" :key="index + 'breadcrumb'">{{ parent }}</el-breadcrumb-item>
     </el-breadcrumb>
@@ -36,6 +36,8 @@ const breadcrumb = computed(() => {
 @import "../../assets/base/common/index";
 .breadcrumb {
   color: var(--layoutBreadcrumbCol);
+  background: #eff1f4;
+  padding: 10px 20px 0;
 }
 
 ::v-deep .el-breadcrumb__inner,

@@ -33,13 +33,36 @@ export const useSystemConfig = defineStore('systemConfig', () => {
     appConfig.value = Object.assign({}, val.appConfig);
   }
 
-  let layoutConfig = reactive(baseLayoutConfig);
-  const setLayoutConfig = (key: keyof typeof layoutConfig, val: any) => {
-    (layoutConfig as Record<string, any>)[key] = val;
+  const layoutConfig = ref({
+      showBreadcrumb: true,
+      showTag: true,
+      themeLayout: 0, // 0 1 2 3
+      themeColor: '#3585FB',
+      menuLayout: 0, // 0: 默认布局 1: 顶部菜单
+      sideCollapse: false,
+      pointList: ['#FF5750', '#FFBD2E', '#29CC41'],
+      themeColorList: [
+        {color: '#6359CA', opacity: 1},
+        {color: '#2F54EB', opacity: 1},
+        {color: '#3585FB', opacity: 1},
+        {color: '#05C3D9', opacity: 1},
+        {color: '#2FB7AA', opacity: 1},
+        {color: '#4BBD13', opacity: 1},
+        {color: '#FF9E44', opacity: 1},
+        {color: '#FF6602', opacity: 1},
+        {color: '#F5212D', opacity: 1},
+        {color: '#F04DAB', opacity: 1},
+      ],
+      tableRowHeight: "small", // small   mini   medium
+      tableStyle: "minimalist", // minimalist  border  stripe
+    });
+  const setLayoutConfig = (key: string, val: any) => {
+    (layoutConfig.value as Record<string, any>)[key] = val;
+    console.log("setLayoutConfig", key, val)
   };
   const resetLayoutConfig = (val: any) => {
-    layoutConfig = Object.assign({}, val);
-    console.log(layoutConfig)
+    layoutConfig.value = Object.assign({}, val);
+    console.log(layoutConfig.value)
   };
 
   const menusConfig = reactive({

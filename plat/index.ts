@@ -66,19 +66,23 @@ class EWebPlat {
   };
   platConfig: PlatConfig = {};
   LoadModulesStoreKey: string = '';
+}
 
-  init!: (platConfig: PlatConfig) => void;
-  registerMoudle!: (module: { init?: (plat: EWebPlat) => void }) => void;
-  addMoudleRoutes!: (routers: unknown[]) => void;
-  addMoudleService!: (servicesConfig: unknown) => void;
-  addMoudleStore!: (storeConfig: unknown) => void;
-  loadResources!: (modules?: { src: string }[]) => void;
-  createLineByJs!: (linkArr?: string[]) => void;
-  setData!: (platConfig: PlatConfig) => void;
-  platService!: (api: unknown, params: unknown, otherParams?: unknown) => Promise<unknown>;
-  addMoudleComponents!: (Components: Record<string, unknown>) => void;
-  updatePassword!: (params: { visible: boolean; showClose: boolean }) => void;
-  creatOtherProductSrcList!: (menus: unknown[]) => void;
+/** 通过 initMixin 挂载到原型的方法，使用 interface 声明避免自有属性遮蔽原型 */
+interface EWebPlat {
+  beforeInit(config: PlatConfig): void;
+  init(platConfig: PlatConfig, router?: unknown): void;
+  registerMoudle(module: { init?: (plat: EWebPlat) => void }): void;
+  addMoudleRoutes(routers: unknown[]): void;
+  addMoudleService(servicesConfig: unknown): void;
+  addMoudleStore(storeConfig: unknown): void;
+  loadResources(modules?: { src: string }[]): void;
+  createLineByJs(linkArr?: string[]): void;
+  setData(platConfig: PlatConfig): void;
+  platService(api: unknown, params: unknown, otherParams?: unknown): Promise<unknown>;
+  addMoudleComponents(Components: Record<string, unknown>): void;
+  updatePassword(params: { visible: boolean; showClose: boolean }): void;
+  creatOtherProductSrcList(menus: unknown[]): void;
 }
 
 initMixin(EWebPlat);

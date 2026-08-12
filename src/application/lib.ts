@@ -20,7 +20,7 @@ let MoudleA = {
   //   plat.addMoudleRoutes(routers);
   // }
 };
-function waitForEWebPlat(callback: (plat: typeof window.EWebPlat) => void, maxRetries = 50, interval = 100): void {
+function waitForEWebPlat(callback: (plat: typeof window.EWebPlat) => void, maxRetries = 10, interval = 100): void {
   let retries = 0;
   const check = () => {
     if (window.EWebPlat && window.EWebPlat.registerMoudle) {
@@ -36,7 +36,6 @@ function waitForEWebPlat(callback: (plat: typeof window.EWebPlat) => void, maxRe
 }
 
 waitForEWebPlat((plat) => {
-  console.log("window.EWebPlat.registerMoudle ready", plat.registerMoudle);
   // plat.addMoudleService({ apiConfig: [] });
   plat.registerMoudle(MoudleA);
 });

@@ -163,7 +163,7 @@ const handleCommand = (command: string) => {
 
 onMounted(() => {
   (window as any).EWebPlat.updateDropdownList = (list: any) => {
-    getDropdownList(list || userStore.logoutBtns)
+    // getDropdownList(list || userStore.logoutBtns)
   }
   (window as any).EWebPlat.setLoginStatus = (status: number) => {
     const obj: Record<number, string> = {
@@ -177,9 +177,9 @@ onMounted(() => {
     // auth.jumpLogin({type: 'first'})
   }
   getDropdownList(userStore.logoutBtns)
-  if (userStore.loginStatus) {
-    ;(window as any).EWebPlat.setLoginStatus(userStore.loginStatus)
-  }
+  // if (userStore.loginStatus) {
+  //   (window as any).EWebPlat.setLoginStatus(userStore.loginStatus)
+  // }
 })
 </script>
 

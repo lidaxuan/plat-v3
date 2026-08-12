@@ -63,8 +63,8 @@
         </div>
         <!-- 折叠按钮 -->
       </el-aside>
-      <el-main class="p-0 position-r overflow-h" height="100%">
-        <el-header class="layout-nav h-66 pl-15 pr-15" width="100%">
+      <el-main class="p-0 position-r " height="100%">
+        <el-header class="layout-nav h-66 plr-15" width="100%">
           <LayoutHeader>
             <template v-if="$slots.headerRight" v-slot:headerRight>
               <slot name="headerRight"></slot>
@@ -74,10 +74,12 @@
             </template>
           </LayoutHeader>
         </el-header>
+
         <LayoutTag v-if="systemConfig.layoutConfig.showTag" style="border-top: 1px solid rgba(0, 0, 0, 0.1); z-index: 1"/>
 
-        <div id="layout-main" :class="['layout-main pt-15 plr-15 overflow-a position-r']" :style="getMainStyle()">
-          <LayoutBreadcrumb v-if="systemConfig.layoutConfig.showBreadcrumb" class="mb-15"/>
+        <LayoutBreadcrumb v-if="systemConfig.layoutConfig.showBreadcrumb"/>
+
+        <div :class="['layout-main pt-15 plr-15']">
           <template v-if="$slots && $slots.content">
             <slot name="content"></slot>
           </template>
@@ -138,6 +140,42 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@use '../assets/base/common/index.scss';
-@use '../assets/style/home/layouts.scss';
+@import '../assets/base/common/index.scss';
+
+.layout {
+  min-width: 1366px;
+
+  .el-main {
+    display: flex;
+    flex-direction: column;
+    background: var(--layoutTopMenuBg);
+
+    .layout-nav {
+      box-shadow: 0px 4px 4px 0px rgba(21, 34, 50, 0.08);
+      width: 100%;
+    }
+
+    .layout-main {
+      flex: 1;
+      overflow-y: auto;
+      background: #eff1f4;
+    }
+  }
+
+  &-menu {
+    height: calc(100% - 38px);
+  }
+
+  &-aside {
+    height: 100%;
+
+    &-collapse {
+      top: 53px;
+      right: -12px;
+      z-index: 2;
+    }
+
+  }
+}
+
 </style>
