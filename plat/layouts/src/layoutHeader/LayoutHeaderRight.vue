@@ -61,6 +61,7 @@ import UpdatePassword from './UpdatePassword.vue'
 import EWebPlat from '../../../index'
 import LayoutSetting from '../layoutSetting/index.vue'
 import {useSystemConfig} from "../../../store/systemConfig";
+import {redirectToLogin} from "plat@/utils";
 
 const userStore = useUserStore()
 const systemConfig = useSystemConfig()
@@ -117,6 +118,8 @@ const settingFun = () => {
 const handleCommand = (command: string) => {
   if (command === '2') {
     EWebPlat.updatePassword({visible: true, showClose: true})
+  } else if (command ==  "userLogout") {
+    redirectToLogin(window.EWebPlat?.platConfig?.appConfig || {});
   } else if (dropdown.value.map((item: any) => item.id).includes(command)) {
     if (command == loginStatus.value) {
       return

@@ -17,6 +17,7 @@ import menusQunfeng from "./enums.ts";
 import {responseError, requestSuccess, responseSuccess} from "./serviceExpand.js";
 import apiMap from "../api/index.ts";
 import {resetRouterBeforeEach, routerChildren} from "@/router";
+import {useSystemConfig} from "plat@/store/systemConfig";
 
 const iconLinkArr = [
   "//at.alicdn.com/t/c/font_2735677_jf1lwq8yzk8.js", //   BEACON基础库
@@ -25,7 +26,7 @@ const iconLinkArr = [
   "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.js", // 群峰重点项目
 ];
 window["platV3ApiMap"] = apiMap;
-
+console.log("apiMap.im!.getUserInfo", apiMap.im!.getUserInfo)
 async function createAppFn(accountEnv: string = "test"): Promise<void> {
   // const apiMap = import.meta.glob('../api/index.ts', { eager: true });
   // const modules = import.meta.glob('../api/*', { eager: true });
@@ -51,7 +52,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       pageTitle: "",
       appId: 10000,
       jumpContext: baseUrl[accountEnv] || "/im-gateway/webcall/view", // /data-config/view/base
-      packageName: "web-client-view"
+      packageName: "plat-v3-client-view"
     },
     iconLink: iconLinkArr,
     apiMap: {
@@ -163,5 +164,5 @@ export async function fetchUserLoginState() {
     clientList: res.data.clientTypes || [],
     userName: res.data.realName
   };
-
+  useSystemConfig().setUserLoginStatus(userLoginStatus);
 }

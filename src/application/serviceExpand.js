@@ -1,24 +1,21 @@
 /*
  * @Description:
- * @Author: 李大玄
- * @Date: 2022-08-24 10:14:43
- * @FilePath: /web-framework-demo/src/application/serviceExpand.js
- * @LastEditors: 李大玄
- * @LastEditTime: 2022-08-24 10:15:21
- */
+ * @Author: lidaxuan
+ * @Date: 2026-09-01 16:55:53
+ * @FilePath: src/application/serviceExpand.js
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-01 16:55:53
+*/
 
-// import ELEMENT from "element-ui";
-// import auth from "plat/src/utils/auth";
-
-// import {jumpLogin} from "./loginConfig";
-
+import {ElMessage, ElMessageBox} from 'element-plus'
 import {useSystemConfig} from "../../plat/store/systemConfig.js";
+import {redirectToLogin} from "../../plat/utils/index";
 
 export function storageFun(msg) {
-  ELEMENT.MessageBox.alert(msg, window.ELCONFIG.TipText, {
-    confirmButtonText: window.ELCONFIG.ConfirmText,
+  ElMessageBox.alert(msg, "提示", {
+    confirmButtonText: "确认",
     callback: () => {
-      // jumpLogin();
+      redirectToLogin(window.EWebPlat?.platConfig?.appConfig || {});
     }
   });
 }
@@ -44,9 +41,7 @@ export function responseError(err) {
   //   err.response.data = data;
   // }
   if (err.response.status === 401) {
-    if (data.code != 90003) {
-      storageFun(data.msg || window.ELCONFIG.serviceCode["401"]);
-    }
+    storageFun(data.msg || window.ELCONFIG.serviceCode["401"]);
   }
   return err;
 }

@@ -67,14 +67,27 @@ export const useSystemConfig = defineStore('systemConfig', () => {
     (menusConfig as Record<string, any>)[key] = val;
   };
 
+  const setUserLoginStatus = (val: boolean) => {
 
+  }
+
+  /** 退出登录：清除用户数据，保留项目配置 */
+  const clearUserData = () => {
+    setToken(null);
+    setUserMsg({});
+    setMenusConfig('leftMenus', []);
+    setMenusConfig('topMenus', []);
+    setMenusConfig('activeMenuCode', '');
+    setMenusConfig('authCodeArr', []);
+  };
 
   return {
     appConfig, handleDropdownList, setAppConfig,
     userMsg, setUserMsg,
     token, setToken,
     layoutConfig, setLayoutConfig, resetLayoutConfig,
-    menusConfig, setMenusConfig
+    menusConfig, setMenusConfig,
+    clearUserData,
   };
 }, {
   persist: {

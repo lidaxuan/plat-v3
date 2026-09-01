@@ -1,8 +1,38 @@
+/*
+ * @Description:
+ * @Author: lidaxuan
+ * @Date: 2026-09-01 16:54:01
+ * @FilePath: plat/utils/index.ts
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-01 16:54:01
+*/
 // 判断是否跳转登录页
-// import EWebPlat from "plat@";
 
 import {useSystemConfig} from "plat@/store/systemConfig.ts";
 
+/**
+ * 跳转 SSO 登录页（清除 token + 重定向）
+ * 用于 401 等需要强制重新登录的场景
+ * @param appConfig 应用配置
+ */
+export function redirectToLogin(appConfig: Record<string, any>): void {
+    const systemConfig = useSystemConfig();
+    systemConfig.clearUserData();
+
+    let locationHref = window.location.href;
+    if (!locationHref.includes("#")) {
+        locationHref = locationHref + "/#/";
+    }
+    const urlParams = new URLSearchParams(appConfig);
+    const redirectUri = window.envLoginUrl[window.__sso + 'LoginUrl'] + "?redirectUri=" + encodeURIComponent(locationHref) + "&" + urlParams;
+    window.location.href = redirectUri;
+}
+
+/**
+ * 检查登录状态，未登录则跳转 SSO
+ * @param appConfig 应用配置
+ * @param callback 已登录时执行的回调
+ */
 export function isGoToLogin(appConfig: Record<string, any>, callback: () => void): void {
     const systemConfig = useSystemConfig();
     const access_token = getQueryString("access_token");
@@ -15,20 +45,18 @@ export function isGoToLogin(appConfig: Record<string, any>, callback: () => void
         callback();
         return;
     }
-    // dev 模式下跳过 SSO 重定向，直接执行回调
-    if (import.meta.env.DEV) {
-        console.warn('[plat] dev 模式：跳过 SSO 登录重定向');
-        callback();
-        return;
-    }
-    let locationHref = window.location.href;
-    if (!locationHref.includes("#")) {
-        locationHref = locationHref + "/#/";
-    }
-    const urlParams = new URLSearchParams(appConfig);
-    const redirectUri = window.envLoginUrl[window.__sso + 'LoginUrl'] + "?redirectUri=" + encodeURIComponent(locationHref) + "&" + urlParams;
-    window.location.href = redirectUri;
+    // 未登录，跳转 SSO（dev 模式下 redirectToLogin 内部会跳过重定向）
+    // if (import.meta.env.DEV) {
+    //     console.warn('[plat] dev 模式：跳过 SSO 登录重定向');
+    //     callback();
+    //     return;
+    // }
+    redirectToLogin(appConfig);
 };
+
+const redirectUrl = ()  => {
+
+}
 
 /**
  * 获取url全部查询参数（兼容hash模式 #/xxx?a=1&b=2）

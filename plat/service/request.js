@@ -1,18 +1,14 @@
 /*
- * @Description: request
- * @Author: 李大玄
- * @Date: 1985-10-26 16:15:00
- * @FilePath: /framework/plat/src/service/request.js
- * @LastEditors: 李大玄
- * @LastEditTime: 2023-07-17 14:34:44
- */
-
-// import ELEMENT from "element-ui";
-// import EWebPlat from '../index.ts';
-// import auth from "../utils/auth.ts";
-
+ * @Description:
+ * @Author: lidaxuan
+ * @Date: 2026-09-01 16:56:40
+ * @FilePath: plat/service/request.js
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-01 16:56:40
+*/
 import {useSystemConfig} from "../store/systemConfig.js";
-
+import {redirectToLogin} from "../utils/index.ts";
+import {ElMessageBox} from 'element-plus';
 
 function getApiUrl(params, api) {
   let url = api.url;
@@ -39,10 +35,10 @@ export function _FormData(params, flag) {
 }
 
 export function storageFun(msg) {
-  ELEMENT.MessageBox.alert(msg, "提示", {
+  ElMessageBox.alert(msg, "提示", {
     confirmButtonText: "确定",
     callback: () => {
-      // auth.jumpLogin(); // 跳转登录
+      redirectToLogin(window.EWebPlat?.platConfig?.appConfig || {});
     }
   });
 }
@@ -159,12 +155,10 @@ export const maxinService = function (Service, requestheader = {}, serviceConfig
       return res.data;
     },
     serviceConfig.responseError || function (err) {
-      let data = err.response.data;
-      if (err.response.status === 401 || err.response.status === 402) {
-        storageFun(data.msg || "token失效，请重新登陆。");
-        store.dispatch("setToken", null);
+      if (err.response?.status === 401 || err.response?.status === 402) {
+        const msg = err.response.data?.msg || "token失效，请重新登陆";
+        storageFun(msg);
       }
-
       return err;
     }
   );
