@@ -27,7 +27,6 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import _ from 'lodash'
 import LayoutSideItem from './LayoutSideItem.vue'
-import { useMenusStore } from '../../store/useMenusStore'
 import findData from '../../utils/findData.js'
 import {useSystemConfig} from "../../store/systemConfig";
 
@@ -35,11 +34,9 @@ const systemConfig  =  useSystemConfig();
 const props = defineProps<{ isCollapse: boolean }>()
 
 const router = useRouter()
-const menusStore = useMenusStore()
 
 const nomalMenu = computed(() => systemConfig.menusConfig.leftMenus)
 const defaultActiveMenu = computed(() => systemConfig.menusConfig.activeMenuCode)
-const defaultActiveHorizontalMenu = computed(() => menusStore.defaultActiveHorizontalMenu)
 
 const menuList = computed(() => {
   let menuList: unknown[] = []
@@ -62,7 +59,7 @@ const dufFun = (setHomeSideMenu: any[]) => {
 
 const getMenuModuleMenu = () => {
   const item = _.cloneDeep(
-    nomalMenu.value.find((item: any) => item.countId === defaultActiveHorizontalMenu.value)
+    nomalMenu.value.find((item: any) => item.countId === defaultActiveMenu.value)
   )
   let children: any[] = []
   if (item && item.children) {

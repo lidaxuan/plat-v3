@@ -56,14 +56,12 @@
 
 <script setup lang="ts">
 import {ref, computed, onMounted} from 'vue'
-import {useUserStore} from '../../../store/useUserStore'
 import UpdatePassword from './UpdatePassword.vue'
 import EWebPlat from '../../../index'
 import LayoutSetting from '../layoutSetting/index.vue'
 import {useSystemConfig} from "../../../store/systemConfig";
 import {redirectToLogin} from "plat@/utils";
 
-const userStore = useUserStore()
 const systemConfig = useSystemConfig()
 
 const userMsg = computed(() => systemConfig.userMsg)

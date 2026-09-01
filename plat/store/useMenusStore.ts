@@ -1,8 +1,11 @@
 /*
- * @Description: 菜单与标签页 Pinia Store
- * @Author: 李大玄
- * @Date: 2022-07-07 13:56:14
- */
+ * @Description: 
+ * @Author: lidaxuan
+ * @Date: 2026-09-01 18:30:43
+ * @FilePath: plat/store/useMenusStore.ts
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-01 18:30:43
+*/
 import { defineStore } from 'pinia'
 
 export interface MenuItem {
