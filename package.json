@@ -17,6 +17,8 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
+    "build:test": "vite build --mode test",
+    "build:staging": "vite build --mode staging",
     "build:lib": "vite build --mode library",
     "type-check": "vue-tsc --build",
     "lint": "run-s \"lint:*\"",

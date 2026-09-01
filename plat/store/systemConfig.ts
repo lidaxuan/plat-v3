@@ -8,6 +8,13 @@ import {ref, computed, reactive} from 'vue'
 import {defineStore} from 'pinia'
 import {baseLayoutConfig} from "../baseConfig";
 
+/** persist key 前缀，由 beforeInit 在 useSystemConfig 调用前设置 */
+let _persistKeyPrefix = '';
+
+export function setPersistKeyPrefix(prefix: string): void {
+  _persistKeyPrefix = prefix;
+}
+
 export interface LayoutSetting {
   tag: { value: string; disabled: boolean }
   breadcrumb: { value: string; disabled: boolean }
@@ -29,36 +36,15 @@ export const useSystemConfig = defineStore('systemConfig', () => {
   };
 
   const appConfig = ref({} as Record<string, any>);
+  const handleDropdownList = ref<string[]>([]);
   const setAppConfig = (val: any) => {
     appConfig.value = Object.assign({}, val.appConfig);
+    handleDropdownList.value = val.handleDropdownList;
   }
 
-  const layoutConfig = ref({
-      showBreadcrumb: true,
-      showTag: true,
-      themeLayout: 0, // 0 1 2 3
-      themeColor: '#3585FB',
-      menuLayout: 0, // 0: 默认布局 1: 顶部菜单
-      sideCollapse: false,
-      pointList: ['#FF5750', '#FFBD2E', '#29CC41'],
-      themeColorList: [
-        {color: '#6359CA', opacity: 1},
-        {color: '#2F54EB', opacity: 1},
-        {color: '#3585FB', opacity: 1},
-        {color: '#05C3D9', opacity: 1},
-        {color: '#2FB7AA', opacity: 1},
-        {color: '#4BBD13', opacity: 1},
-        {color: '#FF9E44', opacity: 1},
-        {color: '#FF6602', opacity: 1},
-        {color: '#F5212D', opacity: 1},
-        {color: '#F04DAB', opacity: 1},
-      ],
-      tableRowHeight: "small", // small   mini   medium
-      tableStyle: "minimalist", // minimalist  border  stripe
-    });
+  const layoutConfig = ref(baseLayoutConfig);
   const setLayoutConfig = (key: string, val: any) => {
     (layoutConfig.value as Record<string, any>)[key] = val;
-    console.log("setLayoutConfig", key, val)
   };
   const resetLayoutConfig = (val: any) => {
     layoutConfig.value = Object.assign({}, val);
@@ -79,14 +65,16 @@ export const useSystemConfig = defineStore('systemConfig', () => {
 
 
   return {
-    appConfig, setAppConfig,
+    appConfig, handleDropdownList, setAppConfig,
     userMsg, setUserMsg,
     token, setToken,
     layoutConfig, setLayoutConfig, resetLayoutConfig,
     menusConfig, setMenusConfig
   };
 }, {
-  persist: true
+  persist: {
+    key: (id: string) => _persistKeyPrefix ? `${_persistKeyPrefix}_${id}` : id,
+  }
 });
 
 /*persist: {

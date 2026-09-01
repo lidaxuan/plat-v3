@@ -24,44 +24,23 @@
       </el-button>
     </div>
 
-    <!--    <el-dropdown class="mr-14" trigger="click" @command="handleCommand">
-
-          <el-dropdown-menu slot="dropdown" class="p-0 popoverCard">
-            <div class="w-232 pt-15" v-if="getUserName">
-              <div align="center" class="el-dropdown-name" font="16">{{ getUserName }}</div>
-              <div align="center" class="ptb-5 el-dropdown-easyChat" font="12">{{ getCompany }}</div>
-            </div>
-
-            <el-dropdown-item
-                    v-for="item in dropdown"
-                    :key="item.id"
-                    style="font-weight: 600"
-                    class="flex ai-center pl-55"
-                    font="12"
-                    :command="item.id"
-                    divided
-                    :class="{ 'status-active': item.id == loginStatus }"
-                    :style="`cursor: ${item.disabled ? 'not-allowed' : 'pointer'}; color: ${item.disabled ? '#bbb' : ''}`"
-            >
-              <icon-class :icon-class="item.icon" :font="item.font || '12'" color="var(&#45;&#45;layoutTopMenuCol)"/>
-              {{ item.name }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>-->
-
-
-    <el-dropdown>
+    <el-dropdown trigger="click" @command="handleCommand">
       <div class="el-dropdown-link">
         {{ getUserName || "" }}123
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-          <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+          <div class="w-232 pt-15" v-if="getUserName">
+            <div align="center" class="el-dropdown-name" font="16">{{ getUserName }}</div>
+            <div align="center" class="ptb-5 el-dropdown-easyChat" font="12">{{ getCompany }}</div>
+          </div>
+          <el-dropdown-item v-for="item in dropdown" :key="item.id" :command="item.id" divided
+                            style="font-weight: 600" class="flex ai-center pl-55" font="12" :class="{ 'status-active': item.id == loginStatus }"
+                            :style="`cursor: ${item.disabled ? 'not-allowed' : 'pointer'}; color: ${item.disabled ? '#bbb' : ''}`">
+            <icon-class :icon-class="item.icon" :font="item.font || '12'" color="var(&#45;&#45;layoutTopMenuCol)"/>
+            {{ item.name }}
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -110,12 +89,7 @@ const getCompany = computed(() => {
 })
 
 const isFullscreen = ref(true)
-const dropdown = ref<any[]>([])
-const loginStatusList = [
-  {id: 'userStatusOnline', name: '在线', icon: 'icon-statua userStatusOnline', disabled: false},
-  {id: 'userStatusBusy', name: '忙碌', icon: 'icon-statua userStatusBusy', disabled: false},
-  {id: 'userStatusLeave', name: '离开', icon: 'icon-statua userStatusLeave', disabled: false}
-]
+
 const loginStatus = ref('')
 
 const emit = defineEmits<{
@@ -123,13 +97,11 @@ const emit = defineEmits<{
   (e: 'dropdownHandleCommand', command: string): void
 }>()
 
-const getDropdownList = (list: any[] = []) => {
-  dropdown.value = [].concat(
-          EWebPlat.platConfig.showLoginStatus ? loginStatusList : [],
-          EWebPlat.platConfig.uiDropdown || {id: '2', name: '修改密码', icon: 'icon-C-C8'},
-          list
-  ) as any[]
-}
+const dropdown = computed(() => {
+
+  // ([{id: '2', name: '修改密码', icon: 'icon-C-C8'}]) as any[]
+  return systemConfig.handleDropdownList
+})
 
 const isScreenFull = () => {
   // if (!screenfull.isEnabled) {
@@ -151,20 +123,18 @@ const handleCommand = (command: string) => {
       return
     }
     if ((EWebPlat as any).dropdownHandleCommand) {
-      ;(EWebPlat as any).dropdownHandleCommand(command)
+      (EWebPlat as any).dropdownHandleCommand(command);
     }
   } else {
     emit('dropdownHandleCommand', command)
     if ((EWebPlat as any).dropdownHandleCommand) {
-      ;(EWebPlat as any).dropdownHandleCommand(command)
+      (EWebPlat as any).dropdownHandleCommand(command);
     }
   }
 }
 
 onMounted(() => {
-  (window as any).EWebPlat.updateDropdownList = (list: any) => {
-    // getDropdownList(list || userStore.logoutBtns)
-  }
+
   (window as any).EWebPlat.setLoginStatus = (status: number) => {
     const obj: Record<number, string> = {
       1: 'userStatusOnline',
@@ -176,7 +146,6 @@ onMounted(() => {
   (window as any).EWebPlat.windowLogout = () => {
     // auth.jumpLogin({type: 'first'})
   }
-  getDropdownList(userStore.logoutBtns)
   // if (userStore.loginStatus) {
   //   (window as any).EWebPlat.setLoginStatus(userStore.loginStatus)
   // }

@@ -8,7 +8,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 const vm = require("vm");
 const {execSync} = require("child_process");
-const remoteJsUrl = "https://views.easyliao.com/el-base-utils/view/v1.0.0/elBaseUtils.min.js?222";
+const remoteJsUrl = "https://views.easyliao.com/el-base-utils/view/v1.0.0/elBaseUtils.min.js";
 
 function fetchProxyConfigSync(region = "cn", env = "test") {
   try {
@@ -92,19 +92,47 @@ export default defineConfig(({mode}) => {
     }
   }
 
-  // 默认 App 模式
+  // ==================== 默认 App 模式 ====================
+  // 环境映射：mode 决定构建目标
+  const envMap: Record<string, { base: string; outDir: string }> = {
+    production: { base: '/', outDir: 'dist' },
+    test:       { base: '/', outDir: 'dist-test' },
+    staging:    { base: '/', outDir: 'dist-staging' },
+  };
+  const envConfig = envMap[mode] || envMap.production;
+
   return {
+    base: envConfig.base,
     plugins: [vue(), vueJsx(), vueDevTools()],
     resolve,
     server: {
       proxy: proxyConfig || {},
-      // proxy: {
-      //   '/cntestbase': {
-      //     target: 'https://test-prd18.easyliao.net', // 后端接口地址
-      //     changeOrigin: true, // 开启跨域，关键
-      //     rewrite: (path) => path.replace(/^\/cntestbase/, ''), // new RegExp(`^${item.prefix}`)
-      //   },
-      // }
+    },
+    build: {
+      outDir: envConfig.outDir,
+      assetsDir: 'static',
+      sourcemap: mode !== 'production',
+      // 分 chunk 策略
+      rollupOptions: {
+        external: [
+          'vue',
+          'vue-router',
+          'pinia',
+          'pinia-plugin-persistedstate',
+          'element-plus',
+          '@element-plus/icons-vue',
+          'nprogress',
+        ],
+        output: {
+          globals: {
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            pinia: 'Pinia',
+            'element-plus': 'ElementPlus',
+            nprogress: 'NProgress',
+          },
+        },
+      },
     },
   }
 })

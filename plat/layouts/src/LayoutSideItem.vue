@@ -14,7 +14,7 @@
         <template #title>
           <div :class="['dom' + menu.level, 'mr-10', ]" height="100%">
             <icon-class :class="{'p-7': menu.icon ? true: false}" :icon-class="menu.icon || ''" font="18" color="var(--layoutSideMenuColor7E84A3)"/>
-            <span class="ellipsis w-120 d-inline-block" :class="[systemConfig.layoutConfig.menuLayout == 1 ? 'pl-17' : 'pl-7']">{{ menu.name }}</span>
+            <span class="ellipsis w-120 d-inline-block" v-if="!isCollapse" :class="[systemConfig.layoutConfig.menuLayout == 1 ? 'pl-17' : 'pl-7']">{{ menu.name }}</span>
             <div class="line"></div>
           </div>
         </template>
@@ -24,7 +24,7 @@
       <el-menu-item :key="menu.id" :index="menu.code" v-else :disabled="menu.disabled" :class="['item' + menu.level]">
         <div :class="['itemDom' + menu.level, (menu.level == '0' && systemConfig.layoutConfig.menuLayout == 1)  ? 'pl-29' : 'pl-19']" height="100%">
           <icon-class :class="{'p-7': menu.icon ? true: false}" v-if="menu.icon" :icon-class="menu.icon || ''" font="18"/>
-          <span class="ellipsis w-120" :class="[(systemConfig.layoutConfig.menuLayout == 1 && menu.level == 2) ? 'pl-17' : '']">{{ menu.name }}</span>
+          <span class="ellipsis w-120" v-if="!isCollapse" :class="[(systemConfig.layoutConfig.menuLayout == 1 && menu.level == 2) ? 'pl-17' : '']">{{ menu.name }}</span>
         </div>
         <div class="line"></div>
       </el-menu-item>
@@ -198,19 +198,87 @@ $icon-radius: 8px;
 
 /* ==================== 菜单树容器 ==================== */
 
+.el-menu {
+
+  .menutree {
+    :deep(.el-submenu__title),
+    :deep(.el-menu-item) {
+      text-align: left;
+      height: 44px;
+      line-height: 44px;
+    }
+
+    .el-menu--inline .is-disabled {
+      display: none;
+    }
+
+    .el-submenu .el-menu-item {
+      padding: 0;
+      transition: none;
+      min-width: 183px;
+      border-radius: $menu-item-radius;
+
+      .title {
+        color: var(--layoutSideMenuColor7E84A3);
+        font-weight: 500;
+      }
+
+      &.is-active {
+        background: var(--layoutSideMenuSelected) !important;
+        margin-right: 10px;
+
+        &:after {
+          @include line-indicator(-10px);
+        }
+      }
+
+      &.is-disabled {
+        border-radius: 1px;
+        border-bottom: 1px solid #cecece;
+        font-weight: 500;
+        color: #1d212f;
+        opacity: 1;
+        text-align: left;
+        margin-right: 0;
+      }
+    }
+
+    :deep(.el-menu-item) {
+      //padding: 0;
+      //transition: none;
+      //min-width: 183px;
+      border-radius: $menu-item-radius;
+
+      //.itemDom1 { padding-left: 0; }
+      //.itemDom2 span { margin-left: 7px; }
+
+      &.is-active {
+        background: var(--layoutSideMenuSelected) !important;
+        margin-right: 10px;
+        .title {
+          color: var(--layoutSideMenuColorFFF) !important;
+        }
+        &:after {
+          @include line-indicator(-10px);
+        }
+      }
+
+      &.is-disabled {
+        border-radius: 1px;
+        border-bottom: 1px solid #cecece;
+        font-weight: 500;
+        color: #1d212f;
+        opacity: 1;
+        text-align: left;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+
 .menutree {
-  background-color: var(--layoutSideMenuBg);
 
-  ::v-deep .el-submenu__title,
-  ::v-deep .el-menu-item {
-    text-align: left;
-    height: 44px;
-    line-height: 44px;
-  }
-
-  .el-menu--inline .is-disabled {
-    display: none;
-  }
 
   .el-submenu span,
   .el-menu-item span {
@@ -220,54 +288,27 @@ $icon-radius: 8px;
 
   // ===== 菜单项通用 =====
 
-  ::v-deep .el-menu-item {
-    padding: 0;
-    transition: none;
-    min-width: 183px;
-    border-radius: $menu-item-radius;
 
-    .itemDom1 { padding-left: 0; }
-    .itemDom2 span { margin-left: 7px; }
 
-    &.is-active {
-      background: var(--layoutSideMenuSelected) !important;
-      margin-right: 10px;
-
-      &:after {
-        @include line-indicator(-10px);
-      }
-    }
-
-    &.is-disabled {
-      border-radius: 1px;
-      border-bottom: 1px solid #cecece;
-      font-weight: 500;
-      color: #1d212f;
-      opacity: 1;
-      text-align: left;
-      margin-right: 0;
-    }
-  }
-
-  ::v-deep .el-submenu__title {
-    padding: 0 !important;
-
-    &:hover {
-      span,
-      i {
-        color: var(--layoutSideMenuColor344563);
-      }
-      span {
-        font-weight: 600;
-        color: var(--layoutSideMenuSelected) !important;
-      }
-      .iconfont {
-        @include icon-selected;
-        @include icon-rounded;
-        background: none;
-      }
-    }
-  }
+  //::v-deep .el-submenu__title {
+  //  padding: 0 !important;
+  //
+  //  &:hover {
+  //    span,
+  //    i {
+  //      color: var(--layoutSideMenuColor344563);
+  //    }
+  //    span {
+  //      font-weight: 600;
+  //      color: var(--layoutSideMenuSelected) !important;
+  //    }
+  //    .iconfont {
+  //      @include icon-selected;
+  //      @include icon-rounded;
+  //      background: none;
+  //    }
+  //  }
+  //}
 
   // ===== 一级菜单（有子级） =====
 
@@ -308,7 +349,6 @@ $icon-radius: 8px;
           color: $-color-344563;
         }
       }
-
       ::v-deep .el-submenu__title .iconfont {
         @include icon-selected-rounded;
       }
@@ -371,9 +411,10 @@ $icon-radius: 8px;
 }
 
 /* ==================== 收起状态 ==================== */
-
+::v-deep .el-menu--collapse {
+  width: 66px !important;
+}
 .el-menu--collapse {
-  width: 66px;
 
   .level0 {
     .dom0 {
@@ -412,13 +453,13 @@ $icon-radius: 8px;
     }
   }
 
-  @for $step from 1 through 5 {
-    .item#{$step} {
-      padding-left: 0px !important;
-    }
-  }
+  //@for $step from 1 through 5 {
+  //  .item#{$step} {
+  //    padding-left: 0px !important;
+  //  }
+  //}
 
-  .item0 {
+/*  .item0 {
     &:hover {
       .iconfont,
       i {
@@ -439,26 +480,26 @@ $icon-radius: 8px;
         }
       }
     }
-  }
+  }*/
 }
 
 /* ==================== 垂直弹出菜单 ==================== */
 
-.el-menu--vertical {
-  @for $step from 1 through 4 {
-    .dom#{$step} {
-      padding-left: 20px !important;
-    }
-
-    .itemDom#{$step} {
-      padding-left: 0px !important;
-
-      &:hover {
-        background-color: $-color-F9F8FD;
-        border-radius: $menu-item-radius;
-        margin-right: 10px;
-      }
-    }
-  }
-}
+//.el-menu--vertical {
+//  @for $step from 1 through 4 {
+//    .dom#{$step} {
+//      padding-left: 20px !important;
+//    }
+//
+//    .itemDom#{$step} {
+//      padding-left: 0px !important;
+//
+//      &:hover {
+//        background-color: $-color-F9F8FD;
+//        border-radius: $menu-item-radius;
+//        margin-right: 10px;
+//      }
+//    }
+//  }
+//}
 </style>

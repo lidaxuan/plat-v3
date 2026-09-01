@@ -22,7 +22,7 @@ interface AppConfig {
 }
 
 /** 平台初始化配置 */
-interface PlatConfig {
+export interface PlatConfig {
   appConfig?: AppConfig;
   routers?: unknown[];
   navEnums?: unknown[];

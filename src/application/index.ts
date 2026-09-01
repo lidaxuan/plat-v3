@@ -93,11 +93,14 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       showTag: false,
       showBreadcrumb: true
     },
-    heandleDropdownList: [
+    handleDropdownList: [
       {id: "userStatusOnline", name: "在线", icon: "icon-zaixianzhuangtai system-dropdown-online", disabled: false},
       {id: "userStatusLeave", name: "离开", icon: "icon-zaixianzhuangtai system-dropdown-leave", disabled: false},
       {id: "userStatusBusy", name: "忙碌", icon: "icon-zaixianzhuangtai system-dropdown-busy", disabled: false},
-      {id: "bindPhone", name: "绑定手机号", icon: "icon-bangdingshoujihao"}
+      {id: "personelSetting", name: "个人设置", icon: "icon-a-UserIcon"},
+      {id: "bindPhone", name: "绑定手机号", icon: "icon-bangdingshoujihao"},
+      {id: "userLogout", name: "退出登录", icon: "icon-C-C11"},
+      {id: "exitingTheCloud", name: "同时退出云端", icon: "icon-C-C11"},
     ],
     menuConfig: { // 用来格式化获取到的菜单 后续功能在增加
       formatterMenu: (val: any[]) => {
