@@ -15,15 +15,16 @@ import {useSystemConfig} from "plat@/store/systemConfig.ts";
  * 用于 401 等需要强制重新登录的场景
  * @param appConfig 应用配置
  */
-export function redirectToLogin(appConfig: Record<string, any>): void {
+export function redirectToLogin(appConfig?: Record<string, any>): void {
     const systemConfig = useSystemConfig();
     systemConfig.clearUserData();
 
+    const config = appConfig || window.EWebPlat?.platConfig?.appConfig || {};
     let locationHref = window.location.href;
     if (!locationHref.includes("#")) {
         locationHref = locationHref + "/#/";
     }
-    const urlParams = new URLSearchParams(appConfig);
+    const urlParams = new URLSearchParams(config);
     const redirectUri = window.envLoginUrl[window.__sso + 'LoginUrl'] + "?redirectUri=" + encodeURIComponent(locationHref) + "&" + urlParams;
     window.location.href = redirectUri;
 }
@@ -33,30 +34,21 @@ export function redirectToLogin(appConfig: Record<string, any>): void {
  * @param appConfig 应用配置
  * @param callback 已登录时执行的回调
  */
-export function isGoToLogin(appConfig: Record<string, any>, callback: () => void): void {
+export function isGoToLogin(appConfig?: Record<string, any>, callback?: () => void): void {
     const systemConfig = useSystemConfig();
     const access_token = getQueryString("access_token");
     if (access_token) {
         systemConfig.setToken(access_token);
-        callback();
+        callback?.();
         return;
     }
     if (systemConfig.token) {
-        callback();
+        callback?.();
         return;
     }
-    // 未登录，跳转 SSO（dev 模式下 redirectToLogin 内部会跳过重定向）
-    // if (import.meta.env.DEV) {
-    //     console.warn('[plat] dev 模式：跳过 SSO 登录重定向');
-    //     callback();
-    //     return;
-    // }
     redirectToLogin(appConfig);
 };
 
-const redirectUrl = ()  => {
-
-}
 
 /**
  * 获取url全部查询参数（兼容hash模式 #/xxx?a=1&b=2）

@@ -119,7 +119,7 @@ const handleCommand = (command: string) => {
   if (command === '2') {
     EWebPlat.updatePassword({visible: true, showClose: true})
   } else if (command ==  "userLogout") {
-    redirectToLogin(window.EWebPlat?.platConfig?.appConfig || {});
+    redirectToLogin();
   } else if (dropdown.value.map((item: any) => item.id).includes(command)) {
     if (command == loginStatus.value) {
       return

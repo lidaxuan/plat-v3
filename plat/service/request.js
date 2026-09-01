@@ -38,7 +38,7 @@ export function storageFun(msg) {
   ElMessageBox.alert(msg, "提示", {
     confirmButtonText: "确定",
     callback: () => {
-      redirectToLogin(window.EWebPlat?.platConfig?.appConfig || {});
+      redirectToLogin();
     }
   });
 }
