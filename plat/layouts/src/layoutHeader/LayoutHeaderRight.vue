@@ -26,7 +26,7 @@
 
     <el-dropdown trigger="click" @command="handleCommand">
       <div class="el-dropdown-link">
-        {{ getUserName || "" }}123
+        {{ getUserName || "" }}
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
       <template #dropdown>
@@ -36,7 +36,7 @@
             <div align="center" class="ptb-5 el-dropdown-easyChat" font="12">{{ getCompany }}</div>
           </div>
           <el-dropdown-item v-for="item in dropdown" :key="item.id" :command="item.id" divided
-                            style="font-weight: 600" class="flex ai-center pl-55" font="12" :class="{ 'status-active': item.id == loginStatus }"
+                            style="font-weight: 600" class="flex ai-center pl-25" font="12" :class="{ 'status-active': item.id == loginStatus }"
                             :style="`cursor: ${item.disabled ? 'not-allowed' : 'pointer'}; color: ${item.disabled ? '#bbb' : ''}`">
             <icon-class :icon-class="item.icon" :font="item.font || '12'" color="var(&#45;&#45;layoutTopMenuCol)"/>
             {{ item.name }}
@@ -45,7 +45,6 @@
       </template>
     </el-dropdown>
     <!--    <UpdatePassword ref="UpdatePassword" />-->
-
 
     <el-drawer v-model="settingLayout" title="系统主题设置" size="396px" append-to-body footerBtnPosition="right"
                titleIconBg="var(--layoutMain-6359CA)" titleIcon="icon-E-E22" :isFooter="false" :contentPadding="false"
@@ -146,59 +145,14 @@ onMounted(() => {
   (window as any).EWebPlat.windowLogout = () => {
     // auth.jumpLogin({type: 'first'})
   }
-  // if (userStore.loginStatus) {
-  //   (window as any).EWebPlat.setLoginStatus(userStore.loginStatus)
-  // }
 })
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/base/common/index";
-
-.popoverCard.el-popper[x-placement^="bottom"] .popper__arrow {
-  display: none !important;
-}
-
-.popoverCard.el-popper[x-placement^="bottom"] {
-  margin-top: 18px !important;
-}
-
-.popoverCard.el-popper {
-  top: 50px !important;
-}
-
-::v-deep .el-badge__content.is-fixed {
-  top: 22px;
-  right: 13px;
-}
-
-.el-dropdown-menu--medium .el-dropdown-menu__item.el-dropdown-menu__item--divided {
-  margin-top: 0px;
-}
-
-.el-dropdown-menu__item i {
-  margin-right: 8px;
-}
-
-.el-dropdown-menu--medium .el-dropdown-menu__item.el-dropdown-menu__item--divided:before {
-  height: 0;
-}
-
-.el-dropdown-menu--medium .el-dropdown-menu__item {
-  line-height: 37px;
-  height: 37px;
-}
+//@import "../../../assets/base/common/index";
 
 .el-dropdown-link {
   color: var(--layoutTopMenuCol);
-}
-
-.btnName,
-.btnName:hover,
-.btnName:focus {
-  background-color: var(--layoutTopMenuBtn);
-  border-color: var(--layoutTopMenuBtn);
-  color: var(--layoutTopMenuBtnCol);
 }
 
 .el-dropdown-menu {
@@ -206,7 +160,7 @@ onMounted(() => {
 
   .el-dropdown-name {
     font-weight: 600;
-    color: $-color-344563;
+    //color: $-color-344563;
   }
 
   .el-dropdown-easyChat {
@@ -216,19 +170,10 @@ onMounted(() => {
 
   .el-dropdown-menu__item {
     font-weight: 500;
-    color: $-color-344563;
+    //color: $-color-344563;
   }
 
-  .el-dropdown-menu__item:not(.is-disabled):hover,
-  .el-dropdown-menu__item:focus {
-    background-color: var(--layoutMain-6359CA);
-    color: $-color-ffffff;
-    border-radius: 1px;
 
-    &:hover ::v-deep i {
-      color: $-color-ffffff !important;
-    }
-  }
 }
 
 .avatar-box {
@@ -258,16 +203,6 @@ onMounted(() => {
   }
 }
 
-.status-active {
-  background-color: var(--layoutMain-6359CA);
-  color: #fff !important;
-}
-
-.icon-statua {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
 
 .userStatusOnline {
   background: #42d92a !important;
@@ -280,4 +215,12 @@ onMounted(() => {
 .userStatusLeave {
   background: #7d8dbf !important;
 }
+
+.userStatusLeave {
+  &::before {
+    content: " ";
+    background: #7D8DBF;
+  }
+}
+
 </style>

@@ -8,27 +8,19 @@ export function isGoToLogin(appConfig: Record<string, any>, callback: () => void
     const access_token = getQueryString("access_token");
     if (access_token) {
         systemConfig.setToken(access_token);
-        // const newUrl = getUrlPathBeforeQuestion();
-        // 替换历史记录，不刷新页面，不会新增历史回退记录
         callback();
-        // history.replaceState(null, '', newUrl);
         return;
     }
     if (systemConfig.token) {
         callback();
         return;
     }
-    // entrySystem(routePath, next, query) {
-    //   if (!routePath) {
-    //     routePath = "/" + this.getFirstPermission();
-    //   }
-    //   window.history.pushState(null, null, this.getPath() + "/#" + routePath);
-    //   delete query.access_token;
-    //   delete query.refresh_token;
-    //   next({ path: routePath, query: query });
-    // }
-    // return;
-    // 清空缓存
+    // dev 模式下跳过 SSO 重定向，直接执行回调
+    if (import.meta.env.DEV) {
+        console.warn('[plat] dev 模式：跳过 SSO 登录重定向');
+        callback();
+        return;
+    }
     let locationHref = window.location.href;
     if (!locationHref.includes("#")) {
         locationHref = locationHref + "/#/";
@@ -89,6 +81,49 @@ function getUrlPathBeforeQuestion(): string {
     const cleanHash = hashQIdx > -1 ? hashPart.slice(0, hashQIdx) : hashPart
 
     return cleanBase + cleanHash
+}
+
+/**
+ * 将 hex 颜色按比例混合
+ * @param color1 第一个颜色 hex
+ * @param color2 第二个颜色 hex
+ * @param weight color1 的权重 (0-1)
+ * @returns 混合后的 hex 颜色
+ */
+function mixColor(color1: string, color2: string, weight: number): string {
+    const hex2rgb = (hex: string): [number, number, number] => {
+        const h = hex.replace('#', '')
+        return [
+            parseInt(h.substring(0, 2), 16),
+            parseInt(h.substring(2, 4), 16),
+            parseInt(h.substring(4, 6), 16),
+        ]
+    }
+    const [r1, g1, b1] = hex2rgb(color1)
+    const [r2, g2, b2] = hex2rgb(color2)
+    const w = Math.round(weight * 255)
+    const r = Math.round((r1 * w + r2 * (255 - w)) / 255)
+    const g = Math.round((g1 * w + g2 * (255 - w)) / 255)
+    const b = Math.round((b1 * w + b2 * (255 - w)) / 255)
+    return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')
+}
+
+/**
+ * 设置 Element Plus 主题色及其派生变量
+ * Element Plus 的 hover/active/disabled 等状态使用 light-N / dark-N 派生变量
+ * @param primary 主题色 hex，如 '#3585FB'
+ */
+export function setElementThemeColor(primary: string): void {
+    const el = document.documentElement
+    el.style.setProperty('--el-color-primary', primary)
+    // light-N: mix(white, primary, N*10%) — 用于 hover / disabled / 背景等
+    const lightLevels = [3, 5, 7, 8, 9] as const
+    lightLevels.forEach(level => {
+        const weight = level / 10
+        el.style.setProperty(`--el-color-primary-light-${level}`, mixColor('#ffffff', primary, weight))
+    })
+    // dark-2: mix(black, primary, 20%) — 用于 active 状态
+    el.style.setProperty('--el-color-primary-dark-2', mixColor('#000000', primary, 0.2))
 }
 
 //获取url指定参数值
@@ -199,6 +234,7 @@ class Utils {
     addJsByScript(url: string, flag = true): void {
         const s = document.createElement('script')
         s.src = url
+        s.onerror = () => console.warn(`[plat] 资源加载失败: ${url}`)
         if (flag) {
             document.body.appendChild(s)
         } else {

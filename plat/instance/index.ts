@@ -1,19 +1,19 @@
 /*
  * @Description:
- * @Author: 李大玄
- * @Date: 1985-10-26 16:15:00
- * @FilePath: /framework/plat/src/instance/index.ts
- * @LastEditors: 李大玄
- * @LastEditTime: 2025-01-02 10:34:55
- */
+ * @Author: lidaxuan
+ * @Date: 2026-09-01 16:20:54
+ * @FilePath: plat/instance/index.ts
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-01 16:20:54
+*/
 import {createApp} from 'vue'
 import type {PlatConfig} from 'plat@/index.ts'
 import App from '../pages/App.vue'
 import {createService, platCreateService} from '../service/index.js';
 
-import utils, {isGoToLogin} from '../utils/index.ts';
+import utils, {isGoToLogin, setElementThemeColor} from '../utils/index.ts';
 import {loadMenus, loadUserInfo} from "../utils/auth.ts";
-import {useSystemConfig, setPersistKeyPrefix} from "../store/systemConfig.js";
+import {useSystemConfig, setPersistKeyPrefix, setPersistStorage} from "../store/systemConfig.js";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import ElementPlus from "element-plus";
 import IconClass from "../components/icon/IconClass.vue";
@@ -30,6 +30,7 @@ import {baseLayoutConfig} from "plat@/baseConfig.js";
 interface ModuleConfig {
   init?: (plat: Record<string, unknown>) => void;
   routers?: unknown[];
+
   [key: string]: unknown;
 }
 
@@ -91,6 +92,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     app.use(pinia)
 
     setPersistKeyPrefix(config.appConfig?.packageName || '');
+    setPersistStorage(config.storeConfig?.storage || localStorage);
 
     router = createRouter(config);
     app.use(router)
@@ -100,11 +102,15 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     const systemConfig = useSystemConfig();
     platBaseConfig = config;
     systemConfig.setAppConfig(config);
-    utils.addLinkArr(["http://192.168.161.159:2332/plat-v3.umd.js"])
+    // dev 模式下加载本地 UMD library 用于模块注册调试
+    if (import.meta.env.DEV) {
+      utils.addLinkArr(["http://localhost:9998/plat-v3.umd.js"])
+    }
     utils.addLinkArr(config.iconLink || [] as string[])
     isGoToLogin(config.appConfig || {}, () => {
       EWebPlat.prototype.init(config);
     });
+    setElementThemeColor(systemConfig.layoutConfig.themeColor);
   }
 
   // ==================== init ====================

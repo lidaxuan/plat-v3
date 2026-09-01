@@ -11,11 +11,8 @@
 import * as Vue from 'vue';
 import EWebPlat from "plat@/index.ts";
 
-// @ts-ignore
 window.Vue = Vue;
-// @ts-ignore
 window.EWebPlat = EWebPlat;
-// console.log("window.EWebPlat", window.EWebPlat);
 import menusQunfeng from "./enums.ts";
 import {responseError, requestSuccess, responseSuccess} from "./serviceExpand.js";
 import apiMap from "../api/index.ts";
@@ -27,13 +24,11 @@ const iconLinkArr = [
   "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.css", // 群峰重点项目 font_4313697_lk2jjwwvd38
   "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.js", // 群峰重点项目
 ];
-
-// routerChildren
+window["platV3ApiMap"] = apiMap;
 
 async function createAppFn(accountEnv: string = "test"): Promise<void> {
   // const apiMap = import.meta.glob('../api/index.ts', { eager: true });
   // const modules = import.meta.glob('../api/*', { eager: true });
-  window["xxxxxApiMap"] = apiMap;
   // const apiMap = require("../api");
   // const files = require.context("../store/modules", false, /\.js$/);
   const baseUrl = {
@@ -139,11 +134,6 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       // }
       return ''
     },
-    // userInfo: {
-    //   userName: "李大玄",
-    //   userId: "110"
-    // },
-
     init(vm: any) {
       // const layoutSetting = vm.store.state.user.layoutSetting;
       // layoutSetting.color.value = "#3585FB";
@@ -152,11 +142,26 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       // mixinProto(Vue, vm);
       // Vue.prototype.$ELEMENT = {size: 'small'};
       // window.ERegisterComponents(Vue);
+
+
     }
-  }
+  } as EWebPlat.EWebPlatConfig;
   EWebPlat.beforeInit(config);
 }
 
 createAppFn();
+fetchUserLoginState();
 
+export async function fetchUserLoginState() {
+  let userLoginStatus = {};
+  const res = await EWebPlat.platService(platV3ApiMap.im.getUserInfo);
+  if (res.code) {
+    return;
+  }
+  userLoginStatus[res.data.userId] = {
+    ...res.data,
+    clientList: res.data.clientTypes || [],
+    userName: res.data.realName
+  };
 
+}

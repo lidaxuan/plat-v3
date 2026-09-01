@@ -1,4 +1,4 @@
-import {createRouter as createVueRouter, createWebHashHistory, type RouteLocationNormalized, type NavigationGuardNext} from 'vue-router'
+import {createRouter as createVueRouter, createWebHashHistory, type RouteLocationNormalized} from 'vue-router'
 import {useSystemConfig} from 'plat@/store/systemConfig.ts'
 import {loadMenus, loadUserInfo} from 'plat@/utils/auth'
 import {isGoToLogin} from 'plat@/utils/index'
@@ -17,27 +17,24 @@ export const createRouter = function (platConfig: Record<string, any>) {
     ],
   })
 
-  const routerBeforeEach = async (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> => {
+  const routerBeforeEach = async (to: RouteLocationNormalized, _from: RouteLocationNormalized): Promise<void | { path: string; query: Record<string, never> } | boolean> => {
     // 一、登录流程：地址存在 token，从统一登录页跳转过来
     if (to.query['access_token']) {
       systemConfig.setToken(to.query['access_token'] as string)
       await loadMenus(platConfig)
       await loadUserInfo(platConfig)
       // 清除 URL 参数后跳转
-      next({path: to.path, query: {}})
-      return
+      return { path: to.path, query: {} }
     }
 
     // 二、已登录
     if (systemConfig.token) {
-      next()
-      return
+      return true
     }
 
     // 三、未登录，跳转统一登录
-    isGoToLogin(platConfig?.appConfig, () => {
-      next()
-    })
+    isGoToLogin(platConfig?.appConfig, () => {})
+    return false
   }
 
   router.beforeEach(platConfig.resetRouterBeforeEach || routerBeforeEach)

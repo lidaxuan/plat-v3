@@ -52,7 +52,7 @@
         <div class="settingLine"></div>
         <div font="14" class="ml-8 settingName">标签页</div>
       </div>
-      <el-switch v-model="showTag" @change="tagChange" width="60px" inline-prompt />
+      <el-switch v-model="showTag" @change="tagChange" width="60px" inline-prompt/>
     </div>
 
     <div class="flex jc-between ai-center">
@@ -91,10 +91,11 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed} from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import LayoutTheme from './LayoutTheme.vue'
 import LayoutMenuTheme from './LayoutMenuTheme.vue'
 import colorSetting from '../../layoutColorSetting.js'
+import { setElementThemeColor } from 'plat@/utils/index'
 import {useSystemConfig} from "../../../store/systemConfig";
 
 const systemConfig = useSystemConfig()
@@ -116,6 +117,8 @@ const clickColorChange = (v: { color: string; opacity: number }) => {
   colorSetting.setLayoutColor(v.color);
   colorSetting.isThemeLayout(systemConfig.layoutConfig.themeLayout, v.color);
   colorSetting.serRootStyle('root', '--layoutPickerBrNone', '1px solid #999');
+
+  setElementThemeColor(v.color);
 }
 // 标签页
 const tagChange = (v: string) => {

@@ -10,9 +10,15 @@ import {baseLayoutConfig} from "../baseConfig";
 
 /** persist key 前缀，由 beforeInit 在 useSystemConfig 调用前设置 */
 let _persistKeyPrefix = '';
+/** persist 存储介质，默认 localStorage，由 beforeInit 设置 */
+let _persistStorage: Storage = localStorage;
 
 export function setPersistKeyPrefix(prefix: string): void {
   _persistKeyPrefix = prefix;
+}
+
+export function setPersistStorage(storage: Storage): void {
+  _persistStorage = storage;
 }
 
 export interface LayoutSetting {
@@ -48,7 +54,6 @@ export const useSystemConfig = defineStore('systemConfig', () => {
   };
   const resetLayoutConfig = (val: any) => {
     layoutConfig.value = Object.assign({}, val);
-    console.log(layoutConfig.value)
   };
 
   const menusConfig = reactive({
@@ -74,6 +79,7 @@ export const useSystemConfig = defineStore('systemConfig', () => {
 }, {
   persist: {
     key: (id: string) => _persistKeyPrefix ? `${_persistKeyPrefix}_${id}` : id,
+    storage: _persistStorage,
   }
 });
 

@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, type RouteLocationNormalized, type NavigationGuardNext } from 'vue-router'
+import { createRouter, createWebHashHistory, type RouteLocationNormalized } from 'vue-router'
 import { useSystemConfig } from 'plat@/store/systemConfig.ts';
 import { loadMenus, loadUserInfo } from 'plat@/utils/auth'
 import { isGoToLogin } from 'plat@/utils/index'
@@ -7,17 +7,17 @@ export const routerChildren = [
   {
     path: '/reportBuilderPage',
     name: 'reportBuilderPage',
-    component: () => import('../views/AboutView.vue'),
+    component: () => import('../views/test1.vue'),
   },
   {
     path: '/chat',
     name: 'chat',
-    component: () => import('../views/AboutView.vue'),
+    component: () => import('../views/test2.vue'),
   },
   {
     path: '/homeIndex/chatRecord',
     name: 'homeIndex/chatRecord',
-    component: () => import('../views/AboutView.vue'),
+    component: () => import('../views/test3.vue'),
   },
   {
     path: '/test1',
@@ -43,7 +43,7 @@ export const routerChildren = [
 ]
 
 
-export const resetRouterBeforeEach = (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
+export const resetRouterBeforeEach = (to: RouteLocationNormalized, _from: RouteLocationNormalized): boolean | { path: string; query: Record<string, never> } => {
   const systemConfig = useSystemConfig()
 
   // 一、登录流程：地址存在 token，从统一登录页跳转过来
@@ -52,18 +52,15 @@ export const resetRouterBeforeEach = (to: RouteLocationNormalized, _from: RouteL
     loadMenus(window.EWebPlat?.platConfig)
     loadUserInfo(window.EWebPlat?.platConfig)
     // 清除 URL 参数后跳转
-    next({ path: to.path, query: {} })
-    return
+    return { path: to.path, query: {} }
   }
 
   // 二、已登录
   if (systemConfig.token) {
-    next()
-    return
+    return true
   }
 
   // 三、未登录，跳转统一登录
-  isGoToLogin(window.EWebPlat?.platConfig?.appConfig, () => {
-    next()
-  })
+  isGoToLogin(window.EWebPlat?.platConfig?.appConfig, () => {})
+  return false
 }

@@ -244,20 +244,17 @@ $icon-radius: 8px;
     }
 
     :deep(.el-menu-item) {
-      //padding: 0;
-      //transition: none;
-      //min-width: 183px;
       border-radius: $menu-item-radius;
 
-      //.itemDom1 { padding-left: 0; }
-      //.itemDom2 span { margin-left: 7px; }
 
       &.is-active {
         background: var(--layoutSideMenuSelected) !important;
         margin-right: 10px;
+
         .title {
           color: var(--layoutSideMenuColorFFF) !important;
         }
+
         &:after {
           @include line-indicator(-10px);
         }
@@ -278,37 +275,11 @@ $icon-radius: 8px;
 
 
 .menutree {
-
-
-  .el-submenu span,
+  .el-sub-menu span,
   .el-menu-item span {
     color: var(--layoutSideMenuColor7E84A3);
     font-weight: 500;
   }
-
-  // ===== 菜单项通用 =====
-
-
-
-  //::v-deep .el-submenu__title {
-  //  padding: 0 !important;
-  //
-  //  &:hover {
-  //    span,
-  //    i {
-  //      color: var(--layoutSideMenuColor344563);
-  //    }
-  //    span {
-  //      font-weight: 600;
-  //      color: var(--layoutSideMenuSelected) !important;
-  //    }
-  //    .iconfont {
-  //      @include icon-selected;
-  //      @include icon-rounded;
-  //      background: none;
-  //    }
-  //  }
-  //}
 
   // ===== 一级菜单（有子级） =====
 
@@ -349,6 +320,7 @@ $icon-radius: 8px;
           color: $-color-344563;
         }
       }
+
       ::v-deep .el-submenu__title .iconfont {
         @include icon-selected-rounded;
       }
@@ -408,12 +380,19 @@ $icon-radius: 8px;
       }
     }
   }
+
+  .itemDom1 {
+    i {
+      display: none;
+    }
+  }
 }
 
 /* ==================== 收起状态 ==================== */
 ::v-deep .el-menu--collapse {
   width: 66px !important;
 }
+
 .el-menu--collapse {
 
   .level0 {
@@ -452,54 +431,6 @@ $icon-radius: 8px;
       }
     }
   }
-
-  //@for $step from 1 through 5 {
-  //  .item#{$step} {
-  //    padding-left: 0px !important;
-  //  }
-  //}
-
-/*  .item0 {
-    &:hover {
-      .iconfont,
-      i {
-        @include icon-collapse-hover;
-      }
-    }
-
-    &.is-active {
-      .itemDom0 {
-        span,
-        i {
-          color: var(--layoutSideMenuColorFFF) !important;
-        }
-
-        .iconfont {
-          @include icon-rounded;
-          background: var(--layoutSideMenuSelected) !important;
-        }
-      }
-    }
-  }*/
 }
 
-/* ==================== 垂直弹出菜单 ==================== */
-
-//.el-menu--vertical {
-//  @for $step from 1 through 4 {
-//    .dom#{$step} {
-//      padding-left: 20px !important;
-//    }
-//
-//    .itemDom#{$step} {
-//      padding-left: 0px !important;
-//
-//      &:hover {
-//        background-color: $-color-F9F8FD;
-//        border-radius: $menu-item-radius;
-//        margin-right: 10px;
-//      }
-//    }
-//  }
-//}
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div class="my-component">
     111111111
+    <el-button type="primary">123</el-button>
   </div>
 </template>
 
