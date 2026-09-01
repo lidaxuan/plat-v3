@@ -61,5 +61,6 @@ declare global {
       creatOtherProductSrcList(menus: unknown[]): void;
       [key: string]: unknown;
     };
+    [key: string]: any;
   }
 }

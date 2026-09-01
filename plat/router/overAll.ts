@@ -1,10 +1,4 @@
 export default [
-
-  {
-    path: "/401",
-    name: "401",
-    component: () => import(/* webpackChunkName: "componentA" */ "../pages/err404.vue"),
-  },
   {
     path: "/403",
     name: "403",

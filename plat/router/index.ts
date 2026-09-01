@@ -2,7 +2,7 @@ import {createRouter as createVueRouter, createWebHashHistory, type RouteLocatio
 import {useSystemConfig} from 'plat@/store/systemConfig.ts'
 import {loadMenus, loadUserInfo} from 'plat@/utils/auth'
 import {isGoToLogin} from 'plat@/utils/index'
-import overAll from './overAll.js';
+import overAll from './overAll.ts';
 export const createRouter = function (platConfig: Record<string, any>) {
   const systemConfig = useSystemConfig()
   const router = createVueRouter({
@@ -12,8 +12,9 @@ export const createRouter = function (platConfig: Record<string, any>) {
         path: '/',
         name: 'Entry',
         component: () => import(/* webpackChunkName: "entry" */ 'plat@/layouts/index.vue'),
-         children: [].concat(overAll,  platConfig.routers || []),
+         children: [].concat(  platConfig.routers || []),
       },
+      ...overAll
     ],
   })
 

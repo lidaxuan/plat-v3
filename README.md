@@ -106,7 +106,7 @@ src/plat/
 │   └── baseConfig.js           # 基础配置（iconLink 等）
 ├── router/                     # 路由管理
 │   ├── index.ts                # 路由创建 + 守卫（登录态、权限、菜单加载）
-│   └── overAll.js              # 通用路由（404、登录等）
+│   └── overAll.ts              # 通用路由（404、登录等）
 ├── service/                    # API 服务层
 │   ├── index.ts                # Axios 封装、请求拦截、响应处理
 │   └── request.js              # 请求核心逻辑

@@ -8,7 +8,7 @@
  */
 
 export interface MenuItem {
-  id: number
+  id: number | string
   code: string
   productId: string
   name: string
