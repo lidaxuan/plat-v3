@@ -145,7 +145,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
   // ==================== registerMoudle ====================
   /** 模块工程代码加载完，主动调用此接口，平台再回设模块的 init 方法，完成模块的初始化 */
   EWebPlat.prototype.registerMoudle = function (module: ModuleConfig): void {
-    console.log("registerMoudle", module);
     // module.init && module.init(this);
     // this.platConfig = Object.assign({}, this.platConfig || {}, module || {});
     this.addMoudleRoutes(module.routers || []);

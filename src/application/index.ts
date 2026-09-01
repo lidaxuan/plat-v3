@@ -26,7 +26,6 @@ const iconLinkArr = [
   "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.js", // 群峰重点项目
 ];
 window["platV3ApiMap"] = apiMap;
-console.log("apiMap.im!.getUserInfo", apiMap.im!.getUserInfo)
 async function createAppFn(accountEnv: string = "test"): Promise<void> {
   // const apiMap = import.meta.glob('../api/index.ts', { eager: true });
   // const modules = import.meta.glob('../api/*', { eager: true });
