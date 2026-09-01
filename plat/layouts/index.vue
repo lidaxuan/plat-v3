@@ -53,7 +53,7 @@
         <!-- 折叠按钮  == 0 顶部有菜单   == 1 无折叠按钮-->
         <div class="layout-aside-collapse position-a" v-if="systemConfig.layoutConfig.menuLayout == 0" @click="collapseChage">
           <div class="w-27 h-27 flex jc-center ai-center layout-aside-collapseBtn">
-            <el-button round size="mini">
+            <el-button round size="mini" style="padding: 8px;">
               <el-icon>
                 <ArrowRightBold v-if="isCollapse"/>
                 <ArrowLeftBold v-else/>

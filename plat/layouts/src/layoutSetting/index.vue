@@ -100,10 +100,10 @@ import {useSystemConfig} from "../../../store/systemConfig";
 
 const systemConfig = useSystemConfig()
 
-const colorList = systemConfig.layoutConfig.themeColorList;
-const themeColor = ref(systemConfig.layoutConfig.themeColor);
-const showTag = ref(systemConfig.layoutConfig.showTag);
-const showBreadcrumb = ref(systemConfig.layoutConfig.showBreadcrumb);
+const colorList = computed(() => systemConfig.layoutConfig.themeColorList);
+const themeColor = computed(() => systemConfig.layoutConfig.themeColor);
+const showTag = computed(() =>  systemConfig.layoutConfig.showTag);
+const showBreadcrumb = computed(() => systemConfig.layoutConfig.showBreadcrumb);
 const tableRowHeight = ref(systemConfig.layoutConfig.tableRowHeight);
 const tableStyle = ref(systemConfig.layoutConfig.tableStyle);
 
