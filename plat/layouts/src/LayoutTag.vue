@@ -118,7 +118,6 @@ const handleTags = (command: string) => {
 }
 </style>
 <style lang="scss" scoped>
-//@import "../../assets/base/common/index";
 
 .tags-el {
   position: relative;

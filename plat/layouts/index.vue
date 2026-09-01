@@ -140,10 +140,16 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/base/common/index.scss';
 
 .layout {
   min-width: 1366px;
+
+  .little-font {
+    transform: scale(0.5);
+    transform-origin: 0 0;
+    width: max-content;
+    margin-top: 0px;
+  }
 
   .el-main {
     display: flex;
@@ -174,7 +180,6 @@ onMounted(() => {
       right: -12px;
       z-index: 2;
     }
-
   }
 }
 

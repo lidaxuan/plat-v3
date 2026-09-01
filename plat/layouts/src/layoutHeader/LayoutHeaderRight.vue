@@ -150,7 +150,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-//@import "../../../assets/base/common/index";
 
 .el-dropdown-link {
   color: var(--layoutTopMenuCol);

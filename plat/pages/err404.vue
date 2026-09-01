@@ -30,13 +30,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../assets/base/common/index";
-.error-page {
-  background: $-color-F1F4FA;
-  box-sizing: border-box;
 
-  .error-desc {
-    color: $-color-2D419B;
-  }
-}
 </style>

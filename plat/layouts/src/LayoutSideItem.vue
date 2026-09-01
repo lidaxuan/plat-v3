@@ -76,7 +76,6 @@ onMounted(() => {
 </style>
 
 <style lang="scss" scoped>
-@import "../../assets/base/common/index";
 
 /* ==================== 变量 ==================== */
 
@@ -317,7 +316,7 @@ $icon-radius: 8px;
         &:hover span,
         &:focus i,
         &:hover i {
-          color: $-color-344563;
+          color: #344563;
         }
       }
 

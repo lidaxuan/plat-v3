@@ -52,7 +52,6 @@ const layoutClick = (v: string) => {
 </script>
 
 <style lang="scss" scoped>
-//@import '../../../assets/base/common/index';
 .layout {
   background: #ffffff;
   box-shadow: 0px 0px 10px 0px #d1dcf5;
