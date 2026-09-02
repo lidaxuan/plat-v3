@@ -35,7 +35,7 @@ export const createRouter = function (platConfig: Record<string, any>) {
     const codeFromPath = path.startsWith('/') ? path.slice(1) : path
     if (codeFromPath && normalMenu.length) {
       const matched = utils.getMenuItem(normalMenu, codeFromPath, [])
-      if (matched?.code) {
+      if (matched && matched.code) {
         systemConfig.setMenusConfig('activeMenuCode', matched.code)
         return
       }
@@ -43,7 +43,7 @@ export const createRouter = function (platConfig: Record<string, any>) {
     // 兜底：取菜单树第一个叶子节点
     const fallback = getFirstLeafCode(normalMenu)
     if (fallback) {
-      systemConfig.setMenusConfig('activeMenuCode', fallback)
+      systemConfig.setMenusConfig('activeMenuCode', fallback as string)
     }
   }
 

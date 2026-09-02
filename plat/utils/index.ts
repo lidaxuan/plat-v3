@@ -288,7 +288,9 @@ class Utils {
         return obj
     }
 
-    getMenuItem(menuTree: any[], menuCode: string, menuModules: string[] = []): { menuModules: string[]; menuItem: any } | undefined {
+    getMenuItem(menuTree: any[], menuCode: string, menuModules: string[] = []): {
+      code: string;
+      menuModules: string[]; menuItem: any } | undefined {
         if (!menuTree || menuTree.length === 0) {
             return
         }

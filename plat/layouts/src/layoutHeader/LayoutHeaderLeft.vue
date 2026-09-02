@@ -152,7 +152,7 @@ onBeforeUnmount(() => {
     border-bottom: none;
     height: 100%;
 
-    .el-menu-item {
+    .el-menu-item, .el-sub-menu {
       height: 100%;
       padding: 0 24px !important;
       background: var(--layoutTopMenuBg);
