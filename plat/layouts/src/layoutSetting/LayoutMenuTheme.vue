@@ -42,7 +42,7 @@ import {useSystemConfig} from "../../../store/systemConfig";
 
 
 const systemConfig = useSystemConfig();
-const layoutSetting = ref(systemConfig.layoutConfig.menuLayout)
+const layoutSetting = ref<number | string>(systemConfig.layoutConfig.menuLayout);
 const pointList = systemConfig.layoutConfig.pointList;
 
 const layoutClick = (v: string) => {
