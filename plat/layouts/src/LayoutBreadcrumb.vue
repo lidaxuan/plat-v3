@@ -26,13 +26,13 @@ import { useSystemConfig } from 'plat@/store/systemConfig'
 const systemConfig = useSystemConfig()
 
 /**
- * 以 activeMenuCode 为锚点，从 leftMenus 树中递归查找并收集路径链
+ * 以 activeMenuCode 为锚点，从 normalMenu 树中递归查找并收集路径链
  * 未找到时显示 ["--"]，无激活菜单时显示占位
  */
 const breadcrumbNames = computed<string[]>(() => {
-  const { leftMenus, activeMenuCode } = systemConfig.menusConfig
-  if (!activeMenuCode || !leftMenus.length) return ['--']
-  const found = utils.getMenuItem(leftMenus, activeMenuCode, [])
+  const { normalMenu, activeMenuCode } = systemConfig.menusConfig
+  if (!activeMenuCode || !normalMenu.length) return ['--']
+  const found = utils.getMenuItem(normalMenu, activeMenuCode, [])
   return found?.menuModules?.length ? found.menuModules : ['--']
 })
 </script>

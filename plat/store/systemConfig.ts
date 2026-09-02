@@ -57,8 +57,7 @@ export const useSystemConfig = defineStore('systemConfig', () => {
   };
 
   const menusConfig = reactive({
-    leftMenus: [],
-    topMenus: [],
+    normalMenu: [],
     activeMenuCode: "",
     authCodeArr: [] as string[],
   });
@@ -75,8 +74,7 @@ export const useSystemConfig = defineStore('systemConfig', () => {
   const clearUserData = () => {
     setToken(null);
     setUserMsg({});
-    setMenusConfig('leftMenus', []);
-    setMenusConfig('topMenus', []);
+    setMenusConfig('normalMenu', []);
     setMenusConfig('activeMenuCode', '');
     setMenusConfig('authCodeArr', []);
   };

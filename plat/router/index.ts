@@ -30,18 +30,18 @@ export const createRouter = function (platConfig: Record<string, any>) {
   /** 当 activeMenuCode 为空时，根据当前路由路径同步一次，确保首次进入/刷新后也能正常高亮 */
   const syncActiveMenuCodeByRoute = (path: string): void => {
     if (systemConfig.menusConfig.activeMenuCode) return
-    const { leftMenus } = systemConfig.menusConfig
+    const { normalMenu } = systemConfig.menusConfig
     // 优先用路径匹配（去掉开头的 '/'）
     const codeFromPath = path.startsWith('/') ? path.slice(1) : path
-    if (codeFromPath && leftMenus.length) {
-      const matched = utils.getMenuItem(leftMenus, codeFromPath, [])
+    if (codeFromPath && normalMenu.length) {
+      const matched = utils.getMenuItem(normalMenu, codeFromPath, [])
       if (matched?.code) {
         systemConfig.setMenusConfig('activeMenuCode', matched.code)
         return
       }
     }
     // 兜底：取菜单树第一个叶子节点
-    const fallback = getFirstLeafCode(leftMenus)
+    const fallback = getFirstLeafCode(normalMenu)
     if (fallback) {
       systemConfig.setMenusConfig('activeMenuCode', fallback)
     }

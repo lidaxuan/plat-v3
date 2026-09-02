@@ -35,7 +35,7 @@ const props = defineProps<{ isCollapse: boolean }>()
 
 const router = useRouter()
 
-const nomalMenu = computed(() => systemConfig.menusConfig.leftMenus)
+const nomalMenu = computed(() => systemConfig.menusConfig.normalMenu)
 const defaultActiveMenu = computed(() => systemConfig.menusConfig.activeMenuCode)
 
 const menuList = computed(() => {

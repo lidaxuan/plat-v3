@@ -103,9 +103,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     platBaseConfig = config;
     systemConfig.setAppConfig(config);
     // dev 模式下加载本地 UMD library 用于模块注册调试
-    if (import.meta.env.DEV) {
-      utils.addLinkArr(["http://localhost:9998/plat-v3.umd.js"])
-    }
+    utils.addLinkArr(["http://localhost:2332/plat-v3.umd.js"])
     utils.addLinkArr(config.iconLink || [] as string[])
     isGoToLogin(config.appConfig || {}, () => {
       EWebPlat.prototype.init(config);
@@ -119,9 +117,9 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
 
     // 菜单缓存已存在，但 activeMenuCode 丢失的兜底（例如 localStorage 恢复后的空字符串、旧版本状态）
     const fallbackFirstMenuCode = () => {
-      const { leftMenus, activeMenuCode } = systemConfig.menusConfig;
-      if (activeMenuCode || !leftMenus.length) return activeMenuCode;
-      let node = leftMenus[0];
+      const { normalMenu, activeMenuCode } = systemConfig.menusConfig;
+      if (activeMenuCode || !normalMenu.length) return activeMenuCode;
+      let node = normalMenu[0];
       while (node?.children?.length) node = node.children[0];
       const code = node?.code || '';
       if (code) systemConfig.setMenusConfig('activeMenuCode', code);
@@ -129,7 +127,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     };
 
     // 仅在首次登录时加载菜单和用户信息，刷新时复用 localStorage 缓存
-    if (!systemConfig.menusConfig.leftMenus.length) {
+    if (!systemConfig.menusConfig.normalMenu.length) {
       await loadMenus(config);
       loadUserInfo(config);
     } else {

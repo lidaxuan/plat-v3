@@ -65,7 +65,7 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
 
     // 格式化并缓存 认证编码集合「格式化和获取所有菜单（包含按钮）的编码」
     systemConfig.setMenusConfig('authCodeArr', codeArrFormat(data))
-    systemConfig.setMenusConfig('leftMenus', menuTree)
+    systemConfig.setMenusConfig('normalMenu', menuTree)
 
     // 取第一个菜单，递归找到最后一个子级的 code 作为默认激活菜单
     const activeMenuCode = getLastChildCode(menuTree);
