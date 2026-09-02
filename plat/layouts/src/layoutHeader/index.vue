@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
 import LayoutHeaderRight from './LayoutHeaderRight.vue'
 import LayoutHeaderLeft from './LayoutHeaderLeft.vue'
 import {useSystemConfig} from "../../../store/systemConfig";

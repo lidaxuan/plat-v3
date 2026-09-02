@@ -95,18 +95,16 @@ const emit = defineEmits<{
   (e: 'dropdownHandleCommand', command: string): void
 }>()
 
-const dropdown = computed(() => {
-
-  // ([{id: '2', name: '修改密码', icon: 'icon-C-C8'}]) as any[]
-  return systemConfig.handleDropdownList
-})
+const dropdown = computed(() => systemConfig.handleDropdownList);
 
 const isScreenFull = () => {
-  // if (!screenfull.isEnabled) {
-  //   return false
-  // }
-  // screenfull.toggle()
-  // isFullscreen.value = screenfull.isFullscreen
+  if (isFullscreen.value) {
+    isFullscreen.value = false
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+    isFullscreen.value = true
+  }
 }
 
 const settingFun = () => {
@@ -116,7 +114,7 @@ const settingFun = () => {
 const handleCommand = (command: string) => {
   if (command === '2') {
     EWebPlat.updatePassword({visible: true, showClose: true})
-  } else if (command ==  "userLogout") {
+  } else if (command == "userLogout") {
     redirectToLogin();
   } else if (dropdown.value.map((item: any) => item.id).includes(command)) {
     if (command == loginStatus.value) {
