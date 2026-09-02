@@ -154,18 +154,18 @@ onBeforeUnmount(() => {
     border-bottom: none;
     height: 100%;
 
-    .el-menu-item, .el-sub-menu {
+    .el-menu-item {
       height: 100%;
       padding: 0 24px !important;
       background: var(--layoutTopMenuBg);
       color: #7e84a3 !important;
 
-      i {
-        color: #7e84a3 !important;
-      }
-
       .menuName {
         color: var(--layoutTopMenuCol);
+      }
+
+      &:hover:not(.is-active) {
+        color: #000 !important;
       }
 
       // 激活 / 悬停态：图标与文字统一用主题色
@@ -194,6 +194,62 @@ onBeforeUnmount(() => {
           border-top-right-radius: 6px;
         }
       }
+    }
+
+    .el-sub-menu {
+      height: 100%;
+
+      .menuName {
+        color: var(--layoutTopMenuCol);
+      }
+
+      .el-sub-menu__title {
+        margin-top: 3px;
+        height: calc(100% - 3px);
+      }
+
+      & > .el-sub-menu__title:hover {
+        background: var(--layoutTopMenuBg);
+      }
+
+      &:hover i,
+      &:hover span {
+        color: var(--layoutTopMenuIsActive) !important;
+      }
+
+      &.is-active {
+        .el-sub-menu__title  {
+          i {
+            color: var(--layoutTopMenuIsActive) !important;
+          }
+
+          .menuName {
+            color: var(--layoutTopMenuIsActive) !important;
+          }
+
+          border: none;
+          position: relative;
+
+          &::after {
+            content: '' !important;
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            width: calc(100% - 40px);
+            border-top: 3px solid var(--layoutTopMenuIsActive) !important;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+          }
+        }
+      }
+    }
+  }
+
+  :deep(.el-menu--horizontal) {
+
+    .el-menu-item {
+      margin-bottom: 10px;
+      padding: 0 20px;
     }
   }
 }

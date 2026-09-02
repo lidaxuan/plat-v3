@@ -379,6 +379,16 @@ $icon-radius: 8px;
       }
     }
   }
+  :deep(.el-sub-menu .el-sub-menu__title) {
+    &:hover {
+      background-color: var(--layoutSideMenuColorF9F8FD-rgba);
+      border-radius: $menu-item-radius;
+      margin-right: 10px !important;
+      i {
+        color: var(--layoutSideMenuColor344563);
+      }
+    }
+  }
 
   .itemDom1 {
     i {
