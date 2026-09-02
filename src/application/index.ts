@@ -68,6 +68,9 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     },
     routers: routerChildren,
     resetRouterBeforeEach,
+    storeConfig: {
+      storage: window.sessionStorage
+    },
     // directives:  // 指令 如果项目需要可以传入, 没有既不需要传
     // 菜单 如果需要菜单配置 就不会走接口请求
     /*routes: [],

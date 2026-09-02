@@ -82,6 +82,7 @@ const foldOverflowMenus = () => {
   overflowMenus.value = []
   nextTick(() => {
     const container = layoutMenuRef.value
+    console.log('foldOverflowMenus', container, visibleMenus.value, overflowMenus.value)
     if (!container) return
     const containerWidth = container.getBoundingClientRect().width
     // el-menu 根节点（ul）下的直接子项 li，过滤掉"更多"子菜单本身
@@ -98,6 +99,7 @@ const foldOverflowMenus = () => {
       }
     }
     // splitIndex <= 0：要么全部放得下，要么第一个就放不下（极端窄），都不折叠
+    console.log('splitIndex', splitIndex)
     if (splitIndex > 0) {
       overflowMenus.value = visibleMenus.value.splice(splitIndex)
     }

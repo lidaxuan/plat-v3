@@ -132,7 +132,6 @@ const handleCommand = (command: string) => {
 }
 
 onMounted(() => {
-
   (window as any).EWebPlat.setLoginStatus = (status: number) => {
     const obj: Record<number, string> = {
       1: 'userStatusOnline',
@@ -140,9 +139,6 @@ onMounted(() => {
       3: 'userStatusLeave'
     }
     loginStatus.value = obj[status]
-  }
-  (window as any).EWebPlat.windowLogout = () => {
-    // auth.jumpLogin({type: 'first'})
   }
 })
 </script>

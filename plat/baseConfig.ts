@@ -7,9 +7,9 @@ export const baseLayoutConfig = {
   sideCollapse: false,
   pointList: ['#FF5750', '#FFBD2E', '#29CC41'],
   themeColorList: [
+    {color: '#3585FB', opacity: 1},
     {color: '#6359CA', opacity: 1},
     {color: '#2F54EB', opacity: 1},
-    {color: '#3585FB', opacity: 1},
     {color: '#05C3D9', opacity: 1},
     {color: '#2FB7AA', opacity: 1},
     {color: '#4BBD13', opacity: 1},

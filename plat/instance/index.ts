@@ -128,6 +128,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
 
     // 仅在首次登录时加载菜单和用户信息，刷新时复用 localStorage 缓存
     if (!systemConfig.menusConfig.normalMenu.length) {
+      console.log(config)
       await loadMenus(config);
       loadUserInfo(config);
     } else {

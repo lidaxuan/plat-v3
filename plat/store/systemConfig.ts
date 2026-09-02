@@ -90,7 +90,10 @@ export const useSystemConfig = defineStore('systemConfig', () => {
 }, {
   persist: {
     key: (id: string) => _persistKeyPrefix ? `${_persistKeyPrefix}_${id}` : id,
-    storage: _persistStorage,
+    // 用 getter 动态读取 _persistStorage，保证 setPersistStorage 之后能生效
+    get storage(): Storage {
+      return _persistStorage;
+    },
   }
 });
 
