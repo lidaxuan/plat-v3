@@ -19,7 +19,7 @@
         <img style="border-radius: 50%; object-fit: cover" size="medium" class="w-32 h-32" :src="appConfig.avatarSrc"/>
       </div>
 
-      <el-button v-else-if="!appConfig.avatarSrc && getUserName" type="primary" size="mini" font="14" class="w-32 h-32" circle>
+      <el-button v-else-if="!appConfig.avatarSrc && getUserName" type="primary" size="small" font="14" class="w-32 h-32" circle>
         {{ getUserName ? getUserName.charAt(0) : "" }}
       </el-button>
     </div>

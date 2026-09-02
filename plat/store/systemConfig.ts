@@ -84,7 +84,7 @@ export const useSystemConfig = defineStore('systemConfig', () => {
     userMsg, setUserMsg,
     token, setToken,
     layoutConfig, setLayoutConfig, resetLayoutConfig,
-    menusConfig, setMenusConfig,
+    menusConfig, setMenusConfig,  setUserLoginStatus,
     clearUserData,
   };
 }, {

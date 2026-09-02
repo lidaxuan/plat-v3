@@ -9,7 +9,9 @@
 <template>
   <div width="100%" height="100%" class="error-page flex jc-center ai-center flex-column">
     <el-image src="./err404.gif" fit="contain">
-      <div slot="placeholder" class="image-slot">加载中<span class="dot">...</span></div>
+      <template #placeholder>
+        <div class="image-slot">加载中<span class="dot">...</span></div>
+      </template>
     </el-image>
     <div class="error-desc ml-20" font="22">目前服务器繁忙、请您稍后再试！</div>
   </div>

@@ -16,7 +16,7 @@
     </template>
     <div class="ml-80" :class="['flex', systemConfig.layoutConfig.menuLayout == 1 ? 'jc-between' : 'jc-end']">
       <template v-if="!$slots.headerRight">
-        <LayoutHeaderRight v-bind="$attrs" v-on="$listeners">
+        <LayoutHeaderRight v-bind="$attrs">
           <template v-slot:actionBar>
             <slot name="actionBar"></slot>
           </template>

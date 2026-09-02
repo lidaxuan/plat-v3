@@ -9,7 +9,7 @@
         <el-dropdown @command="handleTags" trigger="click">
           <icon-class class="cursor-p" icon-class="icon-D1-B2" font="24" :color="'#7E84A3'"/>
           <template #dropdown>
-            <el-dropdown-menu size="small" slot="dropdown" class="tags">
+            <el-dropdown-menu size="small" class="tags">
               <el-dropdown-item v-for="item in dropdownArr" :key="item.command" :icon="item.icon" :command="item.command">{{ item.name }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>

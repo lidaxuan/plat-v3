@@ -9,17 +9,17 @@
 <template>
   <div class="layoutMenu" ref="layoutMenuRef">
     <el-menu :collapse-transition="true" :unique-opened="true" :default-active="activeTopMenuId" mode="horizontal">
-      <el-menu-item v-for="menu in visibleMenus" :key="menu.id" :index="String(menu.id)" class="flex ai-center" @click="handleSelect(String(menu.code))">
+      <el-menu-item v-for="menu in visibleMenus" :key="menu.code" :index="String(menu.id)" class="flex ai-center" @click="handleSelect(String(menu.code))">
         <icon-class :icon-class="menu.icon" :class="{ 'mr-10': !!menu.icon }" font="18" color="var(--layoutTopMenuCol)"/>
         <span class="menuName">{{ menu.name }}</span>
       </el-menu-item>
 
-      <el-sub-menu v-if="overflowMenus.length">
+      <el-sub-menu v-if="overflowMenus.length" index="">
         <template #title>
           <icon-class icon-class="icon-yijidaohang-gengduo" class="mr-10" font="18" color="var(--layoutTopMenuCol)"/>
           <span class="menuName">更多</span>
         </template>
-        <el-menu-item v-for="item in overflowMenus" :key="item.id" :index="String(item.id)" @click="handleSelect(String(item.code))">
+        <el-menu-item v-for="item in overflowMenus" :key="item.code" :index="String(item.id)" @click="handleSelect(String(item.code))">
           <icon-class :icon-class="item.icon" :class="{ 'mr-8': !!item.icon }" font="18" color="var(--layoutTopMenuCol)"/>
           <span class="mt-3">{{ item.name }}</span>
         </el-menu-item>
@@ -82,7 +82,6 @@ const foldOverflowMenus = () => {
   overflowMenus.value = []
   nextTick(() => {
     const container = layoutMenuRef.value
-    console.log('foldOverflowMenus', container, visibleMenus.value, overflowMenus.value)
     if (!container) return
     const containerWidth = container.getBoundingClientRect().width
     // el-menu 根节点（ul）下的直接子项 li，过滤掉"更多"子菜单本身
@@ -99,7 +98,6 @@ const foldOverflowMenus = () => {
       }
     }
     // splitIndex <= 0：要么全部放得下，要么第一个就放不下（极端窄），都不折叠
-    console.log('splitIndex', splitIndex)
     if (splitIndex > 0) {
       overflowMenus.value = visibleMenus.value.splice(splitIndex)
     }

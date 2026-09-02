@@ -166,5 +166,5 @@ export async function fetchUserLoginState() {
     clientList: res.data.clientTypes || [],
     userName: res.data.realName
   };
-  useSystemConfig().setUserLoginStatus(userLoginStatus);
+  // useSystemConfig().setUserLoginStatus(userLoginStatus);
 }

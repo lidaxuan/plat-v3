@@ -11,18 +11,14 @@
   <div class="layout flex jc-between position-r" height="100%">
 
     <el-container v-if="$route.meta && $route.meta.fullScreen" class="overflow-y-a position-r layout-container position-a" :style="styleObj" width="100%" height="100%">
-      <transition name="left-to-right" mode="out-in" appear>
-        <keep-alive>
-          <router-view v-if="$route.meta && $route.meta.keepAlive"></router-view>
-        </keep-alive>
-      </transition>
       <router-view v-slot="{ Component, route }">
         <transition name="left-to-right" mode="out-in" appear>
-          <component v-if="!route.meta || !route.meta.keepAlive" :is="Component"/>
+          <keep-alive v-if="route.meta && route.meta.keepAlive">
+            <component :is="Component"/>
+          </keep-alive>
+          <component v-else :is="Component"/>
         </transition>
       </router-view>
-
-
     </el-container>
 
     <el-container v-else class="overflow-y-a position-r layout-container position-a" :style="styleObj" width="100%" height="100%">
@@ -84,14 +80,14 @@
             <slot name="content"></slot>
           </template>
           <template v-else>
-            <transition name="left-to-right" mode="out-in" appear>
-              <keep-alive>
-                <router-view v-if="$route.meta && $route.meta.keepAlive"></router-view>
-              </keep-alive>
-            </transition>
-            <transition name="left-to-right" mode="out-in" appear>
-              <router-view v-if="!$route.meta || !$route.meta.keepAlive"></router-view>
-            </transition>
+            <router-view v-slot="{ Component, route }">
+              <transition name="left-to-right" mode="out-in" appear>
+                <keep-alive v-if="route.meta && route.meta.keepAlive">
+                  <component :is="Component"/>
+                </keep-alive>
+                <component v-else :is="Component"/>
+              </transition>
+            </router-view>
           </template>
         </div>
       </el-main>
