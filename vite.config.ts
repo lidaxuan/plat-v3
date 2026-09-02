@@ -58,6 +58,16 @@ export default defineConfig(({mode}) => {
     return {
       resolve,
       plugins: [vue(), vueJsx()],
+      css: {
+        preprocessorOptions: {
+          scss: {
+            silenceDeprecations: ['import', 'global-builtin'],
+          },
+          sass: {
+            silenceDeprecations: ['import', 'global-builtin'],
+          },
+        },
+      },
       build: {
         lib: {
           // entry: fileURLToPath(new URL('./plat/index.ts', import.meta.url)),
@@ -105,6 +115,16 @@ export default defineConfig(({mode}) => {
     base: envConfig.base,
     plugins: [vue(), vueJsx(), vueDevTools()],
     resolve,
+    css: {
+      preprocessorOptions: {
+        scss: {
+          silenceDeprecations: ['import', 'global-builtin'],
+        },
+        sass: {
+          silenceDeprecations: ['import', 'global-builtin'],
+        },
+      },
+    },
     server: {
       proxy: proxyConfig || {},
     },

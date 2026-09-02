@@ -158,7 +158,7 @@ const tableSetting = (key: string, val: string) => {
   }
 
   .radio-box {
-    ::v-deep .el-radio__label {
+    :deep(.el-radio__label) {
       display: inline-block;
       width: 60px;
     }

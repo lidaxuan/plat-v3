@@ -135,29 +135,29 @@ const handleTags = (command: string) => {
     height: 24px;
   }
 
-  ::v-deep .el-tabs--card > .el-tabs__header,
-  ::v-deep .el-tabs--card > .el-tabs__header .el-tabs__nav {
+  :deep(.el-tabs--card > .el-tabs__header),
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__nav) {
     border: none;
     margin: 0;
   }
 
-  ::v-deep .el-tabs--card > .el-tabs__header .el-tabs__item:first-child {
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__item:first-child) {
     border-left: 1px solid #e4e7ed;
   }
 
-  ::v-deep .el-tabs--card > .el-tabs__header .el-tabs__item {
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__item) {
     border-bottom: 1px solid #e4e7ed;
     outline: none;
   }
 
-  ::v-deep .el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__item.is-active) {
     border-bottom: 1px solid #e4e7ed;
     outline: none;
     background: #f1f4fa;
     color: #344563 !important;
   }
 
-  ::v-deep .el-tabs__item {
+  :deep(.el-tabs__item) {
     height: 24px;
     line-height: 21px;
     margin-left: 5px;
@@ -178,7 +178,7 @@ const handleTags = (command: string) => {
     }
   }
 
-  ::v-deep .is-active {
+  :deep(.is-active) {
     .el-icon-close,
     .el-icon-close:hover {
       color: #fff;
@@ -190,33 +190,33 @@ const handleTags = (command: string) => {
     }
   }
 
-  ::v-deep .el-tabs--card > .el-tabs__header .el-tabs__item .el-icon-close {
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__item .el-icon-close) {
     width: 14px;
     height: 14px;
     line-height: 14px;
   }
 
-  ::v-deep .el-tabs--card > .el-tabs__header .el-tabs__item {
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__item) {
     transition: none;
   }
 
-  ::v-deep .el-tabs__nav-next,
-  ::v-deep .el-tabs__nav-prev {
+  :deep(.el-tabs__nav-next),
+  :deep(.el-tabs__nav-prev) {
     line-height: 30px;
   }
 
-  ::v-deep .el-tabs__item:focus.is-active.is-focus:not(:active) {
+  :deep(.el-tabs__item:focus.is-active.is-focus:not(:active)) {
     box-shadow: none;
   }
 
-  ::v-deep .el-tabs--top.el-tabs--border-card > .el-tabs__header .el-tabs__item,
-  ::v-deep.el-tabs--top.el-tabs--card > .el-tabs__header .el-tabs__item,
-  ::v-deep .el-tabs--top .el-tabs--left > .el-tabs__header .el-tabs__item,
-  ::v-deep .el-tabs--top .el-tabs--right > .el-tabs__header .el-tabs__item,
-  ::v-deep .el-tabs--bottom.el-tabs--border-card > .el-tabs__header .el-tabs__item,
-  ::v-deep .el-tabs--bottom.el-tabs--card > .el-tabs__header .el-tabs__item,
-  ::v-deep .el-tabs--bottom .el-tabs--left > .el-tabs__header .el-tabs__item,
-  ::v-deep .el-tabs--bottom .el-tabs--right > .el-tabs__header .el-tabs__item {
+  :deep(.el-tabs--top.el-tabs--border-card > .el-tabs__header .el-tabs__item),
+  :deep(.el-tabs--top.el-tabs--card > .el-tabs__header .el-tabs__item),
+  :deep(.el-tabs--top .el-tabs--left > .el-tabs__header .el-tabs__item),
+  :deep(.el-tabs--top .el-tabs--right > .el-tabs__header .el-tabs__item),
+  :deep(.el-tabs--bottom.el-tabs--border-card > .el-tabs__header .el-tabs__item),
+  :deep(.el-tabs--bottom.el-tabs--card > .el-tabs__header .el-tabs__item),
+  :deep(.el-tabs--bottom .el-tabs--left > .el-tabs__header .el-tabs__item),
+  :deep(.el-tabs--bottom .el-tabs--right > .el-tabs__header .el-tabs__item) {
     padding: 0 8px;
   }
 

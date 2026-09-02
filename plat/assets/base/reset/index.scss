@@ -124,31 +124,31 @@
 
 @mixin setElement {
     /* 定位 */
-    @each $val in (relative, absolute) {
-        .position-#{str-slice($val, 0, 1)} {
+    @each $val, $abbr in (relative: "r", absolute: "a") {
+        .position-#{$abbr} {
             position: $val;
         }
     }
     //浮动;
-    @each $float in (left, right) {
-        .f-#{str-slice($float, 0, 1)} {
-            float: $float;
+    @each $val, $abbr in (left: "l", right: "r") {
+        .f-#{$abbr} {
+            float: $val;
         }
     }
     //元素块级 行级  隐藏
-    @each $val in (none, block, inline-block) {
-        .d-#{str-slice($val, 0, 1)} {
+    @each $val, $abbr in (none: "n", block: "b", inline-block: "i") {
+        .d-#{$abbr} {
             display: $val;
         }
     }
 
     // 截取
-    @each $over in (hidden, auto, initial) {
-        .overflow-#{str-slice($over, 0, 1)} {
+    @each $over, $abbr in (hidden: "h", auto: "a", initial: "i") {
+        .overflow-#{$abbr} {
             overflow: $over !important;
         }
         @each $val in (x, y) {
-            .overflow-#{$val}-#{str-slice($over, 0, 1)} {
+            .overflow-#{$val}-#{$abbr} {
                 overflow-#{$val}: $over;
             }
         }
@@ -191,25 +191,14 @@
         }
     }
     /* 鼠标手势 */ /* 默认手势 */
-    @each $val in (pointer, default) {
-        .cursor-#{str-slice($val, 0,1)} {
+    @each $val, $abbr in (pointer: "p", default: "d") {
+        .cursor-#{$abbr} {
             cursor: $val;
         }
     }
 }
 
-//清除浮动;
-/*@mixin clear() {
-    *zoom: 1;
-    &:after {
-        content: "";
-        display: block;
-        height: 0;
-        clear: both;
-        visibility: hidden;
-        overflow: hidden;
-    }
-}*/
+
 
 //打包默认样式;
 @mixin base() {

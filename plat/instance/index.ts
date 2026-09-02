@@ -116,12 +116,32 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
   // ==================== init ====================
   EWebPlat.prototype.init = async function (config: PlatConfig): Promise<void> {
     const systemConfig = useSystemConfig();
+
+    // 菜单缓存已存在，但 activeMenuCode 丢失的兜底（例如 localStorage 恢复后的空字符串、旧版本状态）
+    const fallbackFirstMenuCode = () => {
+      const { leftMenus, activeMenuCode } = systemConfig.menusConfig;
+      if (activeMenuCode || !leftMenus.length) return activeMenuCode;
+      let node = leftMenus[0];
+      while (node?.children?.length) node = node.children[0];
+      const code = node?.code || '';
+      if (code) systemConfig.setMenusConfig('activeMenuCode', code);
+      return code;
+    };
+
     // 仅在首次登录时加载菜单和用户信息，刷新时复用 localStorage 缓存
     if (!systemConfig.menusConfig.leftMenus.length) {
-      await loadMenus(config)
-      loadUserInfo(config)
-      const systemConfig = useSystemConfig();
-      router.push("/" + systemConfig.menusConfig.activeMenuCode);
+      await loadMenus(config);
+      loadUserInfo(config);
+    } else {
+      // 缓存路径：确保激活菜单 code 一定有值
+      fallbackFirstMenuCode();
+    }
+
+    // 如果当前是根路径，跳到激活菜单对应的路由，避免首次进入空白页
+    const currentPath = router.currentRoute.value.path;
+    const targetCode = systemConfig.menusConfig.activeMenuCode;
+    if (currentPath === '/' && targetCode) {
+      router.replace('/' + targetCode);
     }
 
     this.LoadModulesStoreKey = `${window.__sso}-${config.appConfig?.packageName}-loadModulesList`;

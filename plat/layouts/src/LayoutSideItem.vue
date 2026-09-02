@@ -135,7 +135,7 @@ $icon-radius: 8px;
 
 // 子菜单标题文字颜色
 @mixin submenu-title-color {
-  ::v-deep .el-submenu__title {
+  :deep(.el-submenu__title) {
     span,
     i {
       color: var(--layoutSideMenuColor7E84A3) !important;
@@ -285,11 +285,11 @@ $icon-radius: 8px;
   .level0 {
     margin-bottom: 10px;
 
-    ::v-deep .el-submenu__title:hover {
+    :deep(.el-submenu__title:hover) {
       background-color: var(--layoutSideMenuColorF9F8FD-rgba) !important;
     }
 
-    ::v-deep .el-submenu__title i {
+    :deep(.el-submenu__title i) {
       color: var(--layoutSideMenuColorArrow);
     }
 
@@ -320,7 +320,7 @@ $icon-radius: 8px;
         }
       }
 
-      ::v-deep .el-submenu__title .iconfont {
+      :deep(.el-submenu__title .iconfont) {
         @include icon-selected-rounded;
       }
     }
@@ -388,7 +388,7 @@ $icon-radius: 8px;
 }
 
 /* ==================== 收起状态 ==================== */
-::v-deep .el-menu--collapse {
+:deep(.el-menu--collapse) {
   width: 66px !important;
 }
 
@@ -425,7 +425,7 @@ $icon-radius: 8px;
         }
       }
 
-      ::v-deep .el-submenu__title .iconfont {
+      :deep(.el-submenu__title .iconfont) {
         @include icon-rounded;
       }
     }
