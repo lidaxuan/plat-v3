@@ -1,11 +1,11 @@
 /*
  * @Description:
- * @Author: 李大玄
- * @Date: 2022-08-16 14:19:37
- * @FilePath: \web-client\src\application\enums.js
- * @LastEditors: chunxu.Zhao
- * @LastEditTime: 2023-11-21 11:17:03
- */
+ * @Author: lidaxuan
+ * @Date: 2026-09-02 16:35:49
+ * @FilePath: src/application/enums.ts
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-02 16:35:49
+*/
 
 export interface MenuItem {
   id: number | string

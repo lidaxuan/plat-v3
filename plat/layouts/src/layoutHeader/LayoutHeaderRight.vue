@@ -24,7 +24,7 @@
       </el-button>
     </div>
 
-    <el-dropdown trigger="click" @command="handleCommand">
+    <el-dropdown trigger="click" append-to-body @command="handleCommand">
       <div class="el-dropdown-link">
         {{ getUserName || "" }}
         <i class="el-icon-arrow-down el-icon--right"></i>
