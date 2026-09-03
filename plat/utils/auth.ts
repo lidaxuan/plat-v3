@@ -52,11 +52,11 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
         const formatterMenu = platConfig.menuConfig?.formatterMenu || function (data: RawMenuItem[]) {return data}
         data = [].concat(formatterMenu([].concat(res.data || [])) || [])
     }
-
+    console.log(4)
     if (!data.length) {
         return
     }
-
+    console.log(5)
     // 格式化菜单树「格式化数据格式，且仅筛选出菜单数据（不包含按钮）」
     const menuTree = formatMenuTree(structuredClone(data)).map((item: FormattedMenuItem, index: number) => {
         item.countId = index.toString()
@@ -70,6 +70,7 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
     // 取第一个菜单，递归找到最后一个子级的 code 作为默认激活菜单
     const activeMenuCode = getLastChildCode(menuTree);
     systemConfig.setMenusConfig('activeMenuCode', activeMenuCode);
+    systemConfig.setLayoutTag(activeMenuCode);
 }
 
 // ==================== 内部函数 ====================

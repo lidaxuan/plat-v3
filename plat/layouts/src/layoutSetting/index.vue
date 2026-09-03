@@ -60,6 +60,7 @@
         <div class="settingLine"></div>
         <div font="14" class="ml-8 settingName">位置导航（面包屑）</div>
       </div>
+
       <el-switch v-model="showBreadcrumb" @change="breadcrumbChange" width="60px" inline-prompt/>
     </div>
 

@@ -88,7 +88,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     storeKey: initConfig.storeKey,
     */
     layoutSetting: {
-      showTag: false,
+      showTag: true,
       showBreadcrumb: true
     },
     handleDropdownList: [

@@ -1,5 +1,6 @@
 <template>
   <div class="tags-el" ref="tags">
+    {{layoutTag}}
     <el-tabs v-model="valueCode" type="card" closable @tab-remove="removeTab" @tab-click="tabClick">
       <el-tab-pane v-for="(item, index) in layoutTag" :key="index" :label="item.name" :name="item.code"/>
     </el-tabs>
@@ -23,12 +24,13 @@
 import {ref, computed, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {useMenusStore} from '../../store/useMenusStore'
-
+import {useSystemConfig} from "plat@/store/systemConfig";
+const systemConfig = useSystemConfig()
 const route = useRoute()
 const router = useRouter()
 const menusStore = useMenusStore()
 
-const layoutTag = computed(() => menusStore.layoutTag)
+const layoutTag = computed(() => systemConfig.menusConfig.layoutTags)
 
 const dropdownArr = [
   {command: 'l', name: '关闭左侧', icon: 'Back'},

@@ -37,6 +37,7 @@ export const createRouter = function (platConfig: Record<string, any>) {
       const matched = utils.getMenuItem(normalMenu, codeFromPath, [])
       if (matched && matched.code) {
         systemConfig.setMenusConfig('activeMenuCode', matched.code)
+        systemConfig.setLayoutTag(matched.code);
         return
       }
     }
@@ -44,6 +45,7 @@ export const createRouter = function (platConfig: Record<string, any>) {
     const fallback = getFirstLeafCode(normalMenu)
     if (fallback) {
       systemConfig.setMenusConfig('activeMenuCode', fallback as string)
+      // systemConfig.setLayoutTag(fallback as string);
     }
   }
 

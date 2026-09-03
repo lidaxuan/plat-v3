@@ -118,14 +118,19 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     // 菜单缓存已存在，但 activeMenuCode 丢失的兜底（例如 localStorage 恢复后的空字符串、旧版本状态）
     const fallbackFirstMenuCode = () => {
       const { normalMenu, activeMenuCode } = systemConfig.menusConfig;
+      console.log(1,  activeMenuCode , !normalMenu.length)
       if (activeMenuCode || !normalMenu.length) return activeMenuCode;
+      console.log(2)
       let node = normalMenu[0];
       while (node?.children?.length) node = node.children[0];
       const code = node?.code || '';
-      if (code) systemConfig.setMenusConfig('activeMenuCode', code);
+      if (code) {
+        systemConfig.setMenusConfig('activeMenuCode', code);
+        systemConfig.setLayoutTag(code);
+      }
       return code;
     };
-
+    console.log(systemConfig.menusConfig.normalMenu.length, 3232)
     // 仅在首次登录时加载菜单和用户信息，刷新时复用 localStorage 缓存
     if (!systemConfig.menusConfig.normalMenu.length) {
       console.log(config)

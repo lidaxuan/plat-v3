@@ -7,6 +7,7 @@
 import {ref, computed, reactive} from 'vue'
 import {defineStore} from 'pinia'
 import {baseLayoutConfig} from "../baseConfig";
+import utils from "plat@/utils";
 
 /** persist key 前缀，由 beforeInit 在 useSystemConfig 调用前设置 */
 let _persistKeyPrefix = '';
@@ -32,23 +33,30 @@ export interface LayoutSetting {
 
 export const useSystemConfig = defineStore('systemConfig', () => {
   const token = ref("" as string | null);
+  const userMsg = ref({} as Record<string, unknown>);
+  const appConfig = ref({} as Record<string, any>);
+  const handleDropdownList = ref<string[]>([]);
+  const layoutConfig = ref(baseLayoutConfig);
+  const menusConfig = reactive({
+    normalMenu: [],
+    activeMenuCode: "",
+    authCodeArr: [] as string[],
+    layoutTags: [] as { code: string; name: string }[],
+  });
+
   const setToken = (val: string | null = null) => {
     token.value = val;
   };
 
-  const userMsg = ref({} as Record<string, unknown>);
   const setUserMsg = (val: Record<string, unknown> = {}) => {
     userMsg.value = Object.assign({}, val);
   };
 
-  const appConfig = ref({} as Record<string, any>);
-  const handleDropdownList = ref<string[]>([]);
   const setAppConfig = (val: any) => {
     appConfig.value = Object.assign({}, val.appConfig);
     handleDropdownList.value = val.handleDropdownList;
   }
 
-  const layoutConfig = ref(baseLayoutConfig);
   const setLayoutConfig = (key: string, val: any) => {
     (layoutConfig.value as Record<string, any>)[key] = val;
   };
@@ -56,18 +64,22 @@ export const useSystemConfig = defineStore('systemConfig', () => {
     layoutConfig.value = Object.assign({}, val);
   };
 
-  const menusConfig = reactive({
-    normalMenu: [],
-    activeMenuCode: "",
-    authCodeArr: [] as string[],
-  });
-
   const setMenusConfig = (key: keyof typeof menusConfig, val: any) => {
     (menusConfig as Record<string, any>)[key] = val;
   };
 
   const setUserLoginStatus = (val: boolean) => {
 
+  }
+  const setLayoutTag = (code: string): void => {
+    const {normalMenu, activeMenuCode, layoutTags} = menusConfig;
+    const tag = layoutTags.find((tag) => tag.code === code);
+    if (tag) {
+      return
+    }
+    console.log('normalMenu', normalMenu)
+    const found = utils.getMenuItem(normalMenu, code, [])
+    menusConfig.layoutTags.push({code: code, name: found?.menuItem || ''});
   }
 
   /** 退出登录：清除用户数据，保留项目配置 */
@@ -77,6 +89,7 @@ export const useSystemConfig = defineStore('systemConfig', () => {
     setMenusConfig('normalMenu', []);
     setMenusConfig('activeMenuCode', '');
     setMenusConfig('authCodeArr', []);
+    setMenusConfig('layoutTags', []);
   };
 
   return {
@@ -84,7 +97,8 @@ export const useSystemConfig = defineStore('systemConfig', () => {
     userMsg, setUserMsg,
     token, setToken,
     layoutConfig, setLayoutConfig, resetLayoutConfig,
-    menusConfig, setMenusConfig,  setUserLoginStatus,
+    menusConfig, setMenusConfig, setUserLoginStatus,
+    setLayoutTag,
     clearUserData,
   };
 }, {

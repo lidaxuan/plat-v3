@@ -15,12 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+import {computed} from 'vue'
+import {useRouter} from 'vue-router'
 import _ from 'lodash'
 import LayoutSideItem from './LayoutSideItem.vue'
 import findData from '../../utils/findData.js'
-import { useSystemConfig } from '../../store/systemConfig'
+import {useSystemConfig} from '../../store/systemConfig'
 
 /** 菜单项结构（与 systemConfig.menusConfig.normalMenu 元素一致） */
 interface MenuItem {
@@ -30,6 +30,7 @@ interface MenuItem {
   icon?: string | null
   disabled?: boolean
   children?: MenuItem[] | null
+
   [key: string]: unknown
 }
 
@@ -88,6 +89,7 @@ const sideMenus = computed<MenuItem[]>(() => {
 const handleSelect = (code: string) => {
   router.push('/' + code)
   systemConfig.setMenusConfig('activeMenuCode', code)
+  systemConfig.setLayoutTag(code);
 }
 </script>
 
@@ -96,6 +98,7 @@ const handleSelect = (code: string) => {
   border-right: none;
   box-shadow: 2px 4px 4px 0px rgba(21, 34, 50, 0.08);
   background-color: var(--layoutSideMenuBg);
+
   .isCollapseMore {
     bottom: 77px;
     left: 50%;
