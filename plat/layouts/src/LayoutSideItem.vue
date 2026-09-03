@@ -76,66 +76,18 @@ onMounted(() => {
 </style>
 
 <style lang="scss" scoped>
-
 /* ==================== 变量 ==================== */
 
 $menu-item-radius: 0 14px 14px 0;
 $icon-radius: 8px;
+$line-w: 2px;
+$line-h: 20px;
+$line-top: 12px;
 
 /* ==================== Mixins ==================== */
 
-// 右侧竖线指示器
-@mixin line-indicator($right: 0px, $color: var(--layoutSideMenuSelected)) {
-  content: " ";
-  width: 2px;
-  height: 20px;
-  position: absolute;
-  right: $right;
-  top: 12px;
-  background-color: $color;
-}
-
-// 图标圆角
-@mixin icon-rounded {
-  border-radius: $icon-radius;
-}
-
-// 图标悬停底色
-@mixin icon-hover-bg {
-  @include icon-rounded;
-  background: var(--layoutSideMenuColorF9F8FD) !important;
-}
-
-// 图标选中色
-@mixin icon-selected {
-  color: var(--layoutSideMenuSelected) !important;
-}
-
-// 图标选中 + 圆角
-@mixin icon-selected-rounded {
-  @include icon-selected;
-  @include icon-rounded;
-}
-
-// 收起态图标悬停
-@mixin icon-collapse-hover {
-  @include icon-selected;
-  @include icon-rounded;
-  background: var(--layoutSideMenuColorF9F8FD-rgba) !important;
-}
-
-// 文字悬停态
-@mixin text-hover {
-  color: var(--layoutSideMenuColor344563);
-  span {
-    color: var(--layoutSideMenuColor344563) !important;
-    font-weight: 600 !important;
-  }
-}
-
-// 子菜单标题文字颜色
-@mixin submenu-title-color {
-  :deep(.el-submenu__title) {
+@mixin sub-title-base {
+  :deep(.el-sub-menu__title) {
     span,
     i {
       color: var(--layoutSideMenuColor7E84A3) !important;
@@ -150,155 +102,155 @@ $icon-radius: 8px;
   }
 }
 
-// 各级菜单项 hover/focus 通用样式
-@mixin level-hover {
-  &:focus {
-    background: none;
-  }
-
-  &:hover {
-    @include text-hover;
-    background: none !important;
-
-    .iconfont {
-      @include icon-hover-bg;
+@mixin level-hover($step) {
+  .dom#{$step},
+  .item#{$step},
+  .itemDom#{$step} {
+    &:focus {
+      background: none;
     }
-  }
-}
 
-// 为指定层级生成完整样式
-@mixin level-styles($step) {
-  .level#{$step} {
-    @include submenu-title-color;
+    &:hover {
+      color: var(--layoutSideMenuColor344563);
+      background: none !important;
+
+      span {
+        color: var(--layoutSideMenuColor344563) !important;
+        font-weight: 600 !important;
+      }
+
+      .iconfont {
+        background-color: var(--layoutSideMenuColorF9F8FD) !important;
+        border-radius: $icon-radius;
+      }
+    }
   }
 
   .itemDom#{$step} {
     padding-left: 3px;
   }
-
-  .dom#{$step},
-  .item#{$step},
-  .itemDom#{$step} {
-    @include level-hover;
-  }
 }
 
-/* ==================== 多级菜单缩进（level1-5） ==================== */
+/* ==================== 通用层级规则 ==================== */
 
 @for $step from 1 through 5 {
   .level#{$step} {
+    @include sub-title-base;
+
     .dom#{$step},
     .item#{$step} {
       padding-left: $step * 20 + 23px;
     }
   }
-  @include level-styles($step);
+
+  @include level-hover($step);
 }
 
-/* ==================== 菜单树容器 ==================== */
+:deep(.el-menu) {
+  background: none;
+}
 
-.el-menu {
+.el-menu--collapse {
+  width: 66px;
 
-  .menutree {
-    :deep(.el-submenu__title),
-    :deep(.el-menu-item) {
-      text-align: left;
-      height: 44px;
-      line-height: 44px;
-    }
-
-    .el-menu--inline .is-disabled {
-      display: none;
-    }
-
-    .el-submenu .el-menu-item {
-      padding: 0;
-      transition: none;
-      min-width: 183px;
-      border-radius: $menu-item-radius;
-
-      .title {
-        color: var(--layoutSideMenuColor7E84A3);
-        font-weight: 500;
-      }
-
-      &.is-active {
-        background: var(--layoutSideMenuSelected) !important;
-        margin-right: 10px;
-
-        &:after {
-          @include line-indicator(-10px);
-        }
-      }
-
-      &.is-disabled {
-        border-radius: 1px;
-        border-bottom: 1px solid #cecece;
-        font-weight: 500;
-        color: #1d212f;
-        opacity: 1;
-        text-align: left;
-        margin-right: 0;
-      }
-    }
-
-    :deep(.el-menu-item) {
-      border-radius: $menu-item-radius;
-
-
-      &.is-active {
-        background: var(--layoutSideMenuSelected) !important;
-        margin-right: 10px;
-
-        .title {
-          color: var(--layoutSideMenuColorFFF) !important;
-        }
-
-        &:after {
-          @include line-indicator(-10px);
-        }
-      }
-
-      &.is-disabled {
-        border-radius: 1px;
-        border-bottom: 1px solid #cecece;
-        font-weight: 500;
-        color: #1d212f;
-        opacity: 1;
-        text-align: left;
-        margin-right: 0;
-      }
+  @for $step from 1 through 5 {
+    .item#{$step} {
+      padding-left: 0 !important;
     }
   }
 }
 
+/* ==================== 菜单容器 ==================== */
 
 .menutree {
+  background-color: var(--layoutSideMenuBg);
+
+  :deep(.el-sub-menu__title),
+  :deep(.el-menu-item) {
+    text-align: left;
+    height: 44px;
+    line-height: 44px;
+  }
+
+  .el-menu--inline .is-disabled {
+    display: none;
+  }
+
   .el-sub-menu span,
   .el-menu-item span {
     color: var(--layoutSideMenuColor7E84A3);
     font-weight: 500;
   }
 
-  // ===== 一级菜单（有子级） =====
+  :deep(.el-menu-item) {
+    padding: 0;
+    transition: none;
+    min-width: 183px;
+    border-radius: $menu-item-radius;
 
+    .itemDom2 span {
+      margin-left: 7px;
+    }
+
+    &.is-active {
+      background: var(--layoutSideMenuSelected) !important;
+      margin-right: 10px;
+
+      span {
+        margin-top: -3px !important;
+        color: var(--layoutSideMenuColorFFF) !important;
+        font-weight: 600;
+      }
+
+      .line {
+        width: $line-w;
+        height: $line-h;
+        position: absolute;
+        right: -10px;
+        top: $line-top;
+        background-color: var(--layoutSideMenuSelected);
+      }
+    }
+
+    &.is-disabled {
+      border-radius: 1px;
+      border-bottom: 1px solid #cecece;
+      font-weight: 500;
+      color: #1d212f;
+      opacity: 1;
+      text-align: left;
+      margin-right: 0;
+    }
+  }
+
+  /* ----- 第一级·有子菜单 ----- */
   .level0 {
     margin-bottom: 10px;
 
-    :deep(.el-submenu__title:hover) {
-      background-color: var(--layoutSideMenuColorF9F8FD-rgba) !important;
+    :deep(.el-sub-menu__title) {
+      margin-right: 10px;
+      border-radius: $menu-item-radius;
+
+      &:hover {
+        background-color: var(--layoutSideMenuColorF9F8FD-rgba) !important;
+
+        span {
+          color: var(--layoutSideMenuColor344563);
+        }
+      }
     }
 
-    :deep(.el-submenu__title i) {
+    :deep(.el-sub-menu__title i) {
       color: var(--layoutSideMenuColorArrow);
     }
 
-    .dom0:hover {
-      color: var(--layoutSideMenuSelected) !important;
-
-      .line {
-        @include line-indicator(0px, var(--layoutSideMenuColorF9F8FD-rgba));
-      }
+    .dom0:hover .line {
+      width: $line-w;
+      height: $line-h;
+      position: absolute;
+      right: 0;
+      top: $line-top;
+      background-color: var(--layoutSideMenuColorF9F8FD-rgba);
     }
 
     &.is-active,
@@ -307,29 +259,60 @@ $icon-radius: 8px;
         color: var(--layoutSideMenuSelected);
       }
 
-      .el-submenu__title {
-        &:hover {
-          background-color: var(--layoutSideMenuColorFFF);
-        }
+      .el-sub-menu__title:hover {
+        background-color: var(--layoutSideMenuColorFFF);
+      }
 
-        &:focus span,
-        &:hover span,
-        &:focus i,
-        &:hover i {
-          color: #344563;
+      :deep(.el-sub-menu__title .iconfont) {
+        color: var(--layoutSideMenuSelected) !important;
+        border-radius: $icon-radius;
+      }
+    }
+
+    /* 收起态 */
+    .el-menu--collapse & {
+      .dom0 {
+        border-radius: 0;
+        background: none !important;
+
+        &:hover {
+          .iconfont,
+          i {
+            color: var(--layoutSideMenuSelected) !important;
+            background: var(--layoutSideMenuColorF9F8FD-rgba) !important;
+            border-radius: $icon-radius;
+          }
         }
       }
 
-      :deep(.el-submenu__title .iconfont) {
-        @include icon-selected-rounded;
+      &.is-active,
+      &.is-active.is-opened {
+        .el-sub-menu__title {
+          span,
+          i {
+            color: var(--layoutSideMenuSelected) !important;
+          }
+
+          .dom0 {
+            background: none !important;
+            min-width: 183px;
+
+            &:hover .iconfont {
+              border-radius: $icon-radius;
+            }
+          }
+        }
+
+        :deep(.el-sub-menu__title .iconfont) {
+          border-radius: $icon-radius;
+        }
       }
     }
   }
 
-  // ===== 一级菜单（无子级） =====
-
+  /* ----- 第一级·无子菜单 ----- */
   .item0 {
-    padding-left: 0px !important;
+    padding-left: 0 !important;
     margin-bottom: 10px;
 
     span {
@@ -355,7 +338,8 @@ $icon-radius: 8px;
       }
 
       .iconfont {
-        @include icon-selected-rounded;
+        color: var(--layoutSideMenuSelected) !important;
+        border-radius: $icon-radius;
       }
     }
 
@@ -374,70 +358,56 @@ $icon-radius: 8px;
         }
 
         .line {
-          @include line-indicator(0px);
+          width: $line-w;
+          height: $line-h;
+          position: absolute;
+          right: 0;
+          top: $line-top;
+          background-color: var(--layoutSideMenuSelected);
         }
       }
     }
-  }
-  :deep(.el-sub-menu .el-sub-menu__title) {
-    &:hover {
-      background-color: var(--layoutSideMenuColorF9F8FD-rgba);
-      border-radius: $menu-item-radius;
-      margin-right: 10px !important;
-      i {
-        color: var(--layoutSideMenuColor344563);
-      }
-    }
-  }
 
-  .itemDom1 {
-    i {
-      display: none;
-    }
-  }
-}
-
-/* ==================== 收起状态 ==================== */
-:deep(.el-menu--collapse) {
-  width: 66px !important;
-}
-
-.el-menu--collapse {
-
-  .level0 {
-    .dom0 {
-      border-radius: 0;
-      background: none !important;
-
+    /* 收起态 */
+    .el-menu--collapse & {
       &:hover {
         .iconfont,
         i {
-          @include icon-collapse-hover;
+          color: var(--layoutSideMenuSelected) !important;
+          background: var(--layoutSideMenuColorF9F8FD-rgba) !important;
+          border-radius: $icon-radius;
         }
       }
-    }
 
-    &.is-active,
-    &.is-active.is-opened {
-      .el-submenu__title {
-        span,
-        i {
-          @include icon-selected;
-        }
+      &.is-active {
+        .itemDom0 {
+          span,
+          i {
+            color: var(--layoutSideMenuColorFFF) !important;
+          }
 
-        .dom0 {
-          background: none !important;
-          min-width: 183px;
-
-          &:hover .iconfont {
-            @include icon-rounded;
+          .iconfont {
+            background: var(--layoutSideMenuSelected) !important;
+            border-radius: $icon-radius;
           }
         }
       }
+    }
+  }
+}
 
-      :deep(.el-submenu__title .iconfont) {
-        @include icon-rounded;
-      }
+/* ==================== 弹出层 ==================== */
+
+.el-menu--vertical {
+  @for $step from 1 through 4 {
+    .dom#{$step} {
+      padding-left: 20px !important;
+    }
+
+    .itemDom#{$step}:hover {
+      background-color: var(--layoutSideMenuColorF9F8FD);
+      border-radius: $menu-item-radius;
+      margin-right: 10px;
     }
   }
 }
