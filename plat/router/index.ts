@@ -37,15 +37,13 @@ export const createRouter = function (platConfig: Record<string, any>) {
       const matched = utils.getMenuItem(normalMenu, codeFromPath, [])
       if (matched && matched.code) {
         systemConfig.setMenusConfig('activeMenuCode', matched.code)
-        systemConfig.setLayoutTag(matched.code);
         return
       }
-    }
-    // 兜底：取菜单树第一个叶子节点
-    const fallback = getFirstLeafCode(normalMenu)
-    if (fallback) {
-      systemConfig.setMenusConfig('activeMenuCode', fallback as string)
-      // systemConfig.setLayoutTag(fallback as string);
+      // 兜底：取菜单树第一个叶子节点
+      const fallback = getFirstLeafCode(normalMenu)
+      if (fallback) {
+        systemConfig.setMenusConfig('activeMenuCode', fallback as string)
+      }
     }
   }
 

@@ -66,21 +66,28 @@ export const useSystemConfig = defineStore('systemConfig', () => {
 
   const setMenusConfig = (key: keyof typeof menusConfig, val: any) => {
     (menusConfig as Record<string, any>)[key] = val;
+    // 设置 activeMenuCode 时自动联动添加标签页，保证两处状态一致性
+    if (key === 'activeMenuCode' && val) {
+      setLayoutTagItem(val);
+    }
   };
 
   const setUserLoginStatus = (val: boolean) => {
 
   }
-  const setLayoutTag = (code: string): void => {
-    const {normalMenu, activeMenuCode, layoutTags} = menusConfig;
+  const setLayoutTagItem = (code: string): void => {
+    const {normalMenu, layoutTags} = menusConfig;
     const tag = layoutTags.find((tag) => tag.code === code);
     if (tag) {
       return
     }
-    console.log('normalMenu', normalMenu)
     const found = utils.getMenuItem(normalMenu, code, [])
     menusConfig.layoutTags.push({code: code, name: found?.menuItem || ''});
   }
+
+  const setLayoutTags = (val: any) => {
+    menusConfig.layoutTags = val;
+  };
 
   /** 退出登录：清除用户数据，保留项目配置 */
   const clearUserData = () => {
@@ -98,7 +105,7 @@ export const useSystemConfig = defineStore('systemConfig', () => {
     token, setToken,
     layoutConfig, setLayoutConfig, resetLayoutConfig,
     menusConfig, setMenusConfig, setUserLoginStatus,
-    setLayoutTag,
+    setLayoutTags,
     clearUserData,
   };
 }, {

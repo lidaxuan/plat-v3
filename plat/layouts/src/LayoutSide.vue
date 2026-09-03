@@ -89,7 +89,6 @@ const sideMenus = computed<MenuItem[]>(() => {
 const handleSelect = (code: string) => {
   router.push('/' + code)
   systemConfig.setMenusConfig('activeMenuCode', code)
-  systemConfig.setLayoutTag(code);
 }
 </script>
 

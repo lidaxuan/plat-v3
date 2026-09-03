@@ -35,7 +35,7 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
     const systemConfig = useSystemConfig()
     let data: RawMenuItem[] = []
 
-    if (!platConfig.customerMenus && platConfig.customerMenus?.length) {
+    if (platConfig.customerMenus && platConfig.customerMenus.length) {
         data = platConfig.customerMenus
     } else {
         let res: Record<string, any> = {}
@@ -46,17 +46,15 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
             return
         }
         if (res.code) {
-            (this as any).$message.error(res.msg);
+            console.error('[loadMenus] 接口返回错误:', res.msg)
             return;
         }
         const formatterMenu = platConfig.menuConfig?.formatterMenu || function (data: RawMenuItem[]) {return data}
         data = [].concat(formatterMenu([].concat(res.data || [])) || [])
     }
-    console.log(4)
     if (!data.length) {
         return
     }
-    console.log(5)
     // 格式化菜单树「格式化数据格式，且仅筛选出菜单数据（不包含按钮）」
     const menuTree = formatMenuTree(structuredClone(data)).map((item: FormattedMenuItem, index: number) => {
         item.countId = index.toString()
@@ -67,10 +65,9 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
     systemConfig.setMenusConfig('authCodeArr', codeArrFormat(data))
     systemConfig.setMenusConfig('normalMenu', menuTree)
 
-    // 取第一个菜单，递归找到最后一个子级的 code 作为默认激活菜单
-    const activeMenuCode = getLastChildCode(menuTree);
+    // 取菜单树第一个叶子节点的 code 作为默认激活菜单（与各处兜底逻辑统一）
+    const activeMenuCode = getFirstLeafCode(menuTree);
     systemConfig.setMenusConfig('activeMenuCode', activeMenuCode);
-    systemConfig.setLayoutTag(activeMenuCode);
 }
 
 // ==================== 内部函数 ====================
@@ -88,14 +85,14 @@ const formatMenuCode = (code: string): string => {
     return code.split(':').map((item, index) => index > 0 ? item.slice(0, 1).toUpperCase() + item.slice(1) : item).join('')
 }
 
-// 取第一个菜单，递归找到最后一个子级的 code
-const getLastChildCode = (menuTree: FormattedMenuItem[]): string => {
+// 取菜单树第一个叶子节点的 code（与 router/getFirstLeafCode、instance/fallbackFirstMenuCode 逻辑统一）
+const getFirstLeafCode = (menuTree: FormattedMenuItem[]): string => {
     if (!menuTree || menuTree.length === 0) return ''
     const first = menuTree[0]
     if (!first.children || first.children.length === 0) {
         return first.code || ''
     }
-    return getLastChildCode(first.children)
+    return getFirstLeafCode(first.children)
 }
 
 // 格式化菜单树「格式化数据格式，且仅筛选出菜单数据（不包含按钮）」
@@ -153,7 +150,7 @@ export const loadUserInfo = async (platConfig: Record<string, any>): Promise<voi
         return
     }
     if (res.code) {
-        (this as any).$message.error(res.msg);
+        console.error('[loadUserInfo] 接口返回错误:', res.msg)
         return
     }
     systemConfig.setUserMsg(res.data || {})
