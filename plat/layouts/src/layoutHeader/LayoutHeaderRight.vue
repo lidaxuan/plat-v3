@@ -88,7 +88,14 @@ const getCompany = computed(() => {
 
 const isFullscreen = ref(true)
 
-const loginStatus = ref('')
+const loginStatus = computed(() => {
+  const obj: Record<number, string> = {
+    1: 'userStatusOnline',
+    2: 'userStatusBusy',
+    3: 'userStatusLeave'
+  }
+  return obj[systemConfig.userMsg.runningStatus as number];
+})
 
 const emit = defineEmits<{
   (e: 'setting', v: boolean): void
@@ -133,12 +140,7 @@ const handleCommand = (command: string) => {
 
 onMounted(() => {
   (window as any).EWebPlat.setLoginStatus = (status: number) => {
-    const obj: Record<number, string> = {
-      1: 'userStatusOnline',
-      2: 'userStatusBusy',
-      3: 'userStatusLeave'
-    }
-    loginStatus.value = obj[status]
+
   }
 })
 </script>
@@ -154,7 +156,6 @@ onMounted(() => {
 
   .el-dropdown-name {
     font-weight: 600;
-    //color: $-color-344563;
   }
 
   .el-dropdown-easyChat {
@@ -164,10 +165,7 @@ onMounted(() => {
 
   .el-dropdown-menu__item {
     font-weight: 500;
-    //color: $-color-344563;
   }
-
-
 }
 
 .avatar-box {
@@ -196,25 +194,4 @@ onMounted(() => {
     background: #7d8dbf !important;
   }
 }
-
-
-.userStatusOnline {
-  background: #42d92a !important;
-}
-
-.userStatusBusy {
-  background: #f86b4f !important;
-}
-
-.userStatusLeave {
-  background: #7d8dbf !important;
-}
-
-.userStatusLeave {
-  &::before {
-    content: " ";
-    background: #7D8DBF;
-  }
-}
-
 </style>
