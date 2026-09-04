@@ -26,7 +26,6 @@ interface FormattedMenuItem {
     code: string
     children: FormattedMenuItem[] | null
     disabled?: boolean
-    countId?: string
     srcName?: string
 }
 
@@ -49,24 +48,21 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
             console.error('[loadMenus] 接口返回错误:', res.msg)
             return;
         }
-        const formatterMenu = platConfig.menuConfig?.formatterMenu || function (data: RawMenuItem[]) {return data}
-        data = [].concat(formatterMenu([].concat(res.data || [])) || [])
+        data = [].concat(res.data || []);
     }
     if (!data.length) {
         return
     }
+    const formatterMenu = platConfig.menuConfig?.formatterMenu || function (data: RawMenuItem[]) {return data}
     // 格式化菜单树「格式化数据格式，且仅筛选出菜单数据（不包含按钮）」
-    const menuTree = formatMenuTree(structuredClone(data)).map((item: FormattedMenuItem, index: number) => {
-        item.countId = index.toString()
-        return item
-    });
+    const menuTree = formatterMenu(formatMenuTree(structuredClone(data)));
+    const activeMenuCode = getFirstLeafCode(menuTree as FormattedMenuItem[]);
+
 
     // 格式化并缓存 认证编码集合「格式化和获取所有菜单（包含按钮）的编码」
-    systemConfig.setMenusConfig('authCodeArr', codeArrFormat(data))
     systemConfig.setMenusConfig('normalMenu', menuTree)
-
+    systemConfig.setMenusConfig('authCodeArr', codeArrFormat(data))
     // 取菜单树第一个叶子节点的 code 作为默认激活菜单（与各处兜底逻辑统一）
-    const activeMenuCode = getFirstLeafCode(menuTree);
     systemConfig.setMenusConfig('activeMenuCode', activeMenuCode);
 }
 

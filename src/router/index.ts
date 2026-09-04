@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, type RouteLocationNormalized } from 'vue-router'
+import { type RouteLocationNormalized } from 'vue-router'
 import { useSystemConfig } from 'plat@/store/systemConfig.ts';
 import { loadMenus, loadUserInfo } from 'plat@/utils/auth'
 import { isGoToLogin } from 'plat@/utils/index'

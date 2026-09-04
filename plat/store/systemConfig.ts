@@ -73,7 +73,7 @@ export const useSystemConfig = defineStore('systemConfig', () => {
   };
 
   const setUserLoginStatus = (val: boolean) => {
-
+    userMsg.value.runningStatus =  val;
   }
   const setLayoutTagItem = (code: string): void => {
     const {normalMenu, layoutTags} = menusConfig;

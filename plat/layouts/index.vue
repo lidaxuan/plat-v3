@@ -10,7 +10,7 @@
 <template>
   <div class="layout flex jc-between position-r" height="100%">
 
-    <el-container v-if="$route.meta && $route.meta.fullScreen" class="overflow-y-a position-r layout-container position-a" :style="styleObj" width="100%" height="100%">
+    <el-container v-if="$route.meta && $route.meta.fullScreen" class="overflow-y-a position-r layout-container position-a" width="100%" height="100%">
       <router-view v-slot="{ Component, route }">
         <transition name="left-to-right" mode="out-in" appear>
           <keep-alive v-if="route.meta && route.meta.keepAlive">
@@ -21,7 +21,7 @@
       </router-view>
     </el-container>
 
-    <el-container v-else class="overflow-y-a position-r layout-container position-a" :style="styleObj" width="100%" height="100%">
+    <el-container v-else class="overflow-y-a position-r layout-container position-a" width="100%" height="100%">
       <el-aside class="position-r overflow-i layout-elaside" :width="isCollapse ? '66px' : '200px'">
         <div class="br-1 layout-aside">
           <div class="h-66 layout-aside-box" width="100%">
@@ -75,7 +75,7 @@
 
         <LayoutBreadcrumb v-if="systemConfig.layoutConfig.showBreadcrumb"/>
 
-        <div :class="['layout-main pt-15 plr-15']">
+        <div class="layout-main pt-15 plr-15">
           <template v-if="$slots && $slots.content">
             <slot name="content"></slot>
           </template>
@@ -114,12 +114,6 @@ const appConfig = computed(() => systemConfig.appConfig)
 
 let isCollapse = ref(systemConfig.layoutConfig.sideCollapse)
 
-const styleObj = ref<Record<string, string>>({})
-
-const getMainStyle = () => {
-  return {height: 'calc(100% - 66px)'}
-}
-
 const collapseChage = () => {
   isCollapse.value = !isCollapse.value
   systemConfig.setLayoutConfig("sideCollapse", isCollapse);
@@ -136,7 +130,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-
 .layout {
   min-width: 1366px;
 
@@ -178,5 +171,4 @@ onMounted(() => {
     }
   }
 }
-
 </style>

@@ -50,6 +50,7 @@ onUnmounted(() => {
 <style scoped>
 .my-component {
   padding: 20px;
-  background: #f9f9f9;
+  background: #e59595;
+  height: 100%;
 }
 </style>

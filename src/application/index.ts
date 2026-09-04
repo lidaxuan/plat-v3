@@ -14,7 +14,7 @@ import EWebPlat from "plat@/index.ts";
 window.Vue = Vue;
 window.EWebPlat = EWebPlat;
 import menusQunfeng from "./enums.ts";
-import {responseError, requestSuccess, responseSuccess} from "./serviceExpand.js";
+import {responseError, requestSuccess, responseSuccess} from "./serviceExpand";
 import apiMap from "../api/index.ts";
 import {resetRouterBeforeEach, routerChildren} from "@/router";
 import {useSystemConfig} from "plat@/store/systemConfig";
@@ -26,6 +26,7 @@ const iconLinkArr = [
   "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.js", // 群峰重点项目
 ];
 window["platV3ApiMap"] = apiMap;
+
 async function createAppFn(accountEnv: string = "test"): Promise<void> {
   // const apiMap = import.meta.glob('../api/index.ts', { eager: true });
   // const modules = import.meta.glob('../api/*', { eager: true });
@@ -71,26 +72,11 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     storeConfig: {
       storage: window.sessionStorage
     },
-    // directives:  // 指令 如果项目需要可以传入, 没有既不需要传
-    // 菜单 如果需要菜单配置 就不会走接口请求
-    /*routes: [],
-    loginUrl: '',
-    storeConfig: {
-        // plugins: [
-        //   createPersistedState({
-        //     key: "xasxaxaxsa",
-        //     storage: window.localStorage //选择 sessionStorage 进行存储
-        //   })
-        // ],
-        storage: window.sessionStorage
-    },
-    showLoginStatus: true,
-    storeKey: initConfig.storeKey,
-    */
     layoutSetting: {
       showTag: true,
       showBreadcrumb: true
     },
+    showLoginStatus: true,
     handleDropdownList: [
       {id: "userStatusOnline", name: "在线", icon: "icon-zaixianzhuangtai system-dropdown-online", disabled: false},
       {id: "userStatusLeave", name: "离开", icon: "icon-zaixianzhuangtai system-dropdown-leave", disabled: false},
@@ -102,9 +88,9 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     ],
     menuConfig: { // 用来格式化获取到的菜单 后续功能在增加
       formatterMenu: (val: any[]) => {
+        console.log("val", val)
         // if (window.$CONFIG.lang == "cn") {
         //     const codeList = ["channel"];
-        //
         //     const enums = menusQunfeng.map(item => {
         //         if (codeList.includes(item.code)) {
         //             item.srcName = "private-messenger-web-view";
@@ -117,7 +103,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
         //     const data = fotmatterEnum(val);
         //     return data;
         // }
-        return menusQunfeng;
+        return val;
       }
     },
     obtainUserName(val: Record<string, any>): string {
@@ -138,15 +124,6 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       return ''
     },
     init(vm: any) {
-      // const layoutSetting = vm.store.state.user.layoutSetting;
-      // layoutSetting.color.value = "#3585FB";
-      // vm.store.dispatch("setLayoutSetting", Object.assign({}, layoutSetting));
-      // Vue.prototype.$ELCONFIG = ELCONFIG;
-      // mixinProto(Vue, vm);
-      // Vue.prototype.$ELEMENT = {size: 'small'};
-      // window.ERegisterComponents(Vue);
-
-
     }
   } as EWebPlat.EWebPlatConfig;
   EWebPlat.beforeInit(config);
@@ -156,15 +133,15 @@ createAppFn();
 fetchUserLoginState();
 
 export async function fetchUserLoginState() {
-  let userLoginStatus = {};
-  const res = await EWebPlat.platService(platV3ApiMap.im.getUserInfo);
+  // @ts-ignore
+  const res: any = await window.EWebPlat.platService(platV3ApiMap.im.getUserInfo);
   if (res.code) {
     return;
   }
-  userLoginStatus[res.data.userId] = {
-    ...res.data,
-    clientList: res.data.clientTypes || [],
-    userName: res.data.realName
-  };
-  // useSystemConfig().setUserLoginStatus(userLoginStatus);
+  // userLoginStatus[res.data.userId] = {
+  //   ...res.data,
+  //   clientList: res.data.clientTypes || [],
+  //   userName: res.data.realName
+  // };
+  useSystemConfig().setUserLoginStatus(res.data.runningStatus as boolean);
 }

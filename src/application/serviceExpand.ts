@@ -11,7 +11,7 @@ import {ElMessage, ElMessageBox} from 'element-plus'
 import {useSystemConfig} from "../../plat/store/systemConfig.js";
 import {redirectToLogin} from "../../plat/utils/index";
 
-export function storageFun(msg) {
+export function storageFun(msg: string) {
   ElMessageBox.alert(msg, "提示", {
     confirmButtonText: "确认",
     callback: () => {
@@ -20,7 +20,7 @@ export function storageFun(msg) {
   });
 }
 
-export function responseSuccess(res) {
+export function responseSuccess(res: any) {
   let data = res.data;
   switch (data.code) {
     case 200:
@@ -34,7 +34,7 @@ export function responseSuccess(res) {
   return res.data;
 }
 
-export function responseError(err) {
+export function responseError(err: any) {
   let data = err.response.data;
   // if (window.$CONFIG.lang == "en") {
   //   data.msg = window.ELCONFIG.serviceCode[data.code] || data.msg;
@@ -46,7 +46,7 @@ export function responseError(err) {
   return err;
 }
 
-export function requestSuccess(config) {
+export function requestSuccess(config: any) {
   const systemConfig = useSystemConfig();
   if (systemConfig.token) {
     config.headers["Authorization"] = systemConfig.token;

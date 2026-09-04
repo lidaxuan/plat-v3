@@ -7,27 +7,27 @@
 * lr :left 、right   1、mlr-5  2、plr-5
 * bt :top 、bottom   1、mbt-5  2、pbt-5
 ..*/
-@mixin backGauge(){
-    $sides: (top: "t", bottom: "b", left: "l", right: "r");
-    $spacing-types: (m: margin, p: padding);
-    @each $typeKey, $type in $spacing-types {
-        @for $size from 0 through 100 {
-            @each $side, $abbr in $sides {
-                .#{$typeKey}#{$abbr}-#{$size} {
-                    #{$type}-#{$side}: #{$size}px !important;
-                }
-                .#{$typeKey}-#{$size} {
-                    #{$type}-#{$side}: #{$size}px !important;
-                }
-                .#{$typeKey}lr-#{$size} {
-                    #{$type}-left: #{$size}px!important;
-                    #{$type}-right: #{$size}px!important;
-                }
-                .#{$typeKey}tb-#{$size} {
-                    #{$type}-top:  #{$size}px!important;
-                    #{$type}-bottom:  #{$size}px!important;
-                }
-            }
+@mixin backGauge() {
+  $sides: (top: "t", bottom: "b", left: "l", right: "r");
+  $spacing-types: (m: margin, p: padding);
+  @each $typeKey, $type in $spacing-types {
+    @for $size from 0 through 100 {
+      @each $side, $abbr in $sides {
+        .#{$typeKey}#{$abbr}-#{$size} {
+          #{$type}-#{$side}: #{$size}px !important;
         }
+        .#{$typeKey}-#{$size} {
+          #{$type}-#{$side}: #{$size}px !important;
+        }
+        .#{$typeKey}lr-#{$size} {
+          #{$type}-left: #{$size}px !important;
+          #{$type}-right: #{$size}px !important;
+        }
+        .#{$typeKey}tb-#{$size} {
+          #{$type}-top: #{$size}px !important;
+          #{$type}-bottom: #{$size}px !important;
+        }
+      }
     }
+  }
 }

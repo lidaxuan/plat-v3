@@ -44,5 +44,7 @@ onUnmounted(() => {
 .my-component {
   padding: 20px;
   background: #f9f9f9;
+  width: 100%;
+  height: 100%;
 }
 </style>
