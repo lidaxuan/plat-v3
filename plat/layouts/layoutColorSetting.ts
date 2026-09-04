@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: lidaxuan
  * @Date: 2026-09-04 15:27:53
  * @FilePath: plat/layouts/layoutColorSetting.ts
@@ -9,7 +9,7 @@
 
 class LayoutColorSetting {
   // 十六进制转rgba
-  colorRgb(str, opacity) {
+  colorRgb(str: string, opacity: number) {
     if (str) {
       let sColor = str.toLowerCase();
       if (sColor) {
@@ -32,12 +32,11 @@ class LayoutColorSetting {
     }
   }
   // 全局设置
-  serRootStyle(root, val, style) {
+  serRootStyle(root: string, val: string, style: string) {
     let roots = document.querySelector(":" + root);
-    return roots.style.setProperty(val, style);
+    return roots?.style.setProperty(val, style);
   }
-  setLayoutThemeLayoutLeftInit(v) {
-    // Left
+  setLayoutThemeLayoutLeftInit(v: string) {
     this.serRootStyle("root", "--layoutSideMenuBg", "#ffffff");
     this.serRootStyle("root", "--layoutSideMenuColor7E84A3", "#7E84A3");
     this.serRootStyle("root", "--layoutSideMenuColorFFF", "#ffffff");
@@ -50,8 +49,7 @@ class LayoutColorSetting {
     this.serRootStyle("root", "--homeSideMenuCollapseSelected", v);
     this.serRootStyle("root", "--homeSideMenuColorIconfont", this.colorRgb("#F9F8FD", 0.1));
   }
-  setLayoutThemeLayoutTopInit(v) {
-    // top
+  setLayoutThemeLayoutTopInit(v: string) {
     this.serRootStyle("root", "--layoutTopMenuBtn", v);
     this.serRootStyle("root", "--layoutTopMenuCol", "#7E84A3");
     this.serRootStyle("root", "--layoutTopMenuBtnCol", "#ffffff");
@@ -65,13 +63,13 @@ class LayoutColorSetting {
     this.serRootStyle("root", "--layoutTopMenuIsActive", v);
   }
   // 默认主题
-  setLayoutThemeLayoutDefault(v) {
+  setLayoutThemeLayoutDefault(v: string) {
     this.setLayoutColor(v);
     this.setLayoutThemeLayoutLeftInit(v);
     this.setLayoutThemeLayoutTopInit(v);
   }
   // 设置主题布局左侧菜单
-  setLayoutThemeLayoutLeft(v) {
+  setLayoutThemeLayoutLeft(v: string) {
     this.setLayoutColor(v);
     this.setLayoutThemeLayoutTopInit(v);
     this.serRootStyle("root", "--layoutSideMenuBg", v);
@@ -86,7 +84,7 @@ class LayoutColorSetting {
     this.serRootStyle("root", "--homeSideMenuColorIconfont", this.colorRgb("#F9F8FD", 0.1));
   }
   // 设置主题布局左侧菜单
-  setLayoutThemeLayoutLeftAll(v) {
+  setLayoutThemeLayoutLeftAll(v: string) {
     this.setLayoutColor(v);
     this.setLayoutThemeLayoutTopInit(v);
     this.setLayoutThemeLayoutLeft(v);
@@ -95,7 +93,7 @@ class LayoutColorSetting {
     this.serRootStyle("root", "--layoutBeacon", "#fff");
   }
   // 主题布局左侧菜单
-  setLayoutThemeLayoutTop(v) {
+  setLayoutThemeLayoutTop(v: string) {
     this.setLayoutColor(v);
     this.setLayoutThemeLayoutLeftInit(v);
     this.serRootStyle("root", "--layoutTopMenuBtn", "#fff");
@@ -111,7 +109,7 @@ class LayoutColorSetting {
     this.serRootStyle("root", "--layoutBeaconBr", this.colorRgb(v, 0.1));
   }
   // 主题色系设置
-  setLayoutColor(v) {
+  setLayoutColor(v: string) {
     this.serRootStyle("root", "--layoutTopMenuBtn", v);
     this.serRootStyle("root", "--layoutSideMenuSelected", v);
     this.serRootStyle("root", "--layoutMain-6359CA", v);
@@ -128,7 +126,7 @@ class LayoutColorSetting {
     this.serRootStyle("root", "--layoutMain-6359CA-rgba2", this.colorRgb(v, 1));
   }
   // 判断设置了那个主题
-  isThemeLayout(value, color) {
+  isThemeLayout(value: string, color: string) {
     if (value == "0") {
       this.setLayoutThemeLayoutDefault(color);
     } else if (value == "1") {

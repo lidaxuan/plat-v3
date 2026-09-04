@@ -19,7 +19,7 @@ import {computed} from 'vue'
 import {useRouter} from 'vue-router'
 import _ from 'lodash'
 import LayoutSideItem from './LayoutSideItem.vue'
-import findData from '../../utils/findData.js'
+// import findData from '../../utils/findData.js'
 import {useSystemConfig} from '../../store/systemConfig'
 
 /** 菜单项结构（与 systemConfig.menusConfig.normalMenu 元素一致） */
@@ -71,7 +71,28 @@ const getActiveTopMenuChildren = (): MenuItem[] => {
 const excludeDisabled = (menus: MenuItem[]): MenuItem[] => {
   return menus.filter(item => item.disabled !== true)
 }
-
+const levelFun = (array: any[], menuFlag: string, levelName = "level", childrenName = "children") => {
+  if (!Array.isArray(array)) {
+    return [];
+  }
+  const recursive = (array: any[], level = -1) => {
+    level++;
+    return array.map((v: any) => {
+      v[levelName] = level;
+      const child = v[childrenName];
+      if (child && child.length > 0) {
+        if (menuFlag === "0") {
+          for (let j of child || []) {
+            j.icon = "";
+          }
+        }
+        recursive(child, level);
+      }
+      return v;
+    });
+  };
+  return recursive(array);
+}
 /** 左侧最终渲染的菜单列表 */
 const sideMenus = computed<MenuItem[]>(() => {
   let rawMenus: MenuItem[] = []
@@ -82,7 +103,7 @@ const sideMenus = computed<MenuItem[]>(() => {
     // 上左：渲染当前顶级菜单的子级，并过滤占位项
     rawMenus = excludeDisabled(getActiveTopMenuChildren())
   }
-  return findData.levelFun(rawMenus, menuLayout.value)
+  return levelFun(rawMenus, menuLayout.value)
 })
 
 /** 点击菜单：跳转路由并同步激活菜单 */

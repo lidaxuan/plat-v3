@@ -160,6 +160,10 @@ export function getQueryString(param: string): string | null {
 }
 
 class Utils {
+
+    // 菜单层级
+
+
     // 全局设置
     serRootStyle(root: string, val: string, style: string): void {
         const roots = document.querySelector(':' + root) as HTMLElement
