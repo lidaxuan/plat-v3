@@ -1,11 +1,11 @@
 /*
- * @Description: layoutColorSetting
- * @Author: 李大玄
- * @Date: 1985-10-26 16:15:00
- * @FilePath: /framework/ui/components/layouts/layoutColorSetting.js
- * @LastEditors: 李大玄
- * @LastEditTime: 2024-08-26 16:15:23
- */
+ * @Description: 
+ * @Author: lidaxuan
+ * @Date: 2026-09-04 15:27:53
+ * @FilePath: plat/layouts/layoutColorSetting.ts
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-04 15:27:53
+*/
 
 class LayoutColorSetting {
   // 十六进制转rgba

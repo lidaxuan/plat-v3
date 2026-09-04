@@ -95,7 +95,7 @@
 import {ref, computed, onMounted} from 'vue'
 import LayoutTheme from './LayoutTheme.vue'
 import LayoutMenuTheme from './LayoutMenuTheme.vue'
-import colorSetting from '../../layoutColorSetting.js'
+import colorSetting from '../../layoutColorSetting'
 import { setElementThemeColor } from 'plat@/utils/index'
 import {useSystemConfig} from "../../../store/systemConfig";
 
@@ -109,7 +109,7 @@ const tableRowHeight = ref(systemConfig.layoutConfig.tableRowHeight);
 const tableStyle = ref(systemConfig.layoutConfig.tableStyle);
 
 // 初始化
-colorSetting.serRootStyle('root', '--layoutPickerBrNone', '1px solid #999');
+// colorSetting.serRootStyle('root', '--layoutPickerBrNone', '1px solid #999');
 
 // 主题色系
 const clickColorChange = (v: { color: string; opacity: number }) => {

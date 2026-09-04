@@ -61,9 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import {useSystemConfig} from "../../../store/systemConfig";
-import colorSetting from '../../layoutColorSetting.js';
+import colorSetting from '../../layoutColorSetting';
 
 const systemConfig = useSystemConfig();
 const pointList = systemConfig.layoutConfig.pointList
@@ -71,7 +70,6 @@ const pointList = systemConfig.layoutConfig.pointList
 const layoutThemeClick = (v: string) => {
   systemConfig.setLayoutConfig('themeLayout', v);
   colorSetting.isThemeLayout(systemConfig.layoutConfig.themeLayout, systemConfig.layoutConfig.themeColor);
-  // colorSetting.serRootStyle('root', '--layoutPickerBrNone', '1px solid #999');
 
 }
 </script>

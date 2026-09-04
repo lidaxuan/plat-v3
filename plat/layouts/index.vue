@@ -71,7 +71,7 @@
           </LayoutHeader>
         </el-header>
 
-        <LayoutTag v-if="systemConfig.layoutConfig.showTag" style="border-top: 1px solid rgba(0, 0, 0, 0.1); z-index: 1"/>
+        <LayoutTag v-if="systemConfig.layoutConfig.showTag" style="border-top: 1px solid rgba(0, 0, 0, 0.1)"/>
 
         <LayoutBreadcrumb v-if="systemConfig.layoutConfig.showBreadcrumb"/>
 
@@ -92,7 +92,6 @@
         </div>
       </el-main>
     </el-container>
-
   </div>
 </template>
 
@@ -103,7 +102,7 @@ import LayoutHeader from './src/layoutHeader/index.vue'
 
 import LayoutTag from './src/LayoutTag.vue'
 import LayoutBreadcrumb from './src/LayoutBreadcrumb.vue'
-import colorSetting from './layoutColorSetting.js'
+import colorSetting from './layoutColorSetting.ts'
 
 
 import {useSystemConfig} from "../store/systemConfig";
@@ -132,6 +131,11 @@ onMounted(() => {
 <style lang="scss" scoped>
 .layout {
   min-width: 1366px;
+
+  .layout-aside-box {
+    background: var(--layoutBeaconBg);
+    color: var(--layoutBeaconCol);
+  }
 
   .little-font {
     transform: scale(0.5);

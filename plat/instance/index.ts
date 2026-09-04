@@ -212,21 +212,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     }
   }
 
-  // ==================== addMoudleComponents ====================
-  /** 在平台注册全局组件 */
-  // FIXME: Vue.component 是 Vue 2 写法，Vue 3 中应使用 app.component
-  EWebPlat.prototype.addMoudleComponents = function (Components: Record<string, unknown>): void {
-    for (const key in Components) {
-      // Vue.component(key, Components[key]); // Vue 2 API，待迁移为 app.component
-    }
-  }
-
-  // ==================== updatePassword ====================
-  /** 控制修改密码抽屉的展示 */
-  EWebPlat.prototype.updatePassword = function (params: { visible: boolean; showClose: boolean }): void {
-    this.homeStore.setUpdatePassword(params);
-  }
-
   // ==================== creatOtherProductSrcList ====================
   EWebPlat.prototype.creatOtherProductSrcList = function (menus: unknown[]): void {
     let umdLibName = '';

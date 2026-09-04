@@ -6,10 +6,9 @@
  * @LastEditors: lijixuan
  * @LastEditTime: 2026-09-01 16:55:53
 */
-
 import {ElMessage, ElMessageBox} from 'element-plus'
-import {useSystemConfig} from "../../plat/store/systemConfig.js";
-import {redirectToLogin} from "../../plat/utils/index";
+import {useSystemConfig} from "plat@/store/systemConfig.ts";
+import {redirectToLogin} from "plat@/utils/index.ts";
 
 export function storageFun(msg: string) {
   ElMessageBox.alert(msg, "提示", {
