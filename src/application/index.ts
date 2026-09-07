@@ -59,6 +59,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       userEnums: apiMap.authEupms!.getPerUserMenus,
       userInfo: apiMap.im!.getUserInfo
     },
+    env: window.__sso,
     customerMenus: menusQunfeng,
     serviceConfig: {
       apiConfig: [],

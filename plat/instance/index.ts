@@ -89,7 +89,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     app.component("icon-svg", IconSvg);
     app.component("icon-class", IconClass);
 
-    setPersistKeyPrefix(config.appConfig?.packageName || '');
+    setPersistKeyPrefix(`${config.env}-${config.appConfig?.packageName || ''}`);
     setPersistStorage(config.storeConfig?.storage || localStorage);
 
     app.use(pinia)
@@ -115,23 +115,18 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
   // ==================== init ====================
   EWebPlat.prototype.init = async function (config: PlatConfig): Promise<void> {
     const systemConfig = useSystemConfig();
-    // 菜单缓存已存在，但 activeMenuCode 丢失的兜底（例如 localStorage 恢复后的空字符串、旧版本状态）
-    const fallbackFirstMenuCode = () => {
-      const {normalMenu, activeMenuCode} = systemConfig.menusConfig;
-      if (activeMenuCode || !normalMenu.length) return activeMenuCode;
-      let node = normalMenu[0];
-      while (node?.children?.length) node = node.children[0];
-      const code = node?.code || '';
-      if (code) {
-        systemConfig.setMenusConfig('activeMenuCode', code);
+
+    // 首次登录：加载菜单和用户信息、应用初始布局配置
+    // 刷新时复用 localStorage 缓存，不重置 activeMenuCode / layoutConfig / 其他持久化状态
+    if (!systemConfig.menusConfig.normalMenu.length) {
+      await loadMenus(config);
+      loadUserInfo(config);
+      // 仅首次登录时应用 config.layoutSetting 作为初始布局，刷新时保留用户运行时修改的布局配置
+      if (config.layoutSetting) {
+        const obj = Object.assign({}, baseLayoutConfig, config.layoutSetting || {});
+        systemConfig.resetLayoutConfig(obj);
       }
-      return code;
-    };
-    // 仅在首次登录时加载菜单和用户信息，刷新时复用 localStorage 缓存
-    await loadMenus(config);
-    loadUserInfo(config);
-    // 缓存路径：确保激活菜单 code 一定有值
-    // fallbackFirstMenuCode();
+    }
 
     // 如果当前是根路径，跳到激活菜单对应的路由，避免首次进入空白页
     const currentPath = router.currentRoute.value.path;
@@ -142,15 +137,11 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
       }, 0)
     }
 
+    // 刷新时重新加载 UMD 模块（脚本需要重新注入 DOM）
     this.LoadModulesStoreKey = `${window.__sso}-${config.appConfig?.packageName}-loadModulesList`;
     const ModulesList = localStorage.getItem(this.LoadModulesStoreKey);
     if (ModulesList) {
       this.loadResources(JSON.parse(ModulesList));
-    }
-
-    if (config.layoutSetting) {
-      const obj = Object.assign({}, baseLayoutConfig, config.layoutSetting || {});
-      systemConfig.resetLayoutConfig(obj);
     }
   }
 
