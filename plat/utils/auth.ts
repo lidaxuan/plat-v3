@@ -33,7 +33,7 @@ interface FormattedMenuItem {
 export const loadMenus = async (platConfig: Record<string, any>): Promise<void> => {
     const systemConfig = useSystemConfig()
     let data: RawMenuItem[] = []
-
+    console.log('[loadMenus] platConfig:', platConfig.customerMenus)
     if (platConfig.customerMenus && platConfig.customerMenus.length) {
         data = platConfig.customerMenus
     } else {

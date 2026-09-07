@@ -49,8 +49,8 @@ export const resetRouterBeforeEach = (to: RouteLocationNormalized, _from: RouteL
   // 一、登录流程：地址存在 token，从统一登录页跳转过来
   if (to.query['access_token']) {
     systemConfig.setToken(to.query['access_token'] as string)
-    loadMenus(window.EWebPlat?.platConfig)
-    loadUserInfo(window.EWebPlat?.platConfig)
+    // loadMenus(window.EWebPlat?.platConfig)
+    // loadUserInfo(window.EWebPlat?.platConfig)
     // 清除 URL 参数后跳转
     return { path: to.path, query: {} }
   }

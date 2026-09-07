@@ -51,8 +51,8 @@ export const createRouter = function (platConfig: Record<string, any>) {
     // 一、登录流程：地址存在 token，从统一登录页跳转过来
     if (to.query['access_token']) {
       systemConfig.setToken(to.query['access_token'] as string)
-      await loadMenus(platConfig)
-      await loadUserInfo(platConfig)
+      // await loadMenus(platConfig)
+      // await loadUserInfo(platConfig)
       // 清除 URL 参数后跳转
       return { path: to.path, query: {} }
     }

@@ -89,10 +89,11 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     app.component("icon-svg", IconSvg);
     app.component("icon-class", IconClass);
 
-    app.use(pinia)
-
     setPersistKeyPrefix(config.appConfig?.packageName || '');
     setPersistStorage(config.storeConfig?.storage || localStorage);
+
+    app.use(pinia)
+
 
     router = createRouter(config);
     app.use(router)
@@ -116,7 +117,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     const systemConfig = useSystemConfig();
     // 菜单缓存已存在，但 activeMenuCode 丢失的兜底（例如 localStorage 恢复后的空字符串、旧版本状态）
     const fallbackFirstMenuCode = () => {
-      const { normalMenu, activeMenuCode } = systemConfig.menusConfig;
+      const {normalMenu, activeMenuCode} = systemConfig.menusConfig;
       if (activeMenuCode || !normalMenu.length) return activeMenuCode;
       let node = normalMenu[0];
       while (node?.children?.length) node = node.children[0];
@@ -127,19 +128,18 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
       return code;
     };
     // 仅在首次登录时加载菜单和用户信息，刷新时复用 localStorage 缓存
-    if (!systemConfig.menusConfig.normalMenu.length) {
-      await loadMenus(config);
-      loadUserInfo(config);
-    } else {
-      // 缓存路径：确保激活菜单 code 一定有值
-      fallbackFirstMenuCode();
-    }
+    await loadMenus(config);
+    loadUserInfo(config);
+    // 缓存路径：确保激活菜单 code 一定有值
+    // fallbackFirstMenuCode();
 
     // 如果当前是根路径，跳到激活菜单对应的路由，避免首次进入空白页
     const currentPath = router.currentRoute.value.path;
     const targetCode = systemConfig.menusConfig.activeMenuCode;
-    if (currentPath === '/' && targetCode) {
-      router.replace('/' + targetCode);
+    if (currentPath == '/' && targetCode) {
+      setTimeout(() => {
+        router.push('/' + targetCode);
+      }, 0)
     }
 
     this.LoadModulesStoreKey = `${window.__sso}-${config.appConfig?.packageName}-loadModulesList`;
