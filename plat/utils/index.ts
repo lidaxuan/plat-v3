@@ -161,76 +161,8 @@ export function getQueryString(param: string): string | null {
 
 class Utils {
 
-    // 菜单层级
 
 
-    // 全局设置
-    serRootStyle(root: string, val: string, style: string): void {
-        const roots = document.querySelector(':' + root) as HTMLElement
-        roots.style.setProperty(val, style)
-    }
-
-    // 锚点初始化
-    goAnchorInit(): void {
-        const layoutMain = document.getElementById('layout-main')
-        if (layoutMain && layoutMain.scrollTop != null) layoutMain.scrollTop = 0
-    }
-
-    // 锚点
-    goAnchor(selector: string): void {
-        this.goAnchorInit()
-        document.querySelector(selector)
-    }
-
-    // 唯一id
-    guid(): string {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-            /[xy]/g,
-            function (c) {
-                const r = (Math.random() * 16) | 0,
-                    v = c == 'x' ? r : (r & 0x3) | 0x8
-                return v.toString(16)
-            },
-        )
-    }
-
-    // js电话号码正则校验--座机和手机号
-    checkTel(value: string): boolean {
-        const isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/
-        const isMob =
-            /^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/
-        if (isMob.test(value) || isPhone.test(value)) {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    getModule(ks: string[], value: unknown, modules: Record<string, any> = {}, i: number = 0, len?: number): Record<string, any> {
-        if (len === undefined) len = ks.length
-        if (i < len) {
-            if (i == len - 1) {
-                modules[ks[len - 1]] = value
-            } else {
-                let m: Record<string, any> = {}
-                if (modules[ks[i]] && modules[ks[i]]['modules']) {
-                    m = modules[ks[i]]['modules']
-                } else if (modules[ks[i]]) {
-                    const pm = modules[ks[i]]
-                    m = pm['modules']
-                    pm['namespaced'] = true
-                } else {
-                    const pm = modules[ks[i]] || {}
-                    modules[ks[i]] = pm
-                    pm['modules'] = m
-                    pm['namespaced'] = true
-                }
-                i++
-                this.getModule(ks, value, m, i, len)
-            }
-        }
-        return modules
-    }
 
     // 判断icon后缀css、js
     addLinkArr(srcArr: string[], flag = true): void {
@@ -284,14 +216,6 @@ class Utils {
         return modules
     }
 
-    mergeExport(vueFiles: Record<string, any>): Record<string, any> {
-        let obj: Record<string, any> = {}
-        Object.values(this.readFile(vueFiles)).map((item: any) => {
-            obj = { ...obj, ...item }
-        })
-        return obj
-    }
-
     getMenuItem(menuTree: any[], menuCode: string, menuModules: string[] = []): {
       code: string;
       menuModules: string[]; menuItem: any } | undefined {
@@ -314,18 +238,6 @@ class Utils {
             }
         }
         return { menuModules, menuItem: result }
-    }
-
-    exportFile(name: string, res: BlobPart, suffix?: string): void {
-        const str = moment(new Date()).format('YYYY-MM-DD HH:ss')
-        const elink = document.createElement('a')
-        elink.download = `${name}${str}${suffix || '.xlsx'}`
-        elink.style.display = 'none'
-        const blob = new Blob([res])
-        elink.href = URL.createObjectURL(blob)
-        document.body.appendChild(elink)
-        elink.click()
-        document.body.removeChild(elink)
     }
 
     // 获取不同项目的id

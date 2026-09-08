@@ -10,7 +10,6 @@
 <template>
   <div class="flex jc-between ai-center" height="100%">
     <div style="flex: 1" v-if="systemConfig.layoutConfig.menuLayout === 0"/>
-
     <template v-if="systemConfig.layoutConfig.menuLayout === 1">
       <LayoutHeaderLeft class="flex-1" v-if="systemConfig.layoutConfig.menuLayout === 1"/>
     </template>

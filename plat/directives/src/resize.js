@@ -1,11 +1,3 @@
-/*
- * @Description: 
- * @Author: 李大玄
- * @Date: 1985-10-26 16:15:00
- * @FilePath: /framework/plat/src/directives/src/resize.js
- * @LastEditors: 李大玄
- * @LastEditTime: 2022-08-29 17:11:17
- */
 const resize = {
   bind(el, binding) {
     // el为绑定的元素，binding为绑定给指令的对象

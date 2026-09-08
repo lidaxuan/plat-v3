@@ -108,16 +108,12 @@ const showBreadcrumb = computed(() => systemConfig.layoutConfig.showBreadcrumb);
 const tableRowHeight = ref(systemConfig.layoutConfig.tableRowHeight);
 const tableStyle = ref(systemConfig.layoutConfig.tableStyle);
 
-// 初始化
-// colorSetting.serRootStyle('root', '--layoutPickerBrNone', '1px solid #999');
-
 // 主题色系
 const clickColorChange = (v: { color: string; opacity: number }) => {
   themeColor.value = v.color;
   systemConfig.setLayoutConfig('themeColor', v.color);
   colorSetting.setLayoutColor(v.color);
   colorSetting.isThemeLayout(systemConfig.layoutConfig.themeLayout, v.color);
-  colorSetting.serRootStyle('root', '--layoutPickerBrNone', '1px solid #999');
 
   setElementThemeColor(v.color);
 }

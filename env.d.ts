@@ -51,10 +51,8 @@ declare global {
       }): void;
       addMoudleRoutes(routers: unknown[]): void;
       addMoudleService(servicesConfig: unknown): void;
-      addMoudleStore(storeConfig: unknown): void;
       loadResources(modules?: { src: string }[]): void;
       createLineByJs(linkArr?: string[]): void;
-      setData(platConfig: import('./plat/index').PlatConfig): void;
       platService(api: unknown, params: unknown, otherParams?: unknown): Promise<unknown>;
       addMoudleComponents(Components: Record<string, unknown>): void;
       updatePassword(params: { visible: boolean; showClose: boolean }): void;

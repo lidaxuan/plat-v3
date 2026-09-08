@@ -1,11 +1,11 @@
 /*
- * @Description:
- * @Author: 李大玄
- * @Date: 2022-06-22 18:17:24
- * @FilePath: /web-framework-demo/plat/directives/index.ts
- * @LastEditors: 李大玄
- * @LastEditTime: 2022-07-08 09:24:49
- */
+ * @Description: 
+ * @Author: lidaxuan
+ * @Date: 2026-09-08 10:04:47
+ * @FilePath: plat/directives/index.js
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-08 10:04:47
+*/
 import utils from "../utils/index.ts";
 
 const vueFiles = require.context("./src", true, /\.js$/);

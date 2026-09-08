@@ -30,7 +30,6 @@ import {baseLayoutConfig} from "plat@/baseConfig.js";
 interface ModuleConfig {
   init?: (plat: Record<string, unknown>) => void;
   routers?: unknown[];
-
   [key: string]: unknown;
 }
 
@@ -53,14 +52,12 @@ const hasAuthority = function (sourceStr: string): boolean {
   });
 
   return authorities.split(',').some((itemS: string) => {
-    let code = itemS
-      .split(':')
-      .map((item: string, index: number) => {
-        if (index > 0) {
-          item = _.capitalize(item)
-        }
-        return item;
-      })
+    let code = itemS.split(':').map((item: string, index: number) => {
+      if (index > 0) {
+        item = _.capitalize(item)
+      }
+      return item;
+    })
       .join('');
     return authCodeArr.includes(code);
   });
@@ -94,7 +91,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
 
     app.use(pinia)
 
-
     router = createRouter(config);
     app.use(router)
 
@@ -115,7 +111,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
   // ==================== init ====================
   EWebPlat.prototype.init = async function (config: PlatConfig): Promise<void> {
     const systemConfig = useSystemConfig();
-
     // 首次登录：加载菜单和用户信息、应用初始布局配置
     // 刷新时复用 localStorage 缓存，不重置 activeMenuCode / layoutConfig / 其他持久化状态
     if (!systemConfig.menusConfig.normalMenu.length) {
@@ -127,14 +122,11 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
         systemConfig.resetLayoutConfig(obj);
       }
     }
-
     // 如果当前是根路径，跳到激活菜单对应的路由，避免首次进入空白页
     const currentPath = router.currentRoute.value.path;
     const targetCode = systemConfig.menusConfig.activeMenuCode;
     if (currentPath == '/' && targetCode) {
-      setTimeout(() => {
-        router.push('/' + targetCode);
-      }, 0)
+      setTimeout(() => {router.push('/' + targetCode);}, 0);
     }
 
     // 刷新时重新加载 UMD 模块（脚本需要重新注入 DOM）
@@ -175,11 +167,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     // service.install(Vue); // Vue 2 API，待迁移
   }
 
-  // ==================== addMoudleStore ====================
-  EWebPlat.prototype.addMoudleStore = function (storeConfig: unknown): void {
-    // TODO: 实现动态 store 注册
-  }
-
   // ==================== loadResources ====================
   /** 动态创建连接，加载资源 */
   EWebPlat.prototype.loadResources = function (modules: ResourceModule[] = []): void {
@@ -191,16 +178,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
   /** 加载 icon 连接 */
   EWebPlat.prototype.createLineByJs = function (linkArr: string[] = []): void {
     utils.addLinkArr(linkArr, true);
-  }
-
-  // ==================== setData ====================
-  /** 在 plat 初始化时将数据设置到实例 */
-  EWebPlat.prototype.setData = function (platConfig: PlatConfig): void {
-    document.title = platConfig.appConfig?.pageTitle || '易聊系统';
-    if (platConfig.storeKey && JSON.parse(sessionStorage.getItem(platConfig.storeKey) || 'null')) {
-      const menus = [].concat(JSON.parse(sessionStorage.getItem(platConfig.storeKey)!).layoutMenus.nomalMenu || []);
-      this.creatOtherProductSrcList(menus);
-    }
   }
 
   // ==================== creatOtherProductSrcList ====================

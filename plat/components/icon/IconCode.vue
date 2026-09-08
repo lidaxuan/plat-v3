@@ -1,11 +1,3 @@
-<!--
- * @version: v1.2.0
- * @Author: 范庆龙
- * @Date: 2021-08-13 15:10:34
- * @LastEditors: 李大玄
- * @LastEditTime: 2022-07-28 19:57:14
- * @FilePath: /data-config-view/node_modules/el-ui/components/icon/IconCode.vue
--->
 <template>
   <div>
     <i class="icon iconfont" v-html="iconTag" />

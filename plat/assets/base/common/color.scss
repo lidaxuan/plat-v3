@@ -3,7 +3,6 @@ $-color-6359CA: #6359CA !default;
 :root {
   //项目主题设置
   --layoutMain-6359CA: #6359CA; //色系选择的默认主题色 根据颜色选择器变换
-  --layoutMain-6359CA-rgba: rgba(99, 89, 202, .4); //菜单 色
 
   --layoutSideMenuBg: #ffffff; //菜单背景色
   --layoutSideMenuColor7E84A3: #7E84A3; //菜单 色
@@ -13,23 +12,11 @@ $-color-6359CA: #6359CA !default;
   --layoutSideMenuColorF9F8FD-rgba: #F9F8FD; //菜单 色
   --layoutSideMenuSelected: #6359CA; //选中色
   --layoutSideMenuColorArrow: #7E84A3; //上下箭头色
-  --layoutPickerBrNone: none; //颜色选择容器
-  --layoutTopMenuBtn: #6359CA; //头部菜单按钮默认背景色
   --layoutTopMenuCol: #7E84A3; //头部菜单设默认色
-  --layoutTopMenuBtnCol: #ffffff; //头部菜单按钮默认字体色
-  --layoutTopBadge: #6359CA; //头部菜单热点圆点默认字体色
-  --layoutTopBadgeCol: #ffffff; //头部菜单热点圆点默认字体色
   --layoutBeacon: #6359CA; //头部icon默认色
   --layoutBeaconBg: #ffffff; //头部icon默认背景色
   --layoutBeaconCol: #2c3e50; //头部icon默认字体色
-  --layoutBeaconBr: rgba(21, 34, 50, 0.08);
-  --layoutDetailMore: #7C90FF;
   --layoutBreadcrumbCol: #170C6B; //面包屑颜色
   --layoutTopMenuBg: #ffffff; //橫向菜单变量色
   --layoutTopMenuIsActive: #6359CA; ///头部菜单选中
-  //表单样式主色
-  --layoutMain-7C90FF: #7C90FF; //色系选择的默认主题色
-  --layoutMain-6359CA-rgba1: rgba(99, 89, 202, 0.9); //初始
-  --layoutMain-6359CA-rgba2: rgba(99, 89, 202, 1); //点击状态 悬停状态
 }
-

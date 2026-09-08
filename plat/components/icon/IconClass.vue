@@ -1,15 +1,6 @@
 <template>
-  <i :class="['iconfont', iconTag]"
-     :style="{ color: color, fontSize: fontSize + 'px' }"
-     @click="iconClick"
-  >
-    <span :style="{
-        fontSize: fontSize + 'px',
-        color: color,
-        paddingLeft: paddingLeft + 'px'
-      }"
-    ><slot
-    /></span>
+  <i :class="['iconfont', iconTag]" :style="{ color: color, fontSize: fontSize + 'px' }" @click="iconClick">
+    <span :style="{fontSize: fontSize + 'px',color: color,paddingLeft: paddingLeft + 'px'}"><slot/></span>
   </i>
 </template>
 
