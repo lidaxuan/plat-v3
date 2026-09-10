@@ -18,7 +18,7 @@ export function setPersistKeyPrefix(prefix: string): void {
   _persistKeyPrefix = prefix;
 }
 
-export function setPersistStorage(storage: Storage): void {
+export function setPersistStorage(storage: any): void {
   _persistStorage = storage;
 }
 

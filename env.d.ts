@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 /// <reference types="pinia-plugin-persistedstate" />
 
-export {}
 
 declare global {
   interface Window {
@@ -62,3 +61,10 @@ declare global {
     [key: string]: any;
   }
 }
+/// <reference types="vite/client" />
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<{}, {}, any>
+  export default component
+}
+export {}

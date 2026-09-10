@@ -8,15 +8,7 @@ export const createRouter = function (platConfig: Record<string, any>) {
   const systemConfig = useSystemConfig()
   const router = createVueRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
-    routes: [
-      {
-        path: '/',
-        name: 'Entry',
-        component: () => import(/* webpackChunkName: "entry" */ 'plat@/layouts/index.vue'),
-         children: [].concat(  platConfig.routers || []),
-      },
-      ...overAll
-    ],
+    routes: [...platConfig.routers, ...overAll]
   })
 
   /** 取菜单树第一个叶子节点的 code，用于兜底默认激活菜单 */

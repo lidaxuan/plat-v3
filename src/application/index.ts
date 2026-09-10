@@ -139,10 +139,5 @@ export async function fetchUserLoginState() {
   if (res.code) {
     return;
   }
-  // userLoginStatus[res.data.userId] = {
-  //   ...res.data,
-  //   clientList: res.data.clientTypes || [],
-  //   userName: res.data.realName
-  // };
   useSystemConfig().setUserLoginStatus(res.data.runningStatus as boolean);
 }

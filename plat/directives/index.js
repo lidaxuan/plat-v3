@@ -1,10 +1,10 @@
 /*
  * @Description: 
  * @Author: lidaxuan
- * @Date: 2026-09-08 10:04:47
+ * @Date: 2026-09-08 19:02:14
  * @FilePath: plat/directives/index.js
  * @LastEditors: lijixuan
- * @LastEditTime: 2026-09-08 10:04:47
+ * @LastEditTime: 2026-09-08 19:02:14
 */
 import utils from "../utils/index.ts";
 

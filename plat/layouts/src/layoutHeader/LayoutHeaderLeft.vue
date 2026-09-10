@@ -31,8 +31,8 @@
 <script setup lang="ts">
 import {ref, computed, onMounted, onBeforeUnmount, nextTick, watch} from 'vue'
 import {useRouter} from 'vue-router'
-import _ from 'lodash'
 import {useSystemConfig} from '../../../store/systemConfig'
+import _ from 'lodash'
 
 /** 菜单项结构（与 systemConfig.menusConfig.normalMenu 元素一致） */
 interface MenuItem {
@@ -91,7 +91,7 @@ const foldOverflowMenus = () => {
     let accumulatedWidth = 0
     let splitIndex = 0
     for (let i = 0; i < menuNodes.length; i++) {
-      accumulatedWidth += menuNodes[i].getBoundingClientRect().width
+      accumulatedWidth += menuNodes[i]?.getBoundingClientRect().width || 0;
       if (accumulatedWidth >= containerWidth) {
         splitIndex = i - 1
         break
@@ -110,7 +110,7 @@ const foldOverflowMenus = () => {
 const getFirstLeafCode = (menus: MenuItem[]): string | undefined => {
   if (!menus?.length) return undefined
   // 跳过占位用的 disabled 项（formatMenuTree 会为父级插入 disabled 占位）
-  const first = menus[0].disabled ? menus[1] : menus[0]
+  const first = menus[0]?.disabled ? menus[1] : menus[0]
   if (!first) return undefined
   if (!first.children?.length) return first.code
   return getFirstLeafCode(first.children)
