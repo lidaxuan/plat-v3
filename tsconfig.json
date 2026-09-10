@@ -7,12 +7,25 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
+    "noUncheckedIndexedAccess": true,
     "jsx": "preserve",
+    "paths": {
+      "@/*": ["./src/*"],
+      "plat@/*": ["./plat/*"]
+    },
     "plugins": [
       {
         "name": "@vue/typescript-plugin"
       }
     ]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+  "include": [
+    "env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "plat/**/*.ts",
+    "plat/**/*.d.ts",
+    "plat/**/*.vue"
+  ]
 }
