@@ -22,13 +22,13 @@
     </el-container>
 
     <el-container v-else class="overflow-y-a position-r layout-container position-a" width="100%" height="100%">
-      <el-aside class="position-r overflow-i layout-elaside" :width="isCollapse ? '66px' : '200px'">
+      <el-aside class="position-r overflow-i" :width="isCollapse ? '66px' : '200px'">
         <div class="br-1 layout-aside">
           <div class="h-66 layout-aside-box" width="100%">
             <template v-if="!$slots.logo">
-              <div :class="['layout-aside-boxIcon position-r', 'h-66 flex ai-center', 'pl-20', isCollapse ? 'w-66' : '']">
+              <div class="layout-aside-boxIcon position-r h-66 flex ai-center pl-20" :class="[isCollapse ? 'w-66' : '']">
                 <template v-if="!$slots.appIcon">
-                  <icon-class :icon-class="`${appConfig.logoIconFont || 'icon-A-A7'}`" class="mr-10" font="28" color="var(&#45;&#45;layoutBeacon)"/>
+                  <icon-class :icon-class="`${appConfig.logoIconFont || 'icon-A-A7'}`" class="mr-10" font="28" color="var(--layoutBeacon)"/>
                 </template>
                 <template v-else>
                   <slot name="appIcon"></slot>
@@ -44,7 +44,7 @@
             </template>
           </div>
 
-          <LayoutSide class="layout-menu" :isCollapse="isCollapse" :class="[isCollapse ? 'w-66' : '']" style="height: calc(100% - 68px)"/>
+          <LayoutSide class="layout-menu" :isCollapse="isCollapse" :class="[isCollapse ? 'w-66' : '']"/>
         </div>
         <!-- 折叠按钮  == 0 顶部有菜单   == 1 无折叠按钮-->
         <div class="layout-aside-collapse position-a" v-if="systemConfig.layoutConfig.menuLayout == 0" @click="collapseChage">
@@ -71,7 +71,7 @@
           </LayoutHeader>
         </el-header>
 
-        <LayoutTag v-if="systemConfig.layoutConfig.showTag" style="border-top: 1px solid rgba(0, 0, 0, 0.1)"/>
+        <LayoutTag v-if="systemConfig.layoutConfig.showTag"/>
 
         <LayoutBreadcrumb v-if="systemConfig.layoutConfig.showBreadcrumb"/>
 
@@ -161,11 +161,12 @@ onMounted(() => {
     }
   }
 
-  &-menu {
-    height: calc(100% - 38px);
+  .layout-menu {
+    //height: calc(100% - 38px);
+    height: calc(100% - 68px)
   }
 
-  &-aside {
+  .layout-aside {
     height: 100%;
 
     &-collapse {

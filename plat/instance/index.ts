@@ -130,7 +130,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     }
 
     // 刷新时重新加载 UMD 模块（脚本需要重新注入 DOM）
-    this.LoadModulesStoreKey = `${window.__sso}-${config.appConfig?.packageName}-loadModulesList`;
+    this.LoadModulesStoreKey = `${config.env}-${config.appConfig?.packageName}-loadModulesList`;
     const ModulesList = localStorage.getItem(this.LoadModulesStoreKey);
     if (ModulesList) {
       this.loadResources(JSON.parse(ModulesList));
@@ -159,13 +159,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     }
   }
 
-  // ==================== addMoudleService ====================
-  /** 模块的 init 初始化方法中调用，动态注册 API 服务 */
-  // FIXME: service.install(Vue) 是 Vue 2 写法，Vue 3 中 Vue 构造函数不存在，需替换为 app.use(service)
-  EWebPlat.prototype.addMoudleService = function (servicesConfig: unknown): void {
-    const service = createService(servicesConfig);
-    // service.install(Vue); // Vue 2 API，待迁移
-  }
 
   // ==================== loadResources ====================
   /** 动态创建连接，加载资源 */

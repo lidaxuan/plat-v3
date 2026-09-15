@@ -96,6 +96,7 @@ const handleTags = (command: string) => {
   overflow: hidden;
   background: #ffffff;
   box-shadow: 0px 4px 4px 0px rgba(21, 34, 50, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.1)
 
   .el-tabs {
     overflow-x: hidden;

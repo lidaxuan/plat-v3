@@ -49,7 +49,6 @@ declare global {
         init?: (plat: EWebPlat) => void;
       }): void;
       addMoudleRoutes(routers: unknown[]): void;
-      addMoudleService(servicesConfig: unknown): void;
       loadResources(modules?: { src: string }[]): void;
       createLineByJs(linkArr?: string[]): void;
       platService(api: unknown, params: unknown, otherParams?: unknown): Promise<unknown>;

@@ -13,6 +13,7 @@ export const routerChildren = [
         path: '/reportBuilderPage',
         name: 'reportBuilderPage',
         component: () => import('../views/test1.vue'),
+        meta: {fullScreen: true, keepAlive: true},
       },
       {
         path: '/chat',
@@ -23,11 +24,13 @@ export const routerChildren = [
         path: '/homeIndex/chatRecord',
         name: 'homeIndex/chatRecord',
         component: () => import('../views/test3.vue'),
+        meta: {fullScreen: false, keepAlive: true},
       },
       {
         path: '/test1',
         name: 'test1',
         component: () => import('../views/test1.vue'),
+        meta: {fullScreen: true, keepAlive: false},
       },
       {
         path: '/test2',

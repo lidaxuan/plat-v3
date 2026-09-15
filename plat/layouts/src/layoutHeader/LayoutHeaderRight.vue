@@ -38,7 +38,7 @@
           <el-dropdown-item v-for="item in dropdown" :key="item.id" :command="item.id" divided
                             style="font-weight: 600" class="flex ai-center pl-25" font="12" :class="{ 'status-active': item.id == loginStatus }"
                             :style="`cursor: ${item.disabled ? 'not-allowed' : 'pointer'}; color: ${item.disabled ? '#bbb' : ''}`">
-            <icon-class :icon-class="item.icon" :font="item.font || '12'" color="var(&#45;&#45;layoutTopMenuCol)"/>
+            <icon-class :icon-class="item.icon" :font="item.font || '12'" color="var(--layoutTopMenuCol)"/>
             {{ item.name }}
           </el-dropdown-item>
         </el-dropdown-menu>

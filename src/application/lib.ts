@@ -36,6 +36,5 @@ function waitForEWebPlat(callback: (plat: typeof window.EWebPlat) => void, maxRe
 }
 
 waitForEWebPlat((plat) => {
-  // plat.addMoudleService({ apiConfig: [] });
   plat.registerMoudle(MoudleA);
 });

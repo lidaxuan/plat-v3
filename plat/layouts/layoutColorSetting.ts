@@ -10,9 +10,6 @@
 /** 主题色值（hex 格式，如 "#6359CA"） */
 type ThemeColor = string;
 
-/** 主题布局模式：0=默认 / 1=左侧菜单 / 2=顶部菜单 / 3=左侧菜单(全) */
-type ThemeLayoutMode = '0' | '1' | '2' | '3';
-
 /**
  * 布局主题色运行时配置
  * 通过 serRootStyle 动态写入 CSS 自定义属性到 :root，
@@ -161,14 +158,14 @@ class LayoutColorSetting {
    * @param value 主题布局模式 0=默认 / 1=左侧 / 2=顶部 / 3=左侧全量
    * @param color 主题色 hex 值
    */
-  isThemeLayout(value: ThemeLayoutMode, color: ThemeColor): void {
-    if (value == "0") {
+  isThemeLayout(value: number, color: ThemeColor): void {
+    if (value == 0) {
       this.setLayoutThemeLayoutDefault(color);
-    } else if (value == "1") {
+    } else if (value == 1) {
       this.setLayoutThemeLayoutLeft(color);
-    } else if (value == "2") {
+    } else if (value == 2) {
       this.setLayoutThemeLayoutTop(color);
-    } else if (value == "3") {
+    } else if (value == 3) {
       this.setLayoutThemeLayoutLeftAll(color);
     }
   }
