@@ -8,13 +8,13 @@ export const routerChildren = [
     path: '/',
     name: 'Entry',
     // component: () => import(/* webpackChunkName: "entry" */ 'plat@/layouts/index.vue'),
-    components: () => import('../views/layout.vue'),
+    component: () => import('../views/layout.vue'),
     children: [
       {
         path: '/reportBuilderPage',
         name: 'reportBuilderPage',
         component: () => import('../views/test1.vue'),
-        meta: {fullScreen: true, keepAlive: true},
+        meta: {fullScreen: false, keepAlive: true},
       },
       {
         path: '/chat',

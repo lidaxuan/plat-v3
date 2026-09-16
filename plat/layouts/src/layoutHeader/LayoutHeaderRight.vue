@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="flex ai-center">
-    <slot name="actionBar"></slot>
+    <slot name="actionBarLayoutHeaderRight"></slot>
     <icon-class :title="isFullscreen ? '全屏' : '取消全屏'" class="mr-40 cursor-p" :icon-class="isFullscreen ? 'icon-C-C6' : 'icon-C-C7'"
                 @iconClick="isScreenFull" color="var(--layoutTopMenuCol)" font="24"/>
 

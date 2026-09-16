@@ -2,7 +2,7 @@
   <div class="my-component">
     111111111
     <el-button type="primary">123</el-button>
-
+    <el-input v-model="title"></el-input>
     <el-button>Default</el-button>
     <el-button type="primary">Primary</el-button>
     <el-button type="success">Success</el-button>

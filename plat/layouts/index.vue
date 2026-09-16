@@ -1,10 +1,10 @@
 <!--
  * @Description:
- * @Author: 李大玄
- * @Date: 2022-08-30 18:37:15
- * @FilePath: /framework/ui/components/layouts/index.vue
- * @LastEditors: 李大玄
- * @LastEditTime: 2025-02-21 09:53:55
+ * @Author: lijixuan
+ * @Date: 2026-09-16 14:59:16
+ * @FilePath: plat/layouts/index.vue
+ * @LastEditors: lijixuan
+ * @LastEditTime: 2026-09-16 14:59:16
 -->
 
 <template>
@@ -65,7 +65,7 @@
             <template v-if="$slots.headerRight" v-slot:headerRight>
               <slot name="headerRight"></slot>
             </template>
-            <template v-slot:actionBar>
+            <template #actionBarLayoutHeader>
               <slot name="actionBar"></slot>
             </template>
           </LayoutHeader>
