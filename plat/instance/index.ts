@@ -9,7 +9,7 @@
 import {createApp} from 'vue'
 import type {PlatConfig} from 'plat@/index.ts'
 import App from '../pages/App.vue'
-import {createService, platCreateService} from '../service/index.js';
+import {createService, platCreateService} from '../service';
 
 import utils, {isGoToLogin, setElementThemeColor} from '../utils/index.ts';
 import {loadMenus, loadUserInfo} from "../utils/auth.ts";
@@ -189,7 +189,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     const referVersion = Object.assign({}, window.referVersion || {}, this.platConfig.referVersion || {})
     for (let i = 0; i < productNames.length; i++) {
       let item = productNames[i];
-      const projectVersion = Object.assign({}, referVersion[item] || {});
+      const projectVersion = Object.assign({}, referVersion[item as string] || {});
       moudles.push({name: item, src: `${base}/${item}/${projectVersion[env]}/${item}.umd.js?${Math.random()}`});
     }
     localStorage.setItem(this.LoadModulesStoreKey, JSON.stringify(moudles));

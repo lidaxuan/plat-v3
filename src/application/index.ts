@@ -126,7 +126,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     },
     init(vm: any) {
     }
-  } as EWebPlat.EWebPlatConfig;
+  } as any;
   EWebPlat.beforeInit(config);
 }
 

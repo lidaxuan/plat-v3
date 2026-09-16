@@ -109,7 +109,7 @@ src/plat/
 │   └── overAll.ts              # 通用路由（404、登录等）
 ├── service/                    # API 服务层
 │   ├── index.ts                # Axios 封装、请求拦截、响应处理
-│   └── request.js              # 请求核心逻辑
+│   └── request.ts              # 请求核心逻辑
 ├── store/                      # Vuex 状态管理
 │   ├── index.ts                # Store 创建 + vuex-persistedstate
 │   ├── getters.js

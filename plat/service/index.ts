@@ -8,10 +8,11 @@
  */
 import _ from 'lodash';
 import axios from "axios";
-import { platServe, maxinService } from "./request.js";
+import { platServe, maxinService } from "./request";
+// @ts-ignore
 const isDev = process.env.NODE_ENV == 'development';
 
-function formatterApi(apiOpt) {
+function formatterApi({apiOpt}: { apiOpt: any }) {
   let apiOptions = _.cloneDeep(apiOpt);
   let firstStr = '',
     context = '';
@@ -32,7 +33,7 @@ function formatterApi(apiOpt) {
 }
 
 // 公共方法 创建 axios.create
-function axiosCreate(localContext, requestheader, serviceConfig) {
+function axiosCreate(localContext: string, requestheader?: any, serviceConfig?: any) {
   const axiosInstance = axios.create({
     baseURL: isDev ? localContext || '' : '', // 判断本地环境还是线上环境
     timeout: 600000 // 请求超时时间
@@ -41,14 +42,14 @@ function axiosCreate(localContext, requestheader, serviceConfig) {
   return axiosInstance;
 }
 
-function serveApi(instance, name, ApiMap) {
+function serveApi(instance: any, name: string, ApiMap: any) {
   let service = ApiMap[name]; // 找到对应的接口对象 也就是 api 文件夹下的
-  const HttpList = {}; //包裹请求的容器
+  const HttpList = {} as any; //包裹请求的容器
   for (let key in service) {
     //params 请求参数 obj 配置及个性传参
-    HttpList[key] = function (params, otherParams) {
+    HttpList[key] = function (params: any, otherParams: any) {
       // 本地环境需要处理  线上环境不需要处理
-      const { apiOptions } = formatterApi(service[key]);
+      const { apiOptions } = formatterApi({apiOpt: service[key]});
       const api = isDev ? apiOptions : service[key];
       return platServe(api, params, otherParams, instance);
     };
@@ -57,9 +58,9 @@ function serveApi(instance, name, ApiMap) {
 }
 
 
-function getApiArr(apiConfig, apiMap) {
-  let apiArr = [];
-  apiConfig.forEach((item) => {
+function getApiArr(apiConfig: any, apiMap: any) {
+  let apiArr = [] as any;
+  apiConfig.forEach((item: any) => {
     const instance = {
       http: item.http,
       //          本地环境需要代理 线上不需要代理地址
@@ -71,13 +72,13 @@ function getApiArr(apiConfig, apiMap) {
 }
 
 // 老版封装
-export function createService(config) {
+export function createService(config: any) {
   const { apiConfig = [], apiMap = {}, } = config;
   const apiArr = getApiArr([].concat(apiConfig), apiMap);
   return {
     apiArr,
-    install(Vue) {
-      apiArr.forEach((item) => {
+    install(Vue: any) {
+      apiArr.forEach((item: any) => {
         Vue.prototype[item.http] = item.fun;
       });
     }
@@ -86,13 +87,13 @@ export function createService(config) {
 
 
 // 新版 封装
-export function platCreateService(apiObj, params, otherParams,  serviceConfig) {
+export function platCreateService(apiObj: any, params: any, otherParams: any, serviceConfig: any) {
   // return
   const apiOpt = Object.assign({}, {...apiObj});
   if (Object.prototype.toString.call(params) != '[object FormData]') {
     params = _.cloneDeep(params);
   }
-  const { apiOptions, context, requestheader } = formatterApi(apiOpt)
+  const { apiOptions, context, requestheader } = formatterApi({apiOpt: apiOpt})
   if (isDev) {
     return platServe(apiOptions, params, otherParams, axiosCreate(context, requestheader, serviceConfig));
   }

@@ -10,7 +10,7 @@ import {useSystemConfig} from "../store/systemConfig.js";
 import {redirectToLogin} from "../utils/index.ts";
 import {ElMessageBox} from 'element-plus';
 
-function getApiUrl(params, api) {
+function getApiUrl(params: any, api: any) {
   let url = api.url;
   if (params.splicingParams) {
     url = `${url}/${params.splicingParams}`;
@@ -21,7 +21,7 @@ function getApiUrl(params, api) {
   return url;
 }
 
-export function _FormData(params, flag) {
+export function _FormData(params: any, flag: any) {
   let newParams;
   if (flag === "form-data") {
     newParams = new FormData();
@@ -34,7 +34,7 @@ export function _FormData(params, flag) {
   return newParams;
 }
 
-export function storageFun(msg) {
+export function storageFun(msg: any) {
   ElMessageBox.alert(msg, "提示", {
     confirmButtonText: "确定",
     callback: () => {
@@ -56,9 +56,9 @@ const headersEnum = {
   "text/html": "text/html;charset=utf-8",
   "x-form": "application/x-www-form-urlencoded;charset=utf-8",
   "form-data": "multipart/form-data;charset=utf-8"
-};
+} as const;
 
-function formatterUrl(api, params) {
+function formatterUrl(api: any, params: any) {
   let url = api.url;
   const reg = new RegExp(/[$].*/, 'g');
   if (!reg.test(url)) {
@@ -73,7 +73,7 @@ function formatterUrl(api, params) {
   return {api, params};
 }
 
-export async function platServe(apiMap, query, otherParams, instance) {
+export async function platServe(apiMap: any, query: any, otherParams: any = {}, instance: any) {
   const data = formatterUrl(apiMap, query);
   let {api, params} = data;
   //params 请求参数 params 配置及个性传参
@@ -87,13 +87,13 @@ export async function platServe(apiMap, query, otherParams, instance) {
   // 接口contentType判断
   // otherParams.contentType
   if (otherParams.contentType || api.contentType) {
+    const key: keyof typeof headersEnum = otherParams.contentType || api.contentType;
     config.headers = {
-      "content-type": headersEnum[otherParams.contentType || api.contentType] || "application/json;charset=utf-8"
+      "content-type": headersEnum[key] || "application/json;charset=utf-8"
     };
-    if (otherParams.contentType == "x-form" || api.contentType == "x-form") {
-      // form-data对象
-      params = _FormData(params);
-    } else if (otherParams.contentType == "form-data" || api.contentType == "form-data") {
+    if (key == "x-form" || api.contentType == "x-form") {
+      params = _FormData(params, "x-form");
+    } else if (key == "form-data" || api.contentType == "form-data") {
       params = _FormData(params, "form-data");
     }
   }
@@ -103,7 +103,7 @@ export async function platServe(apiMap, query, otherParams, instance) {
   if (config && config.customHeader) {
     config.headers = Object.assign({}, config.headers, config.customHeader)
   }
-  let response = {};
+  let response = {} as any;
   //不同请求的判断get post put 根据后台接口需求而定
   if (api.method === "post" || api.method === "put" || api.method === "patch") {
     try {
@@ -124,27 +124,27 @@ export async function platServe(apiMap, query, otherParams, instance) {
 }
 
 // 将axios 实例传过来 绑定两个切片
-export const maxinService = function (Service, requestheader = {}, serviceConfig) {
+export const maxinService = function (Service: any, requestheader = {} as any, serviceConfig: any) {
   const systemConfig = useSystemConfig()
   // 请求拦截器的
   Service.interceptors.request.use(
     serviceConfig.requestSuccess ||
-    function (config) {
+    function (config: any) {
       // if (EWebPlat.userStore.token) {
-        config.headers["Authorization"] = systemConfig.token ?? "";
+      config.headers["Authorization"] = systemConfig.token ?? "";
       // }
       for (const key in requestheader) {
         config.headers[key] = requestheader[key];
       }
       return config;
     },
-    (err) => {
+    (err: any) => {
       return err;
     }
   );
   // http response 拦截器
   Service.interceptors.response.use(
-    serviceConfig.responseSuccess || function (res) {
+    serviceConfig.responseSuccess || function (res: any) {
       let data = res.data;
       switch (data.code) {
         case 200:
@@ -154,7 +154,7 @@ export const maxinService = function (Service, requestheader = {}, serviceConfig
       }
       return res.data;
     },
-    serviceConfig.responseError || function (err) {
+    serviceConfig.responseError || function (err: any) {
       if (err.response?.status === 401 || err.response?.status === 402) {
         const msg = err.response.data?.msg || "token失效，请重新登陆";
         storageFun(msg);

@@ -1,5 +1,5 @@
 import {useSystemConfig} from '../store/systemConfig'
-import {platCreateService} from '../service/index'
+import {platCreateService} from '../service/index.ts';
 
 // ==================== 类型声明 ====================
 
@@ -27,6 +27,7 @@ interface FormattedMenuItem {
     children: FormattedMenuItem[] | null
     disabled?: boolean
     srcName?: string
+    [key: string]: any
 }
 
 // ==================== 导出函数 ====================
@@ -84,7 +85,7 @@ const formatMenuCode = (code: string): string => {
 // 取菜单树第一个叶子节点的 code（与 router/getFirstLeafCode、instance/fallbackFirstMenuCode 逻辑统一）
 const getFirstLeafCode = (menuTree: FormattedMenuItem[]): string => {
     if (!menuTree || menuTree.length === 0) return ''
-    const first = menuTree[0]
+    const first = menuTree[0] as FormattedMenuItem
     if (!first.children || first.children.length === 0) {
         return first.code || ''
     }
@@ -107,16 +108,16 @@ const formatMenuTree = (menuData: RawMenuItem[], parentItem?: RawMenuItem, ppid?
             code: formatMenuCode(parentItem.uri),
             disabled: true,
             srcName: parentItem.srcName,
-        })
+        } as FormattedMenuItem)
     }
 
     for (let i = 0; i < menuData.length; i++) {
-        const item = menuData[i]
+        const item = menuData[i] as RawMenuItem
         // 不是菜单直接返回
-        if (item.type !== 1 && item.type !== 10) {
+        if (item.type !== 1 && item.type !== 10){
             return 2
         }
-        const childrenOrType = formatMenuTree(item.children, item, parentItem ? parentItem.id + '' : null)
+        const childrenOrType = formatMenuTree(item.children || [], item, parentItem ? parentItem.id + '' : null)
         // 判断是否存在自己「菜单」
         const isChildren = item.children && item.children.length > 0 && childrenOrType !== 2
         // 格式化菜单code「从 user:manage 转换成 userManage」
