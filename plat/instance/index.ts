@@ -130,7 +130,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
         const obj = Object.assign({}, baseLayoutConfig, config.layoutSetting || {});
         systemConfig.resetLayoutConfig(obj);
       }
-      EWebPlat.prototype.createOtherProductSrcList(this, menus);
+      EWebPlat.prototype.createOtherProductSrcList(config, menus);
     }
 
     // 如果当前是根路径，跳到激活菜单对应的路由，避免首次进入空白页
@@ -184,17 +184,17 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
   };
 
   // ==================== createOtherProductSrcList ====================
-  EWebPlat.prototype.createOtherProductSrcList = function (this: EWebPlatThis, menus: any[]): void {
+  EWebPlat.prototype.createOtherProductSrcList = function (platConfig: PlatConfig, menus: any[]): void {
     let umdLibName = '';
-    if (this.platConfig.appConfig && this.platConfig.appConfig.packageName) {
-      umdLibName = this.platConfig.appConfig.packageName;
+    if (platConfig.appConfig && platConfig.appConfig.packageName) {
+      umdLibName = platConfig.appConfig.packageName;
     }
     const productNames = utils.getProductId(menus).filter((item: string) => item !== umdLibName);
     const moudles: ResourceModule[] = [];
 
     const env = window._baseEnvDT || window.ReferEnv || window.__sso;
     const base = window.ssoEnums[env];
-    const referVersion = Object.assign({}, window.referVersion || {}, this.platConfig.referVersion || {});
+    const referVersion = Object.assign({}, window.referVersion || {}, platConfig.referVersion || {});
     for (let i = 0; i < productNames.length; i++) {
       const item = productNames[i];
       const projectVersion = Object.assign({}, referVersion[item as string] || {});
