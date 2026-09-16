@@ -7,7 +7,8 @@ export const routerChildren = [
   {
     path: '/',
     name: 'Entry',
-    component: () => import(/* webpackChunkName: "entry" */ 'plat@/layouts/index.vue'),
+    // component: () => import(/* webpackChunkName: "entry" */ 'plat@/layouts/index.vue'),
+    components: () => import('../views/layout.vue'),
     children: [
       {
         path: '/reportBuilderPage',
