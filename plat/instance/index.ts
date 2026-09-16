@@ -108,7 +108,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     systemConfig.setAppConfig(config);
 
     // dev 模式下加载本地 UMD library 用于模块注册调试
-    utils.addLinkArr(['http://localhost:2332/plat-v3.umd.js']);
+    // utils.addLinkArr(['http://localhost:2332/plat-v3.umd.js']);
     utils.addLinkArr(config.iconLink || []);
     isGoToLogin(config.appConfig || {}, () => {
       EWebPlat.prototype.init(config);
@@ -123,13 +123,14 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     // 首次登录：加载菜单和用户信息、应用初始布局配置
     // 刷新时复用 localStorage 缓存，不重置 activeMenuCode / layoutConfig / 其他持久化状态
     if (!systemConfig.menusConfig.normalMenu.length) {
-      await loadMenus(config);
+      let menus = await loadMenus(config);
       loadUserInfo(config);
       // 仅首次登录时应用 config.layoutSetting 作为初始布局，刷新时保留用户运行时修改的布局配置
       if (config.layoutSetting) {
         const obj = Object.assign({}, baseLayoutConfig, config.layoutSetting || {});
         systemConfig.resetLayoutConfig(obj);
       }
+      EWebPlat.prototype.createOtherProductSrcList(this, menus);
     }
 
     // 如果当前是根路径，跳到激活菜单对应的路由，避免首次进入空白页
@@ -183,7 +184,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
   };
 
   // ==================== createOtherProductSrcList ====================
-  EWebPlat.prototype.createOtherProductSrcList = function (this: EWebPlatThis, menus: unknown[]): void {
+  EWebPlat.prototype.createOtherProductSrcList = function (this: EWebPlatThis, menus: any[]): void {
     let umdLibName = '';
     if (this.platConfig.appConfig && this.platConfig.appConfig.packageName) {
       umdLibName = this.platConfig.appConfig.packageName;

@@ -160,10 +160,6 @@ export function getQueryString(param: string): string | null {
 }
 
 class Utils {
-
-
-
-
     // 判断icon后缀css、js
     addLinkArr(srcArr: string[], flag = true): void {
         const arr = srcArr
@@ -182,8 +178,11 @@ class Utils {
         link.setAttribute('rel', 'stylesheet')
         link.setAttribute('type', 'text/css')
         link.setAttribute('href', url)
-        const heads = doc.getElementsByTagName('head')
-        if (heads.length) heads[0].appendChild(link)
+        const heads: HTMLCollectionOf<HTMLHeadElement> = doc.getElementsByTagName('head') as HTMLCollectionOf<HTMLHeadElement>
+        if (heads.length) {
+            // @ts-ignore
+            heads[0].appendChild(link)
+        }
         else doc.documentElement.appendChild(link)
     }
 
@@ -194,31 +193,15 @@ class Utils {
         if (flag) {
             document.body.appendChild(s)
         } else {
-            const heads = document.getElementsByTagName('head')
+            const heads: HTMLCollectionOf<HTMLHeadElement> = document.getElementsByTagName('head') as HTMLCollectionOf<HTMLHeadElement>
             if (heads.length) {
+                // @ts-ignore
                 heads[0].appendChild(s)
             }
         }
     }
 
-    // 读取文件  正则后缀
-    readFile(modulesFiles: Record<string, any>): Record<string, any> {
-        const modules: Record<string, any> = {}
-        modulesFiles.keys().map((name: string) => {
-            const componentConfig = modulesFiles(name)
-            const componentName = name
-                .replace(/^\.\/_/, '')
-                .replace(/\.\w+$/, '')
-                .split('./')
-                .join('')
-            modules[componentName] = componentConfig.default || componentConfig
-        })
-        return modules
-    }
-
-    getMenuItem(menuTree: any[], menuCode: string, menuModules: string[] = []): {
-      code: string;
-      menuModules: string[]; menuItem: any } | undefined {
+    getMenuItem(menuTree: any[], menuCode: string, menuModules: string[] = []) {
         if (!menuTree || menuTree.length === 0) {
             return
         }

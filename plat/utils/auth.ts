@@ -65,6 +65,7 @@ export const loadMenus = async (platConfig: Record<string, any>): Promise<void> 
     systemConfig.setMenusConfig('authCodeArr', codeArrFormat(data))
     // 取菜单树第一个叶子节点的 code 作为默认激活菜单（与各处兜底逻辑统一）
     systemConfig.setMenusConfig('activeMenuCode', activeMenuCode);
+    return menuTree;
 }
 
 // ==================== 内部函数 ====================
