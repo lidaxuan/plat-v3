@@ -1,0 +1,86 @@
+
+/* 查询表单 开始 */
+.e-cl__condition {
+  padding: 12px 4px;
+  padding-bottom: 0;
+  background-color: #fff;
+  display: flex;
+  overflow: hidden;
+  transition: all 0.3s;
+  position: relative;
+  margin-bottom: 10px;
+  ::v-deep .el-form {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    .el-form-item {
+      padding: 0 8px;
+      box-sizing: border-box;
+      margin-bottom: 12px !important;
+      .el-form-item__content {
+        .el-form-item__error {
+          padding-top: 2px !important;
+        }
+        // .el-select,
+        // .el-date-editor,
+        // .el-cascader,
+        // .el-input-number,
+        // .el-date-editor {
+        //   width: 100% !important;
+        // }
+        &>div {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+.e-cl__condition-base {
+  ::v-deep .el-form {
+    .el-form-item {
+      width: 33.33%;
+    }
+  }
+  .e-cl__condition-oper {
+    margin-left: 28px;
+    width: 268px;
+    .e-cl__condition-oper-fold {
+      margin-left: 20px;
+    }
+  }
+}
+.e-cl__condition-boss {
+  position: relative;
+  ::v-deep .el-form {
+    .el-form-item {
+      width: calc(100% / 6);
+    }
+    @for $i from 1 through 200 {
+      .el-form-item[col="#{$i}"] {
+        width: calc(100% / 6 * #{$i});
+      }
+    }
+  }
+  .e-cl__condition-oper {
+    width: calc(100% / 6);
+    height: 33px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    position: absolute;
+    background-color: white;
+    // transition: all 0.5s;
+  }
+}
+/* 查询表单 结束 */
+
+
+.e-cl-box {
+  padding: 12px;
+  padding-bottom: 0;
+  background-color: white;
+}
+
+* {
+  box-sizing: border-box;
+}

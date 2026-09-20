@@ -4,7 +4,7 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
-
+import vueSetupExtend from "vite-plugin-vue-setup-extend"
 
 const vm = require("vm");
 const {execSync} = require("child_process");
@@ -48,6 +48,7 @@ const resolve = {
   alias: {
     '@': fileURLToPath(new URL('./src', import.meta.url)),
     'plat@': fileURLToPath(new URL('./plat', import.meta.url)),
+    'basic@': fileURLToPath(new URL('./el-web-basic', import.meta.url)),
   },
 }
 
@@ -57,7 +58,7 @@ export default defineConfig(({mode}) => {
   if (mode === 'library') {
     return {
       resolve,
-      plugins: [vue(), vueJsx()],
+      plugins: [vue(), vueJsx(), vueSetupExtend],
       css: {
         preprocessorOptions: {
           scss: {
@@ -113,7 +114,7 @@ export default defineConfig(({mode}) => {
 
   return {
     base: envConfig.base,
-    plugins: [vue(), vueJsx(), vueDevTools()],
+    plugins: [vue(), vueJsx(), vueDevTools(), vueSetupExtend()],
     resolve,
     css: {
       preprocessorOptions: {

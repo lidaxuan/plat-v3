@@ -1,0 +1,11 @@
+.e-list-layout {
+  border-radius: 8px;
+  overflow: hidden;
+  .e-global-btn {
+    position: relative;
+    &-item {
+      position: absolute;
+      right: 0;
+    }
+  }
+}

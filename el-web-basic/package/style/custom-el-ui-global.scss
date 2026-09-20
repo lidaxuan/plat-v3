@@ -1,0 +1,43 @@
+/* 自定义删除弹框 样式(全局) */
+
+.del-message-box {
+  border-radius: 8px;
+  padding-bottom: 0;
+  .el-message-box__header {
+    border-bottom: 1px solid #eee;
+    padding: 15px 20px;
+    .el-message-box__title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #333333;
+    }
+  }
+  .el-message-box__content {
+    padding: 30px 20px 25px;
+    .el-message-box__container {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      .del-message-box-icon {
+        display: block;
+        width: 24px;
+        height: 24px;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAyZJREFUSEuVVk2IG2UYfp5vEruZ1UXNWtuA4q2nei203pYWYdcfqOhFECvqduebNls8CB5MEUQPtUsySdc99CIVfw5SW4VSvQkFKT1Y0HpR9iDI1lWpTVI3mXnKZBN3u83MxDkMzLzP9z7v9z7v9/ARKU/T2hKkZ0BOA9hNYLIHJ1cg/UDyfBiG5+5tNH5PSsNhgWa5vBPdbgXAIQC5tCJIrglYijqdd+5bXFzZir2L4JbnzYTkGQATaYm3xgT8lZNeGKvXL26O3UHQ8n0LaUGA83+Sb8J2Dfl6oVY7Pfj3H8Gto0dnwjA8C8CkJP8F0hWQTwDYkYDrGmOeLFSr3/bkil/9nl/LaMtld3JyHyuVNc3PP9jqdK4CKCWQrIbSrol6fXWdwNoPAbyWKqZ0wq3X3xhgmtaeAzCTMj0n3SA4RllbagHLWdMC4LcwDKcmTp36uWXtPgAXBIynFPWvm8+X2PS8wyAbI4oagfyTUlH99qatM+RLbFp7HkB8kIY/kmjMJZEXGYY3ImAPyecyhqF/HvkZW9YuC3g0hcASuFzodK5waakT425a+wGB+RF2/VNM0BTgpoilXjuiaHa80YiHIR6KZwF8kUkg/ZFJsOnAPO8Gwefxd8v3y5JOZhIA19ny/V8lPZYBjqJud+fAa5qe9yXIp0Yg+DHewVkBT2eAvx8Pgj0xRr6/rS2tZozousjAJ2z7/quRtJRBUBkPguM9gX3/AKULI1QPQ77Im3NzO4zjLEu6J2mRQ+4fq9W+6Qsc2/jbIxC03VyutG4Vvl+DZBMnSdrr1uuXeljP80CeABB7/yOJa8j33VrtzR7BP7Oz25nLXSPwwLAFJD8qFIuHWKl0ezqUy/e3wvBdSIeHEkgrbj6/iwsLf2/YteftD8mvkzyJ6351VeTDlB4XsC2h+jVjzFShWv2uL/QGrGntKwAWRzC+pM6sGeDlQhB8vOn83IltHzkyFUXRpwCKIwi5AZFWjOMcHFSeSBAHbnheMUe+JWAOya0YzHobZLXgOO/FPd9a1NBbxQAUE+WNmRYwLWk3pIdACrEFAL1ry5jjfDUs8SDHbTGOOgUI8Do6AAAAAElFTkSuQmCC)
+          no-repeat;
+        background-size: 100%;
+        position: inherit;
+        transform: none;
+        top: 0;
+      }
+      .el-message-box__message {
+        flex: 1;
+        padding-left: 10px;
+        padding-right: 0;
+      }
+    }
+  }
+
+  .el-message-box__btns {
+    padding: 0 20px 20px;
+  }
+}

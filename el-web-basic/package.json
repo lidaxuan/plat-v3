@@ -1,0 +1,99 @@
+{
+  "_from": "el-web-basic@^0.1.179",
+  "_id": "el-web-basic@0.1.180",
+  "_inBundle": false,
+  "_integrity": "sha512-VVy4iYWfPFY1XWh4zo9A7D4H8DUJUkkgyg9pRTCDiPXEWVjHvmzv4doVa8yG6XHOh2FJs8Cwmk/jAjhPxmKqoA==",
+  "_location": "/el-web-basic",
+  "_phantomChildren": {
+    "@vue/devtools-api": "6.5.1"
+  },
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "el-web-basic@^0.1.179",
+    "name": "el-web-basic",
+    "escapedName": "el-web-basic",
+    "rawSpec": "^0.1.179",
+    "saveSpec": null,
+    "fetchSpec": "^0.1.179"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "http://svn.kinfe.net:8082/repository/easyliao-npm-all/el-web-basic/-/el-web-basic-0.1.180.tgz",
+  "_shasum": "227c2e8c735fe8c8558818ccbf59464e115b88c2",
+  "_spec": "el-web-basic@^0.1.179",
+  "_where": "/Users/lijixuan/lijixuan/easyliao/hw-web-client-view",
+  "author": {
+    "name": "web.王晓冬"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "bundleDependencies": false,
+  "dependencies": {
+    "@lijixuan/safe-get": "^1.0.2",
+    "@lijixuan/safe-set": "^1.0.1",
+    "@wangeditor/core": "^1.0.0",
+    "@wangeditor/editor": "^5.0.1",
+    "@wangeditor/editor-for-vue": "^1.0.1",
+    "element-ui": "2.15.3",
+    "highlight.js": "^11.2.0",
+    "lodash": "^4.17.21",
+    "vuedraggable": "^2.24.3",
+    "vuex": "^4.1.0",
+    "vxe-table": "^3.3.11",
+    "wangeditor": "^4.7.8",
+    "xe-utils": "^3.3.1"
+  },
+  "deprecated": false,
+  "description": "el-web-basic",
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "core-js": "^3.6.4",
+    "css-color-function": "^1.3.3",
+    "es6-promise": "^4.2.8",
+    "js-cookie": "^2.2.1",
+    "moment": "^2.24.0",
+    "node-sass": "^4.12.0",
+    "readline-sync": "1.4.9",
+    "sass": "^1.3.0",
+    "sass-loader": "^7.1.0",
+    "shelljs": "^0.8.3",
+    "vue": "^2.6.14",
+    "vue-hljs": "^2.0.0",
+    "vue-router": "^3.5.2",
+    "vue-template-compiler": "^2.6.14",
+    "vuepress": "^1.9.10",
+    "vuepress-plugin-container": "^2.1.5",
+    "vuepress-plugin-demo-container": "^0.2.0"
+  },
+  "files": [
+    "package"
+  ],
+  "keyword": "vue basic",
+  "license": "MIT",
+  "main": "package/index.ts",
+  "name": "el-web-basic",
+  "private": false,
+  "publishConfig": {
+    "set": "npm config set registry http://svn.kinfe.net:8082/repository/easyliao-nmp-hosted/",
+    "revert": "npm config set registry http://svn.kinfe.net:8082/repository/easyliao-npm-all/",
+    "registry": "http://svn.kinfe.net:8082/repository/easyliao-nmp-hosted/"
+  },
+  "scripts": {
+    "b": "vue-cli-service build --target lib --name el-web-basic --dest lib packages/index.js",
+    "build": "vue-cli-service build",
+    "docs:build": "vuepress build docs",
+    "docs:dev": "vuepress dev docs",
+    "lint": "vue-cli-service lint",
+    "pub": "node shell",
+    "serve": "vue-cli-service serve"
+  },
+  "version": "0.1.180"
+}

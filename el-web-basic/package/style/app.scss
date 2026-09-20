@@ -1,0 +1,105 @@
+$--font-path: 'https://statics.easyliao.com/web/vue/element-ui/2.13.1/theme-chalk/fonts';
+@import '~element-ui/packages/theme-chalk/src/index';
+@import 'custom-el-ui-global.scss';
+* {
+  box-sizing: border-box;
+}
+
+// tab
+.el-tabs {
+  .el-tabs__nav-wrap::after {
+    height: 1px;
+  }
+}
+
+// Tree
+.el-tree {
+  color: #7d8dbf !important;
+}
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  background: none !important;
+  font-weight: bold;
+  color: #344563;
+}
+
+// table
+.el-table {
+  border: 1px solid #ebeef5;
+  border-right: none;
+  border-bottom: none;
+  color: #666666 !important;
+  thead .cell {
+    color: #333333 !important;
+    font-weight: bold !important;
+  }
+  &::after {
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+
+    content: '';
+    position: absolute;
+    background-color: #ebeef5;
+    z-index: 10;
+  }
+}
+.el-table .cell {
+  line-height: 20px !important;
+  padding: 0 20px !important;
+}
+.el-table--medium td,
+.el-table--small td,
+.el-table--mini td {
+  // padding: 15px 0 !important;
+  padding: 8px 0 !important;
+}
+.el-table--medium th,
+.el-table--small th,
+.el-table--mini th {
+  padding: 8px 0 !important;
+}
+
+// drawer-form 相关
+.container-panel {
+  padding: 20px;
+  border: 1px dashed #bdc7ff;
+  background-color: #f8f8fd;
+  font-size: 14px;
+  line-height: 20px;
+}
+.container-panel-2 {
+  padding: 20px;
+  border: 1px dashed #bdc7ff80;
+  font-size: 14px;
+  line-height: 24px;
+  box-sizing: border-box;
+  border-radius: 1px;
+  box-shadow: 0px 0px 16px 0px #d1dcf5;
+}
+h3.form-module {
+  color: #6f82b3;
+  padding: 10px 0 20px 10px;
+  position: relative;
+  font-size: 14px;
+  line-height: 14px;
+  margin: 0;
+  &::before {
+    position: absolute;
+    content: '';
+    height: 14px;
+    width: 2px;
+    background-color: #6f82b3;
+    left: 0;
+  }
+}
+
+// tags
+// .el-tag.el-tag--mini {
+//   margin: 0 !important;
+//   box-sizing: border-box !important;
+//   line-height: 18px !important;
+// }
+// .el-tag + .el-tag {
+//   margin-left: 10px !important;
+// }

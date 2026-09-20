@@ -1,0 +1,39 @@
+// @use "./common";
+
+.e-container-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  position: relative;
+
+  .e-cl__module {
+    flex: 1;
+    height: 0;
+  }
+}
+
+.e-cl__global-oper {
+  position: absolute;
+  top: -54px;
+  right: 0;
+}
+.e-cl__tab {
+  padding: 0 12px;
+  padding-top: 10px;
+  background-color: #FFF;
+  ::v-deep .el-tabs {
+    .el-tabs__header {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.e-container-list-full {
+  position: relative;
+
+  .e-cl__module {
+    // flex: 1;
+    // height: 0;
+  }
+}

@@ -146,6 +146,7 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     if (modulesList) {
       this.loadResources(JSON.parse(modulesList));
     }
+    config.init && config.init(this, app, router, pinia, systemConfig);
   };
 
   // ==================== platService ====================

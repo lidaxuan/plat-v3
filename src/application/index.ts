@@ -18,6 +18,7 @@ import {responseError, requestSuccess, responseSuccess} from "./serviceExpand";
 import apiMap from "../api/index.ts";
 import {resetRouterBeforeEach, routerChildren} from "@/router";
 import {useSystemConfig} from "plat@/store/systemConfig";
+import {install} from "basic@/package/index.ts";
 
 const iconLinkArr = [
   "//at.alicdn.com/t/c/font_2735677_jf1lwq8yzk8.js", //   BEACON基础库
@@ -124,7 +125,9 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       // }
       return ''
     },
-    init(vm: any) {
+    init(instance: any, app: any, router: any, pinia: any, systemConfig: any) {
+      console.log("instance", instance)
+      install(app);
     }
   } as any;
   EWebPlat.beforeInit(config);
