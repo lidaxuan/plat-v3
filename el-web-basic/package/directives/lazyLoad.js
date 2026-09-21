@@ -1,28 +1,6 @@
-/*
- * @Author: 李继玄
- * @Date: 2021-08-20 15:59:46
- * @LastEditTime: 2021-08-27 11:35:21
- * @LastEditors: 段丽军
- * @Description: 
- * @FilePath: /code/el-web-basic/package/directives/lazyLoad.js
- */
+
 const LazyLoad = {
-  // // install方法
-  // install(Vue, options) {
-  //   const defaultSrc = options.default
-  //   Vue.directive('lazy', {
-  //     bind(el, binding) {
-  //       LazyLoad.init(el, binding.value, defaultSrc)
-  //     },
-  //     inserted(el) {
-  //       if (IntersectionObserver) {
-  //         LazyLoad.observe(el)
-  //       } else {
-  //         LazyLoad.listenerScroll(el)
-  //       }
-  //     },
-  //   })
-  // },
+
   // 初始化
   init(el, val, def) {
     el.setAttribute('data-src', val)

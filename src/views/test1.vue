@@ -3,7 +3,8 @@
     111111111
     <el-button type="primary">123</el-button>
     <el-input v-model="title"></el-input>
-    <el-button>Default</el-button>
+    <el-input v-model="num" v-int:1></el-input>
+    <el-button v-copy="title">copy</el-button>
     <el-button type="primary">Primary</el-button>
     <el-button type="success">Success</el-button>
     <el-button type="info">Info</el-button>
@@ -11,7 +12,10 @@
     <e-button-n :loading="true" type="oper" @click="visible = true">抽屉</e-button-n>
     <el-button  type="warning" @click="dialogVisible = true">dialogVisible</el-button>
 
-    <e-table-sp height="100%" :tableColumnData="tableColumnData" :data="tableData">
+    <img v-previewImg src="../assets/imgs/d4997705-61f0-4ae2-8dda-c7979dae23d4.png" width="100" alt="">
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+
+    <e-table-sp v-stacky height="500px" :tableColumnData="tableColumnData" :data="tableData">
       <template #groupId="scope">
         {{ scope.row.groupId }}345
       </template>
@@ -25,6 +29,22 @@
 <!--      <el-table-column property="name" label="Name" width="120" />-->
 <!--      <el-table-column property="address" label="Address" />-->
 <!--    </el-table>-->
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
+    <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
 
     <e-drawer-sp title="123" :isFooter="!false" v-model="visible" @close="drawerClose">
       <template #default="scope">
@@ -59,9 +79,10 @@ import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 
 // ref 响应式变量
 const count = ref(0)
-const title = ref('这是一个 Vue3 代码片段')
+const title = ref('这是一个1 Vue3 代码片段')
 const visible = ref(false)
 const dialogVisible = ref(false)
+const num = ref(0)
 const tableColumnData = [
   { width: 230, label: '账号昵称', prop: "thirdName"},
   { label: '启用状态', prop: "useStatus"},
@@ -74,7 +95,31 @@ const tableColumnData = [
 const tableData = ref([
   { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
   { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
-  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' }
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
+  { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
 ])
 // reactive 响应式对象
 const state = reactive({
@@ -116,5 +161,6 @@ onUnmounted(() => {
   background: #f9f9f9;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 </style>

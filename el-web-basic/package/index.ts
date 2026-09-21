@@ -1,14 +1,3 @@
-/*
- * @Author: 段丽军
- * @Date: 2021-05-21 14:17:09
- * @LastEditTime: 2022-12-21 17:50:54
- * @LastEditors: 段丽军
- * @Description:
- * @FilePath: /el-web-basic/package/index.js
- */
-
-import ELEMENT from "element-ui";
-import draggable from "vuedraggable";
 
 // 组件
 import EBigDataSelectBatchSp from "./components/secondary-packaging/big-data-select-batch/index.js";
@@ -60,6 +49,18 @@ let directives = {};
 //   }
 // });
 
+// @ts-ignore
+const modules = import.meta.glob<{ default: any }>('./directives/*.js', { eager: true });
+const directivesMap = Object.fromEntries(
+  Object.entries(modules).map(([src, mod]) => {
+    const match = src.match(/\/(.+)\./);
+    if (!match) return null;
+    const name = match[1].split('/')[1];
+    return mod.default ? [name, { ...mod.default }] : null;
+  }).filter((entry): entry is [string, any] => entry !== null)
+);
+
+
 let components = [
   EBigDataSelectBatchSp,
   BigDataSelectSp,
@@ -102,9 +103,9 @@ const install = function (vueInstance: any, opts = {}) {
     vueInstance.component(component.name, component);
   });
 
-  // Object.keys(directives || {}).forEach((key) => {
-  //   vueInstance.directive(key, directives[key]);
-  // });
+  Object.keys(directivesMap || {}).forEach((key) => {
+    vueInstance.directive(key, directivesMap[key as keyof typeof directivesMap]);
+  });
   // vueInstance.prototype.$EASYLIAO = opts;
   //
   // const bindPrototype = (Vue, ELEMENT) => {

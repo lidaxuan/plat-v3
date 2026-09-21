@@ -3,18 +3,17 @@
  * @Date: 2021-08-26 14:56:36
  * @LastEditTime: 2021-12-14 14:41:18
  * @LastEditors: 段丽军
- * @Description: 
+ * @Description:
  * @FilePath: /el-web-basic/package/components/native/preview-image/src/main.vue
 -->
 <!--
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2021-04-16 15:23:15
  * @FilePath: /code/el-web-basic/package/components/native/preview-image/src/main.vue
 -->
 
 <script>
-// import process from '@/env/index';
 
 const Size = ['contain', 'cover', 'auto'];
 

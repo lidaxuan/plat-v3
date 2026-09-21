@@ -1,22 +1,15 @@
-/* jshint esversion: 6 */
-/*
- * @Description: 
- * @Author: 李大玄
- * @Date: 2021-08-27 14:55:48
- * @FilePath: /vue-shelf/src/directives/focus.js
- */
 const findEle = (parent, type) => {
+  // 原逻辑：自身是目标标签返回自身，否则返回queryAll节点列表
   return parent.tagName.toLowerCase() === type ? parent : parent.querySelectorAll(type)
 }
-
 export default {
-  inserted: function (el) {
+  mounted: function (el) {
     // 聚焦元素
-    if (el.tagName == 'INPUT') {
+    if (el.tagName === 'INPUT') {
       el.focus();
       return;
     }
-    if (el.tagName == 'DIV') {
+    if (el.tagName === 'DIV') {
       let nodes = findEle(el, 'input');
       if (nodes && nodes.length) {
         nodes[0].focus();
@@ -24,3 +17,4 @@ export default {
     }
   }
 }
+
