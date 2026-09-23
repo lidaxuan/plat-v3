@@ -3,17 +3,10 @@
  * @Date: 2021-08-26 14:56:36
  * @LastEditTime: 2022-12-29 15:24:29
  * @LastEditors: 段丽军
- * @Description: 
+ * @Description:
  * @FilePath: /el-web-basic/package/components/native/user-center-iframe/src/main.vue
 -->
-/*
- * @Author: chunxu.Zhao 
- * @Date: 2021-08-26 18:02:30 
- * @Last Modified by: chunxu.Zhao
- * @Last Modified time: 2021-08-26 18:39:09
- */
- 
- <!-- <user-center-iframe 
+ <!-- <user-center-iframe
  token="xxxxx"
  sys-id="90000"
  role-name="role"

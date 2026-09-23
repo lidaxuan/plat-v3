@@ -52,68 +52,19 @@ const resolve = {
   },
 }
 
+const versionMap = {
+  test: 'v1.0.0',
+  pre: 'v1.0.0',
+  prod: 'v1.0.0',
+} as {
+  [key: string]: string;
+};
+
 // https://vite.dev/config/
 export default defineConfig(({mode}) => {
-  // Library 模式：vite build --mode library
-  if (mode === 'library') {
-    return {
-      resolve,
-      plugins: [vue(), vueJsx(), vueSetupExtend],
-      css: {
-        preprocessorOptions: {
-          scss: {
-            silenceDeprecations: ['import', 'global-builtin'],
-          },
-          sass: {
-            silenceDeprecations: ['import', 'global-builtin'],
-          },
-        },
-      },
-      build: {
-        lib: {
-          // entry: fileURLToPath(new URL('./plat/index.ts', import.meta.url)),
-          entry: fileURLToPath(new URL('./src/application/lib.ts', import.meta.url)),
-          name: 'PlatV3',
-          formats: ['es', 'umd'],
-          fileName: (format) => `plat-v3.${format}.js`,
-        },
-        rollupOptions: {
-          // 外部化依赖，不打包进 library
-          external: [
-            'vue',
-            'vue-router',
-            'pinia',
-            'pinia-plugin-persistedstate',
-            'element-plus',
-            'nprogress',
-          ],
-          output: {
-            // UMD 模式下提供全局变量映射
-            globals: {
-              vue: 'Vue',
-              'vue-router': 'VueRouter',
-              pinia: 'Pinia',
-              'element-plus': 'ElementPlus',
-              nprogress: 'NProgress',
-            },
-          },
-        },
-        cssCodeSplit: false,
-      },
-    }
-  }
-
-  // ==================== 默认 App 模式 ====================
-  // 环境映射：mode 决定构建目标
-  const envMap: Record<string, { base: string; outDir: string }> = {
-    production: { base: '/', outDir: 'dist' },
-    test:       { base: '/', outDir: 'dist-test' },
-    staging:    { base: '/', outDir: 'dist-staging' },
-  };
-  const envConfig = envMap[mode] || envMap.production;
 
   return {
-    base: envConfig.base,
+    base: '/',
     plugins: [vue(), vueJsx(), vueDevTools(), vueSetupExtend()],
     resolve,
     css: {
@@ -130,9 +81,16 @@ export default defineConfig(({mode}) => {
       proxy: proxyConfig || {},
     },
     build: {
-      outDir: envConfig.outDir,
+      lib: {
+        entry: fileURLToPath(new URL('./src/application/lib.ts', import.meta.url)),
+        name: 'PlatV3',
+        formats: ['es', 'umd'],
+        fileName: (format) => `plat-v3.${format}.js`,
+      },
+      outDir: `dist/${versionMap[mode]}`,
       assetsDir: 'static',
       sourcemap: mode !== 'production',
+      cssCodeSplit: false,
       // 分 chunk 策略
       rollupOptions: {
         external: [

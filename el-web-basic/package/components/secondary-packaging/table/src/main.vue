@@ -249,7 +249,6 @@ function setHeaderHeight() {
 
 .e-table-sp {
   position: relative;
-  //overflow: hidden;
   box-sizing: border-box;
   flex: 1;
   width: 100%;

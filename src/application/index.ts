@@ -6,7 +6,7 @@
  * @LastEditors: lijixuan
  * @LastEditTime: 2026-08-05 18:35:31
 -->*/
-// __webpack_public_path__ = window.static_url || window.url || "";
+__webpack_public_path__ = window.static_url || window.url || "";
 
 import * as Vue from 'vue';
 import EWebPlat from "plat@/index.ts";
