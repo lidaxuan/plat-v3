@@ -49,7 +49,7 @@
         <!-- 折叠按钮  == 0 顶部有菜单   == 1 无折叠按钮-->
         <div class="layout-aside-collapse position-a" v-if="systemConfig.layoutConfig.menuLayout == 0" @click="collapseChage">
           <div class="w-27 h-27 flex jc-center ai-center layout-aside-collapseBtn">
-            <el-button round size="mini" style="padding: 8px;">
+            <el-button round size="small" style="padding: 8px;">
               <el-icon>
                 <ArrowRightBold v-if="isCollapse"/>
                 <ArrowLeftBold v-else/>
@@ -135,12 +135,14 @@ onMounted(() => {
   .layout-aside-box {
     background: var(--layoutBeaconBg);
     color: var(--layoutBeaconCol);
+    border-bottom: 1px solid rgba(21, 34, 50, .08);
+    border-right: 1px solid rgba(21, 34, 50, .08);
   }
 
   .little-font {
     transform: scale(0.5);
-    transform-origin: 0 0;
-    width: max-content;
+    transform-origin: top left;
+    width: max-content !important;
     margin-top: 0px;
   }
 
@@ -162,7 +164,6 @@ onMounted(() => {
   }
 
   .layout-menu {
-    //height: calc(100% - 38px);
     height: calc(100% - 68px)
   }
 

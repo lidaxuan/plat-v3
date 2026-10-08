@@ -32,23 +32,6 @@ import ECountTimeN from "./components/native/count-time/index.js";
 import EListLayoutN from "./components/native/list-layout/index.js";
 import EListLayoutItemN from "./components/native/list-layout-item/index.js";
 
-// 获取指令
-let directives = {};
-// 自动加载该目录下的所有文件
-// const files = require.context("./directives", true, /\.js$/);
-// // 根据文件名组织模块对象
-// files.keys().map((src) => {
-//   const match = src.match(/\/(.+)\./);
-//   if (match && match.length >= 1) {
-//     const name = match[1];
-//     // const key = _.upperFirst(name);
-//     const moduleValue = files(src);
-//     if (moduleValue.default) {
-//       directives[name] = moduleValue.default;
-//     }
-//   }
-// });
-
 // @ts-ignore
 const modules = import.meta.glob<{ default: any }>('./directives/*.js', { eager: true });
 const directivesMap = Object.fromEntries(

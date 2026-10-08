@@ -15,7 +15,7 @@
     <img v-previewImg src="../assets/imgs/d4997705-61f0-4ae2-8dda-c7979dae23d4.png" width="100" alt="">
     <el-image src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"  style="width: 100px"></el-image>
 
-    <e-table-sp v-stacky height="500px" :tableColumnData="tableColumnData" :data="tableData">
+    <e-table-sp height="500px" :tableColumnData="tableColumnData" :data="tableData">
       <template #groupId="scope">
         {{ scope.row.groupId }}345
       </template>

@@ -1,5 +1,5 @@
 <template>
-  <el-drawer class="e-drawer" v-bind="$attrs" @close="close" :append-to-body="appendToBody" :wrapper-closable="false">
+  <el-drawer class="e-drawer" v-bind="$attrs" @close="emit('close')" :append-to-body="appendToBody" :wrapper-closable="false">
     <template #title>
       <div class="e-drawer-title">
         <div :class="['e-drawer-title-icon', 'icon', 'iconfont', titleIcon]" :style="{fontSize: titleIconSize, color: titleIconColor, background: titleIconBg}" align="center"/>

@@ -1,6 +1,5 @@
 $--font-path: 'https://statics.easyliao.com/web/vue/element-ui/2.13.1/theme-chalk/fonts';
 @import '~element-ui/packages/theme-chalk/src/index';
-@import 'custom-el-ui-global.scss';
 * {
   box-sizing: border-box;
 }
@@ -93,13 +92,3 @@ h3.form-module {
     left: 0;
   }
 }
-
-// tags
-// .el-tag.el-tag--mini {
-//   margin: 0 !important;
-//   box-sizing: border-box !important;
-//   line-height: 18px !important;
-// }
-// .el-tag + .el-tag {
-//   margin-left: 10px !important;
-// }

@@ -53,7 +53,7 @@
   </el-table-column>
 </template>
 
-<script setup>
+<script setup name="ETableColumnSp">
 import { defineProps } from 'vue';
 
 const props = defineProps({

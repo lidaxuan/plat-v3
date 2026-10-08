@@ -1,18 +1,11 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2021-08-05 09:46:12
  * @FilePath: /el-web-basic/package/components/native/icon-font/src/load.js
  */
 
-// function append(src) {
-//   const script = document.createElement('script');
-//   script.src = src;
-//   script.setAttribute('data-namespace', src);
-//   const body = document.querySelector('body');
-//   body.appendChild(script);
-// }
 function append(src) {
   const body = document.querySelector('body');
   if (src.match('.js')) {

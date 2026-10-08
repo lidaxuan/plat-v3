@@ -12,7 +12,7 @@
       <i class="iconfont icon-D1-A6" style="font-size: 22px; cursor: pointer; color: #bbb;" @click="$emit('oper-click')"/>
     </div>
 
-    <el-table v-bind="$attrs" :border="styleComputed === 'border'" :data="data" ref="tableRef" size="medium" :height="height"
+    <el-table v-bind="$attrs" :border="styleComputed === 'border'" :data="data" ref="tableRef" size="default" :height="height"
               :row-class-name="rowClassNameComputed">
       <template v-for="(item, index) in columnsComputed || []" :key="index">
         <Column v-bind="item" v-if="item.display === undefined || item.display === true"
