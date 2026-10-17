@@ -11,44 +11,18 @@ export const routerChildren = [
     component: () => import('../views/layout.vue'),
     children: [
       {
-        path: '/reportBuilderPage',
-        name: 'reportBuilderPage',
-        component: () => import('../views/test1.vue'),
+        path: '/workOrderWorkbench',
+        name: 'workOrderWorkbench',
+        component: () => import('../views/workOrderWorkbench/index.vue'),
+        // component: () => import('../views/test2.vue'),
         meta: {fullScreen: false, keepAlive: true},
       },
       {
-        path: '/chat',
-        name: 'chat',
-        component: () => import('../views/test2.vue'),
-      },
-      {
-        path: '/homeIndex/chatRecord',
-        name: 'homeIndex/chatRecord',
-        component: () => import('../views/test3.vue'),
+        path: '/systemSetting',
+        name: 'systemSetting',
+        component: () => import('../views/systemSetting/index.vue'),
         meta: {fullScreen: false, keepAlive: true},
-      },
-      {
-        path: '/test1',
-        name: 'test1',
-        component: () => import('../views/test1.vue'),
-        meta: {fullScreen: true, keepAlive: false},
-      },
-      {
-        path: '/test2',
-        name: 'test2',
-        component: () => import('../views/test2.vue'),
-      },
-      {
-        path: '/test3',
-        name: 'test3',
-        component: () => import('../views/test3.vue'),
-      },
-      {
-        path: '/test333',
-        name: 'test333',
-        meta: {fullScreen: true, keepAlive: true},
-        component: () => import('../views/test3.vue'),
-      },
+      }
     ],
   },
 ]
@@ -56,13 +30,9 @@ export const routerChildren = [
 
 export const resetRouterBeforeEach = (to: RouteLocationNormalized, _from: RouteLocationNormalized): boolean | { path: string; query: Record<string, never> } => {
   const systemConfig = useSystemConfig()
-
   // 一、登录流程：地址存在 token，从统一登录页跳转过来
   if (to.query['access_token']) {
     systemConfig.setToken(to.query['access_token'] as string)
-    // loadMenus(window.EWebPlat?.platConfig)
-    // loadUserInfo(window.EWebPlat?.platConfig)
-    // 清除 URL 参数后跳转
     return {path: to.path, query: {}}
   }
 

@@ -23,8 +23,6 @@ import {install} from "basic@/package/index.ts";
 const iconLinkArr = [
   "//at.alicdn.com/t/c/font_2735677_jf1lwq8yzk8.js", //   BEACON基础库
   "//at.alicdn.com/t/c/font_2735677_jf1lwq8yzk8.css", //   BEACON基础库
-  "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.css", // 群峰重点项目 font_4313697_lk2jjwwvd38
-  "//at.alicdn.com/t/c/font_4313697_gvkdwra2dg.js", // 群峰重点项目
 ];
 window["platV3ApiMap"] = apiMap;
 
@@ -91,20 +89,14 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     menuConfig: { // 用来格式化获取到的菜单 后续功能在增加
       formatterMenu: (val: any[]) => {
         console.log("val", val)
-        // if (window.$CONFIG.lang == "cn") {
-        //     const codeList = ["channel"];
-        //     const enums = menusQunfeng.map(item => {
-        //         if (codeList.includes(item.code)) {
-        //             item.srcName = "private-messenger-web-view";
-        //         }
-        //         return item;
-        //     });
-        //     return enums;
-        // } else if (window.$CONFIG.lang == "en") {
-        //     localStorage.setItem("menusList", JSON.stringify(val));
-        //     const data = fotmatterEnum(val);
-        //     return data;
-        // }
+            const codeList = ["test4"];
+            const enums = menusQunfeng.map(item => {
+                if (codeList.includes(item.code)) {
+                    item.srcName = "private-messenger-web-view";
+                }
+                return item;
+            });
+            return enums;
         return val;
       }
     },

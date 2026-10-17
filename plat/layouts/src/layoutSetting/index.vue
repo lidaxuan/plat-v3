@@ -52,7 +52,7 @@
         <div class="settingLine"></div>
         <div font="14" class="ml-8 settingName">标签页</div>
       </div>
-      <el-switch v-model="showTag" @change="tagChange" width="60px" inline-prompt/>
+      <el-switch v-model="showTag" @change="tagChange" width="40px" inline-prompt/>
     </div>
 
     <div class="flex jc-between ai-center">
@@ -61,7 +61,7 @@
         <div font="14" class="ml-8 settingName">位置导航（面包屑）</div>
       </div>
 
-      <el-switch v-model="showBreadcrumb" @change="breadcrumbChange" width="60px" inline-prompt/>
+      <el-switch v-model="showBreadcrumb" @change="breadcrumbChange" width="40px" inline-prompt/>
     </div>
 
     <div class="mtb-30 h-1 br-1 settingBg-EAECF0"/>
