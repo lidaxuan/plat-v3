@@ -10,9 +10,10 @@
   <div class="flex ai-center">
     <slot name="actionBarLayoutHeaderRight"></slot>
     <icon-class :title="isFullscreen ? '全屏' : '取消全屏'" class="mr-40 cursor-p" :icon-class="isFullscreen ? 'icon-C-C6' : 'icon-C-C7'"
-                @iconClick="isScreenFull" color="var(--layoutTopMenuCol)" font="24"/>
+                @iconClick="isScreenFull" color="var(--layoutTopMenuCol)" font="24" v-if="systemConfig.layoutConfig.fullScreen"/>
 
-    <icon-class class="mr-44 cursor-p" icon-class="icon-C-C13" @iconClick="settingFun" font="24" color="var(--layoutTopMenuCol)"/>
+    <icon-class class="mr-44 cursor-p" icon-class="icon-C-C13" @iconClick="settingFun" font="24" color="var(--layoutTopMenuCol)"
+                v-if="systemConfig.layoutConfig.systemThemeConfig"/>
 
     <div class="avatar-box mr-12" :class="loginStatus + '-status'">
       <div v-if="appConfig.avatarSrc" class="">
@@ -67,7 +68,6 @@ const systemConfig = useSystemConfig()
 const userMsg = computed(() => systemConfig.userMsg)
 const appConfig = computed(() => systemConfig.appConfig)
 const settingLayout = ref(false)
-
 
 const getUserName = computed(() => {
   if (userMsg.value && (userMsg.value as any).realName) {

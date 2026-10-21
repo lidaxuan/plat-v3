@@ -8,7 +8,16 @@
 <!--      <template #actionBar>-->
 <!--        actionBar-->
 <!--      </template>-->
-
+      <template #content>
+        <router-view v-slot="{ Component, route }">
+          <transition name="left-to-right" mode="out-in" appear>
+            <keep-alive v-if="route.meta && route.meta.keepAlive">
+              <component :is="Component" :key="route.fullPath"/>
+            </keep-alive>
+            <component v-else :is="Component" :key="route.fullPath" />
+          </transition>
+        </router-view>
+      </template>
 
     </Application>
   </div>
@@ -20,11 +29,9 @@ import Application from "plat@/layouts/index.vue";
 
 // 生命周期
 onMounted(() => {
-  console.log('组件已挂载')
 })
 
 onUnmounted(() => {
-  console.log('组件已卸载')
 })
 </script>
 

@@ -45,11 +45,11 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
   const config = {
     appConfig: {
       appName: "易聊科技",
-      welcomeMessage: "欢迎登录群峰后台管理系统",
+      welcomeMessage: "欢迎登录工单系统",
       logoIconFont: "icon-doutuilogo",
       enAppName: "EASYLIAO TECHNOLOGY",
       pageTitle: "",
-      appId: 10000,
+      appId: 610000,
       jumpContext: baseUrl[accountEnv] || "/im-gateway/webcall/view", // /data-config/view/base
       packageName: "plat-v3-client-view"
     },
@@ -73,6 +73,8 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       storage: window.sessionStorage
     },
     layoutSetting: {
+      fullScreen: false,
+      systemThemeConfig: false,
       showTag: true,
       showBreadcrumb: true
     },
@@ -88,7 +90,6 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     ],
     menuConfig: { // 用来格式化获取到的菜单 后续功能在增加
       formatterMenu: (val: any[]) => {
-        console.log("val", val)
             const codeList = ["test4"];
             const enums = menusQunfeng.map(item => {
                 if (codeList.includes(item.code)) {
@@ -118,7 +119,6 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       return ''
     },
     init(instance: any, app: any, router: any, pinia: any, systemConfig: any) {
-      console.log("instance", instance)
       install(app);
     }
   } as any;

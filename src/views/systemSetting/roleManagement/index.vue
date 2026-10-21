@@ -76,14 +76,6 @@ const tableData = ref([
   { thirdName: '张三', useStatus: '启用', status: '正常', groupId: '1', effectiveTime: '2023-04-01', invalidTime: '2023-04-02' },
 ])
 
-// 生命周期
-onMounted(() => {
-  console.log('组件已挂载')
-})
-
-onUnmounted(() => {
-  console.log('组件已卸载')
-})
 </script>
 
 <style scoped>

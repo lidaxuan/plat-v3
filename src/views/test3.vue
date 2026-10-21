@@ -25,18 +25,11 @@ function increment() {
   count.value++
 }
 
-// watch 监听
-watch(count, (newVal, oldVal) => {
-  console.log(`count: ${oldVal} -> ${newVal}`)
-})
-
 // 生命周期
 onMounted(() => {
-  console.log('组件已挂载')
 })
 
 onUnmounted(() => {
-  console.log('组件已卸载')
 })
 </script>
 

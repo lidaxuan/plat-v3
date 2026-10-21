@@ -124,23 +124,13 @@ const rules = {
 
 // 方法
 function handleClick(item: any) {
-  console.log(item)
   firstQuestionItem.value = item
 }
 
 function addFirstQuestion() {
-  console.log('新增一级问题')
 }
 
 
-// 生命周期
-onMounted(() => {
-  console.log('组件已挂载')
-})
-
-onUnmounted(() => {
-  console.log('组件已卸载')
-})
 </script>
 
 <style scoped>

@@ -101,8 +101,8 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     router = createRouter(config);
     app.use(router);
     app.use(ElementPlus);
-    app.mount('#app');
 
+    app.mount('#app');
     const systemConfig = useSystemConfig();
     platBaseConfig = config;
     systemConfig.setAppConfig(config);

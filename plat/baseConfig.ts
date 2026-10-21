@@ -1,4 +1,6 @@
 export const baseLayoutConfig = {
+  fullScreen: true,
+  systemThemeConfig: true,
   showBreadcrumb: true,
   showTag: true,
   themeLayout: 0, // 0 1 2 3

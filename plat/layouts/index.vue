@@ -59,7 +59,7 @@
         </div>
         <!-- 折叠按钮 -->
       </el-aside>
-      <el-main class="p-0 position-r " height="100%">
+      <el-main class="p-0 position-r flex right-main" height="100%">
         <el-header class="layout-nav h-66 plr-15" width="100%">
           <LayoutHeader>
             <template v-if="$slots.headerRight" v-slot:headerRight>
@@ -149,6 +149,8 @@ onMounted(() => {
   .el-main {
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    height: 100%;
     background: var(--layoutTopMenuBg);
 
     .layout-nav {
@@ -157,7 +159,8 @@ onMounted(() => {
     }
 
     .layout-main {
-      flex: 1;
+      flex: 1 1 0;
+      min-height: 0;
       overflow-y: auto;
       background: #eff1f4;
     }

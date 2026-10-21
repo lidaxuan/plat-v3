@@ -138,7 +138,6 @@ const state = reactive({
 })
 
 function drawerClose() {
-  console.log(1111)
   visible.value = false
 }
 
@@ -157,11 +156,9 @@ watch(count, (newVal, oldVal) => {
 
 // 生命周期
 onMounted(() => {
-  console.log('组件已挂载')
 })
 
 onUnmounted(() => {
-  console.log('组件已卸载')
 })
 </script>
 
