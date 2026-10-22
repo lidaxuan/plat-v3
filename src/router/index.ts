@@ -13,20 +13,20 @@ export const routerChildren = [
       {
         path: '/workOrderWorkbench',
         name: 'workOrderWorkbench',
-        component: () => import('../views/workOrderWorkbench/index.vue'),
+        component: () => import(/*webpackChunkName: "workOrderWorkbench"*/'../views/workOrderWorkbench/index.vue'),
         // component: () => import('../views/test2.vue'),
         meta: {fullScreen: false, keepAlive: true},
       },
       {
         path: '/systemSetting',
         name: 'systemSetting',
-        component: () => import('../views/systemSetting/index.vue'),
+        component: () => import(/*webpackChunkName: "systemSetting"*/'../views/systemSetting/index.vue'),
         meta: {fullScreen: false, keepAlive: true},
       },
       {
         path: '/home',
         name: 'home',
-        component: () => import('../views/HomeView.vue'),
+        component: () => import(/*webpackChunkName: "home"*/'../views/HomeView.vue'),
         meta: {fullScreen: false, keepAlive: false},
       },
     ],

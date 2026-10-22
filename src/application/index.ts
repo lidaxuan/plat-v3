@@ -80,13 +80,13 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     },
     showLoginStatus: true,
     handleDropdownList: [
-      {id: "userStatusOnline", name: "在线", icon: "icon-zaixianzhuangtai system-dropdown-online", disabled: false},
+     /* {id: "userStatusOnline", name: "在线", icon: "icon-zaixianzhuangtai system-dropdown-online", disabled: false},
       {id: "userStatusLeave", name: "离开", icon: "icon-zaixianzhuangtai system-dropdown-leave", disabled: false},
       {id: "userStatusBusy", name: "忙碌", icon: "icon-zaixianzhuangtai system-dropdown-busy", disabled: false},
       {id: "personelSetting", name: "个人设置", icon: "icon-a-UserIcon"},
-      {id: "bindPhone", name: "绑定手机号", icon: "icon-bangdingshoujihao"},
+      {id: "bindPhone", name: "绑定手机号", icon: "icon-bangdingshoujihao"},*/
       {id: "userLogout", name: "退出登录", icon: "icon-C-C11"},
-      {id: "exitingTheCloud", name: "同时退出云端", icon: "icon-C-C11"},
+      // {id: "exitingTheCloud", name: "同时退出云端", icon: "icon-C-C11"},
     ],
     menuConfig: { // 用来格式化获取到的菜单 后续功能在增加
       formatterMenu: (val: any[]) => {
@@ -129,8 +129,7 @@ createAppFn();
 fetchUserLoginState();
 
 export async function fetchUserLoginState() {
-  // @ts-ignore
-  const res: any = await window.EWebPlat.platService(platV3ApiMap.im.getUserInfo);
+  const res: any = await window.EWebPlat.platService(apiMap.im!.getUserInfo);
   if (res.code) {
     return;
   }

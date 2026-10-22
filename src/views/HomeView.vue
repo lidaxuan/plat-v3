@@ -152,8 +152,6 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .home-view {
-  //padding: 24px;
-  //background-color: #f5f7fa;
   min-height: 100%;
   height: 100%;
   flex: 1;

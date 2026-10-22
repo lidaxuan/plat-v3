@@ -52,16 +52,77 @@ const resolve = {
   },
 }
 
-const versionMap = {
+/**
+ * 版本号映射 —— 所有构建（应用 / 库）统一输出到 dist/<类型>/<版本号>/
+ * 改这里即可控制各环境的版本号
+ */
+const versionMap: Record<string, string> = {
+  production: 'latest',
   test: 'v1.0.0',
   pre: 'v1.0.0',
   prod: 'v1.0.0',
-} as {
-  [key: string]: string;
 };
+
+/** 库构建的 mode 前缀，形如 lib-test / lib-pre / lib-prod */
+const LIB_MODE_PREFIX = 'lib-';
 
 // https://vite.dev/config/
 export default defineConfig(({mode}) => {
+  // 库构建 mode：lib-<env>；其余 mode 走应用构建（index.html 入口）
+  const isLibBuild = mode.startsWith(LIB_MODE_PREFIX);
+  // 从 lib-test 中取出环境名 test，用于匹配版本号
+  const envKey = isLibBuild ? mode.slice(LIB_MODE_PREFIX.length) : mode;
+  const version = versionMap[envKey] ?? 'v1.0.0';
+  const outDir = `dist/${version}`;
+
+  /** 库构建配置：产出 es / umd，外部依赖不打包 */
+  const libBuildConfig = {
+    lib: {
+      entry: fileURLToPath(new URL('./src/application/lib.ts', import.meta.url)),
+      name: 'PlatV3',
+      formats: ['es', 'umd'] as const,
+      fileName: (format: string) => `plat-v3.${format}.js`,
+    },
+    outDir,
+    assetsDir: 'static',
+    sourcemap: true,
+    cssCodeSplit: false,
+    rollupOptions: {
+      external: [
+        'vue',
+        'vue-router',
+        'pinia',
+        'pinia-plugin-persistedstate',
+        'element-plus',
+        '@element-plus/icons-vue',
+        'nprogress',
+      ],
+      output: {
+        globals: {
+          vue: 'Vue',
+          'vue-router': 'VueRouter',
+          pinia: 'Pinia',
+          'element-plus': 'ElementPlus',
+          nprogress: 'NProgress',
+        },
+      },
+    },
+  };
+
+  /** 应用构建配置：以 index.html 为入口，产出可部署的静态站点 */
+  const appBuildConfig = {
+    outDir,
+    assetsDir: 'static',
+    sourcemap: mode !== 'production',
+    rollupOptions: {
+      output: {
+        // 去掉 chunk 文件名中的 hash 后缀
+        chunkFileNames: 'static/[name].js',
+        entryFileNames: 'static/[name].js',
+        assetFileNames: 'static/[name].[ext]',
+      },
+    },
+  };
 
   return {
     base: '/',
@@ -80,38 +141,6 @@ export default defineConfig(({mode}) => {
     server: {
       proxy: proxyConfig || {},
     },
-    build: {
-      lib: {
-        entry: fileURLToPath(new URL('./src/application/lib.ts', import.meta.url)),
-        name: 'PlatV3',
-        formats: ['es', 'umd'],
-        fileName: (format) => `plat-v3.${format}.js`,
-      },
-      outDir: `dist/${versionMap[mode]}`,
-      assetsDir: 'static',
-      sourcemap: mode !== 'production',
-      cssCodeSplit: false,
-      // 分 chunk 策略
-      rollupOptions: {
-        external: [
-          'vue',
-          'vue-router',
-          'pinia',
-          'pinia-plugin-persistedstate',
-          'element-plus',
-          '@element-plus/icons-vue',
-          'nprogress',
-        ],
-        output: {
-          globals: {
-            vue: 'Vue',
-            'vue-router': 'VueRouter',
-            pinia: 'Pinia',
-            'element-plus': 'ElementPlus',
-            nprogress: 'NProgress',
-          },
-        },
-      },
-    },
+    build: isLibBuild ? libBuildConfig : appBuildConfig,
   }
 })

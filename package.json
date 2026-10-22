@@ -3,24 +3,26 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "./dist/plat-v3.umd.js",
-  "module": "./dist/plat-v3.es.js",
+  "main": "./dist/v1.0.0/plat-v3.umd.js",
+  "module": "./dist/v1.0.0/plat-v3.es.js",
   "exports": {
     ".": {
-      "import": "./dist/plat-v3.es.js",
-      "require": "./dist/plat-v3.umd.js"
+      "import": "./dist/v1.0.0/plat-v3.es.js",
+      "require": "./dist/v1.0.0/plat-v3.umd.js"
     },
-    "./dist/style.css": "./dist/style.css"
+    "./dist/style.css": "./dist/v1.0.0/plat-v3.css"
   },
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "build:test": "vite build --mode test --target build",
-    "build:pre": "vite build --mode pre --target build",
-    "build:prod": "vite build --mode prod --target build",
-    "build:lib:test": "vite build --mode test",
+    "build:test": "vite build --mode test",
+    "build:pre": "vite build --mode pre",
+    "build:prod": "vite build --mode prod",
+    "build:lib:test": "vite build --mode lib-test",
+    "build:lib:pre": "vite build --mode lib-pre",
+    "build:lib:prod": "vite build --mode lib-prod",
     "type-check": "vue-tsc --build",
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",

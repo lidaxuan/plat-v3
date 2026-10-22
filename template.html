@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" th:href="@{${host} + '/' + ${contextPath} + '/' + ${version} + '/favicon.ico'}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${projectTitle}"></title>
+  <script th:src="@{${'https://views.easyliao.com/el-base-utils/view/'} + ${baseUtilsVersion} + ${'/elBaseUtils.min.js'}}"></script>
+  <script th:inline="javascript">
+    window.ReferEnv = [[${env}]];
+    window.isLocal = false;
+    window.__sso = [[${env}]];
+    window._baseEnv = [[${env}]];
+    window.$CONFIG = {
+      lang: "cn",
+      projectName: "applet-console",
+      version: [[${version}]],
+      suffixText: "Config"
+    };
+    window.ssoEnums = {
+      "test": "https://test-prd18.easyliao.net",
+      "pre": "https://pre-views.easyliao.com",
+      "prod": "https://views.easyliao.com",
+      "group6": "https://views-cdn.easyliao.com/view",
+      "group5": "https://views-cdn.easyliao.com/view"
+    }
+    window.envLoginUrl = {
+      testLoginUrl: "https://test-prd18.easyliao.net/auth-sso/oauth/web/login/view",
+      preLoginUrl: "https://pre-auth.easyliao.net/auth-sso/oauth/web/login/view",
+      group5LoginUrl: "https://group5-auth.easyliao.com/auth-sso/oauth/web/login/view",
+      group6LoginUrl: "https://group6-auth.easyliao.com/auth-sso/oauth/web/login/view",
+      prodLoginUrl: "https://tencent-auth2.easyliao.com/auth-sso/oauth/web/login/view"
+    };
+  </script>
+  <script type="module" crossorigin th:src="@{${host} + '/' + ${contextPath} + '/' + ${version} + '/static/index.js'}"></script>
+  <link rel="stylesheet" crossorigin th:href="@{${host} + '/' + ${contextPath} + '/' + ${version} + '/static/index.css'}">
+</head>
+<body>
+<div id="app"></div>
+</body>
+</html>
