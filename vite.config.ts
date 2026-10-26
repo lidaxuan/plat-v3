@@ -125,7 +125,7 @@ export default defineConfig(({mode}) => {
   };
 
   return {
-    base: '/',
+    base: './',
     plugins: [vue(), vueJsx(), vueDevTools(), vueSetupExtend()],
     resolve,
     css: {

@@ -70,8 +70,8 @@ const appConfig = computed(() => systemConfig.appConfig)
 const settingLayout = ref(false)
 
 const getUserName = computed(() => {
-  if (userMsg.value && (userMsg.value as any).realName) {
-    return (userMsg.value as any).realName
+  if (userMsg.value && (userMsg.value as any).userName) {
+    return (userMsg.value as any).userName
   }
   // if (EWebPlat.platConfig?.obtainUserName) {
   //   return EWebPlat.platConfig.obtainUserName(userMsg.value) || '--'
@@ -94,6 +94,7 @@ const loginStatus = computed(() => {
     2: 'userStatusBusy',
     3: 'userStatusLeave'
   }
+  console.log("systemConfig.userMsg.runningStatus", systemConfig.userMsg.runningStatus)
   return obj[systemConfig.userMsg.runningStatus as number];
 })
 

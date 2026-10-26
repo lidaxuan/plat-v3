@@ -50,16 +50,16 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       enAppName: "EASYLIAO TECHNOLOGY",
       pageTitle: "",
       appId: 610000,
-      jumpContext: baseUrl[accountEnv] || "/im-gateway/webcall/view", // /data-config/view/base
-      packageName: "plat-v3-client-view"
+      jumpContext: "/ticket-service/view", // /data-config/view/base
+      packageName: "work-order-web-view"
     },
     iconLink: iconLinkArr,
     apiMap: {
-      userEnums: apiMap.authEupms!.getPerUserMenus,
-      userInfo: apiMap.im!.getUserInfo
+      userEnums: apiMap.ticketService!.ticketServiceUserGetMenus,
+      userInfo: apiMap.ticketService!.getUserInfo
     },
     env: window.__sso,
-    customerMenus: menusQunfeng,
+    // customerMenus: menusQunfeng,
     serviceConfig: {
       apiConfig: [],
       // apiMap: apiMap.default,
@@ -90,14 +90,15 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
     ],
     menuConfig: { // 用来格式化获取到的菜单 后续功能在增加
       formatterMenu: (val: any[]) => {
-            const codeList = ["test4"];
-            const enums = menusQunfeng.map(item => {
-                if (codeList.includes(item.code)) {
-                    item.srcName = "private-messenger-web-view";
-                }
-                return item;
-            });
-            return enums;
+            // const codeList = ["test4"];
+            // const enums = menusQunfeng.map(item => {
+            //     if (codeList.includes(item.code)) {
+            //         item.srcName = "private-messenger-web-view";
+            //     }
+            //     return item;
+            // });
+            // return enums;
+        console.log("formatterMenu", val)
         return val;
       }
     },
@@ -126,7 +127,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
 }
 
 createAppFn();
-fetchUserLoginState();
+// fetchUserLoginState();
 
 export async function fetchUserLoginState() {
   const res: any = await window.EWebPlat.platService(apiMap.im!.getUserInfo);

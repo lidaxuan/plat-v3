@@ -102,7 +102,6 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     app.use(router);
     app.use(ElementPlus);
 
-    app.mount('#app');
     const systemConfig = useSystemConfig();
     platBaseConfig = config;
     systemConfig.setAppConfig(config);
@@ -110,10 +109,15 @@ export function initMixin(EWebPlat: { prototype: Record<string, any> }): void {
     // dev 模式下加载本地 UMD library 用于模块注册调试
     // utils.addLinkArr(['http://localhost:2332/plat-v3.umd.js']);
     utils.addLinkArr(config.iconLink || []);
-    isGoToLogin(config.appConfig || {}, () => {
-      EWebPlat.prototype.init(config);
-    });
     setElementThemeColor(systemConfig.layoutConfig.themeColor);
+
+    isGoToLogin(config.appConfig || {}, () => {
+      // 等待 init（菜单加载 + 业务组件注册）与首屏路由解析完成后再挂载应用。
+      // 否则首次访问时菜单接口尚未返回，页面组件会先于组件注册渲染，导致 e-table-sp 等业务组件解析不到而空白
+      Promise.all([EWebPlat.prototype.init(config), router.isReady()]).finally(() => {
+        app.mount('#app');
+      });
+    });
   };
 
   // ==================== init ====================
