@@ -59,7 +59,7 @@ async function createAppFn(accountEnv: string = "test"): Promise<void> {
       userInfo: apiMap.ticketService!.getUserInfo
     },
     env: window.__sso,
-    // customerMenus: menusQunfeng,
+    customerMenus: menusQunfeng,
     serviceConfig: {
       apiConfig: [],
       // apiMap: apiMap.default,

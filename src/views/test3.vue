@@ -1,12 +1,12 @@
 <template>
   <div class="my-component">
-    3333333333
+    <SchemaFormGenerator />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
-
+import SchemaFormGenerator from '../components/schema-form-generator.vue';
 // ref 响应式变量
 const count = ref(0)
 const title = ref('这是一个 Vue3 代码片段')

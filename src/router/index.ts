@@ -29,6 +29,18 @@ export const routerChildren = [
         component: () => import(/*webpackChunkName: "home"*/'../views/HomeView.vue'),
         meta: {fullScreen: false, keepAlive: false},
       },
+      {
+        path: '/test',
+        name: 'test',
+        component: () => import(/*webpackChunkName: "home"*/'../views/test3.vue'),
+        meta: {fullScreen: false, keepAlive: false},
+      },
+      {
+        path: '/testForm',
+        name: 'testForm',
+        component: () => import(/*webpackChunkName: "home"*/'../views/testForm.vue'),
+        meta: {fullScreen: false, keepAlive: false},
+      },
     ],
   },
 ]
@@ -45,11 +57,11 @@ export const resetRouterBeforeEach = (to: RouteLocationNormalized, _from: RouteL
 
   // 二、已登录
   if (systemConfig.token) {
-    if(to.path === '/home'){
-      return true
-    }
-    return {path: '/home', query: { "_t": Date.now().toString()}}
-    // return true;
+    // if(to.path === '/home'){
+    //   return true
+    // }
+    // return {path: '/home', query: { "_t": Date.now().toString()}}
+    return true;
   }
 
   // 三、未登录，跳转统一登录
