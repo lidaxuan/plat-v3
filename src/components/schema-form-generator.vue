@@ -9,6 +9,9 @@
  -->
 <template>
   <div class="schema-form-generator">
+    <el-button>展示||隐藏 1</el-button>
+    <el-button>展示||隐藏 2</el-button>
+    <el-button>展示||隐藏 3</el-button>
     <el-row :gutter="12">
       <!-- 左栏：输入 JSON 样本 -->
       <el-col :span="8">
@@ -44,18 +47,7 @@
             Tree 模式下展开箭头自动渲染在第一列，只需用 row-key + children 即可。
             expand-row-keys 用于外部控制展开态，@expand-change 监听用户点击同步 expandedKeys。
           -->
-          <el-table
-            ref="tableRef"
-            :data="fields"
-            size="small"
-            max-height="560"
-            border
-            row-key="path"
-            :default-expand-all="false"
-            :expand-row-keys="expandedKeys"
-            @expand-change="onExpandChange"
-            :tree-props="{ children: 'children' }"
-          >
+          <el-table ref="tableRef" :data="fields" size="small" max-height="560" border row-key="path" :default-expand-all="false" :expand-row-keys="expandedKeys" @expand-change="onExpandChange" :tree-props="{ children: 'children' }">
             <!-- 第一列：字段名 + Tree 模式展开箭头（自动渲染） -->
             <el-table-column prop="key" label="字段" width="140" show-overflow-tooltip />
 
@@ -140,6 +132,7 @@
 </template>
 
 <script setup lang="ts">
+import * as Vue from 'vue'
 import { computed, defineComponent, h, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { ElTable } from 'element-plus'
@@ -210,7 +203,7 @@ function onExpandChange(row: FieldNode, expanded: boolean): void {
 }
 
 /** 右栏视图切换：源码 / 渲染预览 */
-const resultView = ref<'preview' | 'source'>('preview')
+const resultView = ref<'preview' | 'source'>('source')
 /** 渲染预览组件（把生成的 SFC 字符串编译成可挂载的组件） */
 const previewComp = computed(() => {
   if (!code.value) return null
@@ -227,41 +220,56 @@ const previewComp = computed(() => {
 /**
  * 把生成的 SFC 字符串编译成可渲染的组件
  *
- * 流程：
- *  1. parseSfc → 拿到 template / script
- *  2. compileTemplate({ mode: 'function' }) → 产出没有 import 的纯 function render 源码
- *  3. 用 new Function 包一层拿到 render 函数
- *  4. defineComponent 包装 + setup 提供 mock 数据
+ * compileTemplate 产出代码的完整结构：
+ *   import { resolveComponent as _resolveComponent, ... } from "vue"   ← Vue helper
+ *   const _hoisted_1 = { class: "xxx" }                               ← 提升的静态节点
+ *   const _hoisted_2 = ...
+ *   export function render(_ctx, _cache) { ...引用 _hoisted_1... }
  *
- * 为什么 mode: 'function'？
- *  默认 mode: 'module' 会产出 `import { resolveComponent } from 'vue'` 的 ES module 代码，
- *  new Function 无法执行 import 语句。mode: 'function' 会把 Vue 内部 helper（resolveComponent 等）
- *  自动挂到 render 函数参数的闭包链上，产出纯净可 eval 的 function 源码。
- *
- * 为什么能 resolve Element Plus 组件？
- *  预览组件是当前组件的子组件，运行在同一个 Vue App 上下文里，
- *  Element Plus 全局注册的组件会被 resolveComponent 自动找到。
+ * 所以 eval 时必须保留 hoisted const（render 依赖它们），只去掉 import 和 export。
+ * Vue helper 通过 new Function 参数注入（因为 import 语法不能在 new Function 里执行）。
  */
 function compileSfc(source: string) {
   const { descriptor } = parseSfc(source)
   if (!descriptor.template) return null
 
-  // mode: 'function' → 产出 `function render(_ctx, _cache, ...) { ... }` 源码，无 import
   const { code: renderCode } = compileTemplate({
     source: descriptor.template.content,
     filename: 'preview.vue',
     id: 'preview-component',
-    mode: 'function',
   })
 
-  // 拿到 function render(...) { ... } 整个函数定义
-  const match = renderCode.match(/function render\([^)]*\) \{[\s\S]*\n?\}$/)
-  if (!match) {
-    console.warn('[schema-form-generator] 无法从编译结果提取 render 函数', renderCode.slice(0, 200))
-    return null
+  // ① 解析 import 行，拿到 alias → Vue 原属性名的映射
+  //    例：`resolveComponent as _resolveComponent` → alias="_resolveComponent", orig="resolveComponent"
+  const importMatch = renderCode.match(/^\s*import\s*\{([^}]+)\}\s*from\s*["']vue["']/m)
+  const aliases: string[] = []
+  const values: unknown[] = []
+  if (importMatch) {
+    const pairs = importMatch[1].split(',').map((s) => s.trim()).filter(Boolean)
+    for (const pair of pairs) {
+      const asMatch = pair.match(/^(\w+)\s+as\s+(\w+)$/)
+      if (asMatch) {
+        aliases.push(asMatch[2])
+        values.push((Vue as Record<string, unknown>)[asMatch[1]])
+      } else {
+        aliases.push(pair)
+        values.push((Vue as Record<string, unknown>)[pair])
+      }
+    }
   }
+
+  // ② 清理源码：去掉 import 行和 export 关键字
+  //    保留所有 const _hoisted_N = ...（它们定义在 render 外但被 render 引用）
+  const cleanedCode = renderCode
+    .replace(/^\s*import\s*\{[^}]+\}\s*from\s*["']vue["'];?\s*$/m, '')
+    .replace(/^\s*export\s+/gm, '')
+    .trim()
+
+  // ③ 整段丢进 new Function：alias 作形参，Vue helper 做实参
+  //    hoisted const 和 render function 都在同一个闭包里，render 能正常引用 _hoisted_N
   // eslint-disable-next-line no-new-func
-  const renderFn = new Function(`return ${match[0]}`)()
+  const factory = new Function(...aliases, cleanedCode + '; return render;')
+  const renderFn = factory(...values)
 
   // 从 script 里提取 mock 数据，让 template 里的 v-model / :model / v-for 有值可渲染
   const mockForm = buildMockForm(descriptor.script?.content || '')
