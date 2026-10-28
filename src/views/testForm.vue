@@ -1,13 +1,7 @@
 <template>
   <div class="generated-form-page">
     <el-card class="generated-form-card" shadow="hover" header="表单">
-      <el-form
-              ref="formRef"
-              :model="form"
-              :rules="rules"
-              label-width="110px"
-              label-position="right"
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="110px" label-position="right">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="userName" prop="userName">
@@ -40,6 +34,36 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="24">
+            <el-divider content-position="left">list</el-divider>
+            <div
+                    v-for="(item, idx) in form.list"
+                    :key="idx"
+                    class="array-item"
+            >
+              <el-row :gutter="16">
+                <el-col :span="12">
+                  <el-form-item label="a" prop="list.${idx}.a" :rules="[{ required: true, message: '请输入a', trigger: 'blur' }]">
+                    <el-input-number v-model="item.a" placeholder="请输入a" controls-position="right" style="width: 100%" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="b" prop="list.${idx}.b" :rules="[{ required: true, message: '请输入b', trigger: 'blur' }]">
+                    <el-input-number v-model="item.b" placeholder="请输入b" controls-position="right" style="width: 100%" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="c" prop="list.${idx}.c">
+                    <el-input-number v-model="item.c" placeholder="请输入c" controls-position="right" style="width: 100%" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <div class="array-item-footer">
+                <el-button type="danger" plain size="small" @click="removeListItem(idx)">删除此行</el-button>
+              </div>
+            </div>
+            <el-button class="add-btn" size="small" @click="addListItem">新增一行</el-button>
+          </el-col>
           <el-col :span="12">
             <el-form-item label="enable" prop="enable">
               <el-switch v-model="form.enable" active-text="开启" inactive-text="关闭" />
@@ -56,36 +80,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
-        <el-divider content-position="left">list</el-divider>
-        <div
-                v-for="(item, idx) in form.list"
-                :key="idx"
-                class="array-item"
-        >
-          <el-row :gutter="16">
-            <el-col :span="12">
-              <el-form-item label="a" prop="list.${idx}.a">
-                <el-input-number v-model="item.a" placeholder="请输入a" controls-position="right" style="width: 100%" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="b" prop="list.${idx}.b">
-                <el-input-number v-model="item.b" placeholder="请输入b" controls-position="right" style="width: 100%" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="c" prop="list.${idx}.c">
-                <el-input-number v-model="item.c" placeholder="请输入c" controls-position="right" style="width: 100%" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <div class="array-item-footer">
-            <el-button type="danger" plain size="small" @click="removeListItem(idx)">删除此行</el-button>
-          </div>
-        </div>
-        <el-button class="add-btn" size="small" @click="addListItem">新增一行</el-button>
-
         <el-form-item class="form-actions">
           <el-button @click="reset">重置</el-button>
           <el-button type="primary" @click="submit">提交</el-button>
@@ -102,8 +96,7 @@ const statusOptions = ["ENABLE","DISABLE"]
 const tagsOptions = ["A","B"]
 const formRef = ref(null)
 
-const form = reactive({
-  userName: '',
+const form = reactive({  userName: '',
   mobile: '',
   age: undefined,
   status: '',
@@ -117,12 +110,12 @@ const form = reactive({
   ],
   enable: false,
   createTime: '',
-  remark: ''
-})
+  remark: ''})
 
 const rules = {
   userName: [{ required: true, message: '请输入userName', trigger: 'blur' }],
   mobile: [{ required: true, message: '请输入mobile', trigger: 'blur' }],
+  age: [{ required: true, message: '请输入age', trigger: 'blur' }],
   status: [{ required: true, message: '请选择status', trigger: 'change' }]
 }
 

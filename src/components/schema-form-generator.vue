@@ -9,148 +9,142 @@
  -->
 <template>
   <div class="schema-form-generator">
-    <el-button>展示||隐藏 1</el-button>
-    <el-button>展示||隐藏 2</el-button>
-    <el-button>展示||隐藏 3</el-button>
-    <el-row :gutter="12">
+    <el-button @click="visible1 = !visible1">展示||隐藏 1</el-button>
+    <el-button @click="visible2 = !visible2">展示||隐藏 2</el-button>
+    <el-button @click="visible3 = !visible3">展示||隐藏 3</el-button>
+
+    <div class="flex">
       <!-- 左栏：输入 JSON 样本 -->
-      <el-col :span="8">
-        <el-card shadow="never">
-          <template #header>
-            <div class="card-header">
-              <span>1. 粘贴数据结构</span>
-              <div class="card-header-actions">
-                <el-button size="small" @click="fillDemo">填示例</el-button>
-                <el-button size="small" type="primary" @click="parse">解析字段</el-button>
-              </div>
+      <el-card v-if="visible1" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span>1. 粘贴数据结构</span>
+            <div class="card-header-actions">
+              <el-button size="small" @click="fillDemo">填示例</el-button>
+              <el-button size="small" type="primary" @click="parse">解析字段</el-button>
             </div>
-          </template>
-          <el-input v-model="raw" type="textarea" :rows="14" placeholder='{"userName":"张三","age":18,"status":"ENABLE","tags":["A"],"enable":true,"createTime":"2026-10-27 10:00:00","remark":""}'/>
-        </el-card>
-      </el-col>
+          </div>
+        </template>
+        <el-input v-model="raw" type="textarea" :rows="14" placeholder='{"userName":"张三","age":18,"status":"ENABLE","tags":["A"],"enable":true,"createTime":"2026-10-27 10:00:00","remark":""}'/>
+      </el-card>
 
       <!-- 中栏：字段配置表格 -->
-      <el-col :span="9">
-        <el-card shadow="never">
-          <template #header>
-            <div class="card-header">
-              <span>2. 配置字段</span>
-              <div class="card-header-actions">
-                <el-button size="small" :disabled="!fields.length" @click="toggleExpandAll">{{ allExpanded ? '全部收起' : '全部展开' }}</el-button>
-                <el-button size="small" type="success" :disabled="!fields.length" @click="generate">生成代码</el-button>
-                <el-button size="small" :disabled="!code" @click="copy">复制</el-button>
-              </div>
+      <el-card v-if="visible2" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span>2. 配置字段</span>
+            <div class="card-header-actions">
+              <el-button size="small" :disabled="!fields.length" @click="toggleExpandAll">{{ allExpanded ? '全部收起' : '全部展开' }}</el-button>
+              <el-button size="small" type="success" :disabled="!fields.length" @click="generate">生成代码</el-button>
+              <el-button size="small" :disabled="!code" @click="copy">复制</el-button>
             </div>
-          </template>
-          <!--
-            注意：Tree 模式(:tree-props) 和 type="expand" 列互斥（Element Plus 源码里是 if/else 分支）。
-            Tree 模式下展开箭头自动渲染在第一列，只需用 row-key + children 即可。
-            expand-row-keys 用于外部控制展开态，@expand-change 监听用户点击同步 expandedKeys。
-          -->
-          <el-table ref="tableRef" :data="fields" size="small" max-height="560" border row-key="path" :default-expand-all="false" :expand-row-keys="expandedKeys" @expand-change="onExpandChange" :tree-props="{ children: 'children' }">
-            <!-- 第一列：字段名 + Tree 模式展开箭头（自动渲染） -->
-            <el-table-column prop="key" label="字段" width="140" show-overflow-tooltip />
+          </div>
+        </template>
+        <!--
+          注意：Tree 模式(:tree-props) 和 type="expand" 列互斥（Element Plus 源码里是 if/else 分支）。
+          Tree 模式下展开箭头自动渲染在第一列，只需用 row-key + children 即可。
+          expand-row-keys 用于外部控制展开态，@expand-change 监听用户点击同步 expandedKeys。
+        -->
+        <el-table ref="tableRef" :data="fields" size="small" max-height="560" border row-key="path" :default-expand-all="false" :expand-row-keys="expandedKeys" @expand-change="onExpandChange"
+                  :tree-props="{ children: 'children' }">
 
-            <el-table-column label="中文名" width="130">
-              <template #default="{ row }">
-                <el-input v-model="row.label" size="small" />
-              </template>
-            </el-table-column>
+          <el-table-column label="必填" width="55" align="center">
+            <template #default="{ row }">
+              <el-checkbox v-if="!row.children" v-model="row.required"/>
+            </template>
+          </el-table-column>
 
-            <el-table-column label="控件" width="120">
-              <template #default="{ row }">
-                <el-select v-model="row.widget" size="small">
-                  <el-option v-for="item in widgetOptions" :key="item.value" :label="item.label" :value="item.value"/>
-                </el-select>
-              </template>
-            </el-table-column>
+          <el-table-column label="校验" width="65" align="center">
+            <template #default="{ row }">
+              <el-switch v-if="!row.children" v-model="row.useCustomValidator"/>
+            </template>
+          </el-table-column>
 
-            <el-table-column v-if="hasSelectWidget" label="选项" min-width="140">
-              <template #default="{ row }">
-                <el-input v-if="isSelectWidget(row.widget)" v-model="row.optionsText" size="small" placeholder="逗号分隔"/>
-              </template>
-            </el-table-column>
+          <el-table-column v-if="hasCustomValidator" label="Validator" min-width="180">
+            <template #default="{ row }">
+              <el-input v-if="row.useCustomValidator" v-model="row.validatorCode" type="textarea" :rows="2" size="small" placeholder="if (!value) return callback(new Error('必填'))&#10;callback()"/>
+            </template>
+          </el-table-column>
 
-            <el-table-column prop="type" label="类型" width="65" />
+          <!-- 第一列：字段名 + Tree 模式展开箭头（自动渲染） -->
+          <el-table-column prop="key" label="字段" width="140" show-overflow-tooltip/>
 
-            <el-table-column label="必填" width="55" align="center">
-              <template #default="{ row }">
-                <el-checkbox v-if="!row.children" v-model="row.required" />
-              </template>
-            </el-table-column>
+          <el-table-column label="中文名" width="130">
+            <template #default="{ row }">
+              <el-input v-model="row.label" size="small"/>
+            </template>
+          </el-table-column>
 
-            <el-table-column label="校验" width="55" align="center">
-              <template #default="{ row }">
-                <el-switch v-if="!row.children" v-model="row.useCustomValidator" />
-              </template>
-            </el-table-column>
+          <el-table-column label="控件" width="120">
+            <template #default="{ row }">
+              <el-select v-model="row.widget" size="small">
+                <el-option v-for="item in widgetOptions" :key="item.value" :label="item.label" :value="item.value"/>
+              </el-select>
+            </template>
+          </el-table-column>
 
-            <el-table-column v-if="hasCustomValidator" label="Validator" min-width="180">
-              <template #default="{ row }">
-                <el-input
-                  v-if="row.useCustomValidator"
-                  v-model="row.validatorCode"
-                  type="textarea"
-                  :rows="2"
-                  size="small"
-                  placeholder="if (!value) return callback(new Error('必填'))&#10;callback()"
-                />
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-      </el-col>
+          <el-table-column v-if="hasSelectWidget" label="选项" min-width="140">
+            <template #default="{ row }">
+              <el-input v-if="isSelectWidget(row.widget)" v-model="row.optionsText" size="small" placeholder="逗号分隔"/>
+            </template>
+          </el-table-column>
+
+          <el-table-column prop="type" label="类型" width="65"/>
+
+        </el-table>
+      </el-card>
 
       <!-- 右栏：生成结果（源码 / 渲染预览 切换） -->
-      <el-col :span="7">
-        <el-card shadow="never">
-          <template #header>
-            <div class="card-header">
-              <span>3. 生成结果</span>
-              <div class="card-header-actions">
-                <el-radio-group v-model="resultView" size="small">
-                  <el-radio-button value="preview">预览</el-radio-button>
-                  <el-radio-button value="source">源码</el-radio-button>
-                </el-radio-group>
-              </div>
+      <el-card v-if="visible3" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span>3. 生成结果</span>
+            <div class="card-header-actions">
+              <el-radio-group v-model="resultView" size="small">
+                <el-radio-button value="preview">预览</el-radio-button>
+                <el-radio-button value="source">源码</el-radio-button>
+              </el-radio-group>
             </div>
-          </template>
-
-          <!-- 渲染预览 -->
-          <div v-if="resultView === 'preview'">
-            <component v-if="previewComp" :is="previewComp" />
-            <el-empty v-else description="先生成代码" />
           </div>
+        </template>
 
-          <!-- 源码 -->
-          <pre v-else-if="code" class="code">{{ code }}</pre>
-          <el-empty v-else description="先生成代码" />
-        </el-card>
-      </el-col>
-    </el-row>
+        <!-- 渲染预览 -->
+        <div v-if="resultView === 'preview'">
+          <component v-if="previewComp" :is="previewComp"/>
+          <el-empty v-else description="先生成代码"/>
+        </div>
+
+        <!-- 源码 -->
+        <pre v-else-if="code" class="code">{{ code }}</pre>
+        <el-empty v-else description="先生成代码"/>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import * as Vue from 'vue'
-import { computed, defineComponent, h, reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import type { ElTable } from 'element-plus'
-import { parse as parseSfc, compileTemplate } from '@vue/compiler-sfc'
+import {computed, defineComponent, h, reactive, ref} from 'vue'
+import {ElMessage} from 'element-plus'
+import type {ElTable} from 'element-plus'
+import {parse as parseSfc, compileTemplate} from '@vue/compiler-sfc'
 
+const visible1 = ref(true)
+const visible2 = ref(true)
+const visible3 = ref(true)
 // ==================== 常量 ====================
 
 /** 控件类型选项，控件值即生成代码时的 type 标记 */
 const widgetOptions = [
-  { label: '输入框', value: 'input' },
-  { label: '多行文本', value: 'textarea' },
-  { label: '数字', value: 'number' },
-  { label: '开关', value: 'switch' },
-  { label: '日期', value: 'date' },
-  { label: '日期时间', value: 'datetime' },
-  { label: '下拉单选', value: 'select' },
-  { label: '下拉多选', value: 'multiSelect' },
-  { label: '单选框', value: 'radio' },
+  {label: '输入框', value: 'input'},
+  {label: '多行文本', value: 'textarea'},
+  {label: '数字', value: 'number'},
+  {label: '开关', value: 'switch'},
+  {label: '日期', value: 'date'},
+  {label: '日期时间', value: 'datetime'},
+  {label: '下拉单选', value: 'select'},
+  {label: '下拉多选', value: 'multiSelect'},
+  {label: '单选框', value: 'radio'},
 ] as const
 
 /** 示例 JSON，点"填示例"时注入 */
@@ -185,6 +179,7 @@ const allExpanded = computed(() => {
   const blockPaths = fields.value.filter((f) => f.isArrayBlock).map((f) => f.path)
   return blockPaths.length > 0 && blockPaths.every((p) => expandedKeys.value.includes(p))
 })
+
 /** 展开/收起全部数组块（改 prop 触发 Element Plus 内部重算） */
 function toggleExpandAll(): void {
   if (allExpanded.value) {
@@ -193,6 +188,7 @@ function toggleExpandAll(): void {
     expandedKeys.value = fields.value.filter((f) => f.isArrayBlock).map((f) => f.path)
   }
 }
+
 /** 监听用户手动展开/收起，同步 expandedKeys（保证按钮文案正确） */
 function onExpandChange(row: FieldNode, expanded: boolean): void {
   if (expanded) {
@@ -230,10 +226,10 @@ const previewComp = computed(() => {
  * Vue helper 通过 new Function 参数注入（因为 import 语法不能在 new Function 里执行）。
  */
 function compileSfc(source: string) {
-  const { descriptor } = parseSfc(source)
+  const {descriptor} = parseSfc(source)
   if (!descriptor.template) return null
 
-  const { code: renderCode } = compileTemplate({
+  const {code: renderCode} = compileTemplate({
     source: descriptor.template.content,
     filename: 'preview.vue',
     id: 'preview-component',
@@ -261,9 +257,9 @@ function compileSfc(source: string) {
   // ② 清理源码：去掉 import 行和 export 关键字
   //    保留所有 const _hoisted_N = ...（它们定义在 render 外但被 render 引用）
   const cleanedCode = renderCode
-    .replace(/^\s*import\s*\{[^}]+\}\s*from\s*["']vue["'];?\s*$/m, '')
-    .replace(/^\s*export\s+/gm, '')
-    .trim()
+          .replace(/^\s*import\s*\{[^}]+\}\s*from\s*["']vue["'];?\s*$/m, '')
+          .replace(/^\s*export\s+/gm, '')
+          .trim()
 
   // ③ 整段丢进 new Function：alias 作形参，Vue helper 做实参
   //    hoisted const 和 render function 都在同一个闭包里，render 能正常引用 _hoisted_N
@@ -282,7 +278,8 @@ function compileSfc(source: string) {
         form: reactive(mockForm.form),
         rules: reactive(mockForm.rules),
         submit: () => ElMessage.info('这是预览，不是真提交'),
-        reset: () => {},
+        reset: () => {
+        },
         ...mockForm.arrayFns,
         ...mockForm.optionsConsts,
       }
@@ -302,7 +299,7 @@ function buildMockForm(scriptContent: string) {
     rules: Record<string, unknown>
     optionsConsts: Record<string, unknown>
     arrayFns: Record<string, unknown>
-  } = { form: {}, rules: {}, optionsConsts: {}, arrayFns: {} }
+  } = {form: {}, rules: {}, optionsConsts: {}, arrayFns: {}}
 
   if (!scriptContent) return result
 
@@ -312,7 +309,8 @@ function buildMockForm(scriptContent: string) {
     try {
       // eslint-disable-next-line no-new-func
       result.form = new Function(`return (${formMatch[1].trim()})`)()
-    } catch {}
+    } catch {
+    }
   }
 
   // 提取 const rules = { ... }
@@ -321,7 +319,8 @@ function buildMockForm(scriptContent: string) {
     try {
       // eslint-disable-next-line no-new-func
       result.rules = new Function(`return (${rulesMatch[1]})`)()
-    } catch {}
+    } catch {
+    }
   }
 
   // 提取 const xxxOptions = [...]
@@ -331,13 +330,15 @@ function buildMockForm(scriptContent: string) {
     try {
       // eslint-disable-next-line no-new-func
       result.optionsConsts[m[1]] = new Function(`return (${m[2]})`)()
-    } catch {}
+    } catch {
+    }
   }
 
   // 提取 function addXxxItem / removeXxxItem（用 placeholder，不真操作 form）
   const fnRegex = /function (add\w+Item|remove\w+Item)\([^)]*\) \{[\s\S]*?\n\}/g
   while ((m = fnRegex.exec(scriptContent))) {
-    result.arrayFns[m[1]] = () => {}
+    result.arrayFns[m[1]] = () => {
+    }
   }
 
   return result
@@ -428,12 +429,7 @@ function joinPath(prefix: string, key: string): string {
 /**
  * 构造一个叶子字段节点
  */
-function makeLeaf(
-  key: string,
-  value: unknown,
-  prefix: string,
-  parentArray: string | null,
-): FieldNode {
+function makeLeaf(key: string, value: unknown, prefix: string, parentArray: string | null): FieldNode {
   const path = joinPath(prefix, key)
   const type = Array.isArray(value) ? 'array' : value === null ? 'string' : typeof value
   const widget = inferWidget(key, value, type)
@@ -472,19 +468,19 @@ function walk(node: Record<string, unknown>, prefix: string, parentArray: string
       if (value.length && first && typeof first === 'object' && !Array.isArray(first)) {
         const blockPath = joinPath(prefix, key)
         rows.push(
-          reactive({
-            key,
-            path: blockPath,
-            label: key,
-            isArrayBlock: true,
-            parentArray: null,
-            widget: '',
-            type: 'array',
-            required: false,
-            options: [],
-            optionsText: '',
-            children: walk(first as Record<string, unknown>, '', blockPath),
-          }),
+                reactive({
+                  key,
+                  path: blockPath,
+                  label: key,
+                  isArrayBlock: true,
+                  parentArray: null,
+                  widget: '',
+                  type: 'array',
+                  required: false,
+                  options: [],
+                  optionsText: '',
+                  children: walk(first as Record<string, unknown>, '', blockPath),
+                }),
         )
       } else {
         // 数组首项是原始值 → 多选字段
@@ -530,12 +526,50 @@ function fillDemo(): void {
   parse()
 }
 
-/** 右栏"复制代码"：写入剪贴板 */
+/**
+ * 右栏"复制代码"：写入剪贴板
+ * 双路径兜底，保证所有环境都能用：
+ *   1. navigator.clipboard.writeText —— 现代 API，HTTPS / localhost 安全上下文
+ *   2. textarea + document.execCommand('copy') —— 兜底，兼容所有浏览器和非 HTTPS
+ */
 async function copy(): Promise<void> {
+  const text = code.value
+  if (!text) {
+    ElMessage.warning('没有可复制的代码')
+    return
+  }
+
+  // 路径 1：现代 Clipboard API
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text)
+      ElMessage.success('已复制')
+      return
+    } catch {
+      // 安全上下文也可能因权限/超时失败，继续走兜底
+    }
+  }
+
+  // 路径 2：textarea + execCommand 兜底（兼容 http://localhost / 旧浏览器 / iframe）
   try {
-    await navigator.clipboard.writeText(code.value)
-    ElMessage.success('已复制')
-  } catch (e) {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.top = '0'
+    ta.style.left = '0'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    ta.setSelectionRange(0, ta.value.length)
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    if (ok) {
+      ElMessage.success('已复制')
+    } else {
+      ElMessage.error('复制失败，请手动选择复制')
+    }
+  } catch {
     ElMessage.error('复制失败，请手动选择复制')
   }
 }
@@ -554,10 +588,7 @@ function cap(key: string): string {
 
 /** 选择控件的最终选项：用户输入优先，否则用推断值 */
 function optionsOf(field: FieldNode): string[] {
-  const fromText = (field.optionsText || '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
+  const fromText = (field.optionsText || '').split(',').map((s) => s.trim()).filter(Boolean)
   return fromText.length ? fromText : field.options
 }
 
@@ -571,26 +602,18 @@ function defaultVal(field: FieldNode): string {
 
 /** el-form-item rules 的 trigger 推断 */
 function triggerOf(field: FieldNode): string {
-  return isSelectWidget(field.widget) || ['date', 'datetime', 'switch'].includes(field.widget)
-    ? 'change'
-    : 'blur'
+  return isSelectWidget(field.widget) || ['date', 'datetime', 'switch'].includes(field.widget) ? 'change' : 'blur'
 }
 
 /** 必填校验的 message 文案：选择控件 → 请选择，其余 → 请输入 */
 function messageOf(field: FieldNode): string {
-  const action = isSelectWidget(field.widget) || ['date', 'datetime'].includes(field.widget)
-    ? '请选择'
-    : '请输入'
+  const action = isSelectWidget(field.widget) || ['date', 'datetime'].includes(field.widget) ? '请选择' : '请输入'
   return `${action}${field.label}`
 }
 
 /** HTML 属性转义，防止 label/option 含引号破坏模板 */
 function escapeAttr(value: string): string {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+  return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
 /** 把 JS 值序列化成模板里的 :value 属性值 */
@@ -607,13 +630,9 @@ function bindValueAttr(value: unknown): string {
 function renderOptions(field: FieldNode): string {
   const options = optionsOf(field)
   if (field.widget === 'radio') {
-    return options
-      .map((o) => `      <el-radio :value="${bindValueAttr(o)}">${escapeAttr(o)}</el-radio>`)
-      .join('\n')
+    return options.map((o) => `      <el-radio :value="${bindValueAttr(o)}">${escapeAttr(o)}</el-radio>`).join('\n')
   }
-  return options
-    .map((o) => `        <el-option label="${escapeAttr(o)}" :value="${bindValueAttr(o)}" />`)
-    .join('\n')
+  return options.map((o) => `        <el-option label="${escapeAttr(o)}" :value="${bindValueAttr(o)}" />`).join('\n')
 }
 
 /**
@@ -687,51 +706,51 @@ ${inner}
 
 /**
  * 生成数组块片段（含 v-for / 新增 / 删除）
- * 数组块独立卡片化，内部子字段两列栅格，删除按钮绝对定位
- * 生成源码里 idx 是模板变量本身，所以 prop 前缀直接写字面量 ${idx}
+ * 外层包 el-col :span="24" 使其能与叶子字段一起放进主 el-row 里，保持配置顺序
  */
 function renderArrayBlock(block: FieldNode): string {
   const addFn = `add${cap(block.key)}Item`
   const removeFn = `remove${cap(block.key)}Item`
   // 数组子项也走 renderItemPure + el-col，实现栅格布局
   const items = (block.children || [])
-    .map((c) => {
-      const span = ['textarea', 'datetime'].includes(c.widget) ? '12' : '12'
-      const inner = renderItemPure(c, 'item.', `${block.key}.\${idx}.`)
-      return `              <el-col :span="${span}">
+          .map((c) => {
+            const span = ['textarea', 'datetime'].includes(c.widget) ? '12' : '12'
+            const inner = renderItemPure(c, 'item.', `${block.key}.\${idx}.`)
+            return `              <el-col :span="${span}">
 ${inner}
               </el-col>`
-    })
-    .join('\n')
+          })
+          .join('\n')
 
-  return `    <el-divider content-position="left">${escapeAttr(block.label)}</el-divider>
-    <div
-      v-for="(item, idx) in form.${block.key}"
-      :key="idx"
-      class="array-item"
-    >
-      <el-row :gutter="16">
+  // 整个数组块独占一行（span=24），与叶子字段的 el-col 同级，保持配置顺序
+  return `        <el-col :span="24">
+          <el-divider content-position="left">${escapeAttr(block.label)}</el-divider>
+          <div
+            v-for="(item, idx) in form.${block.key}"
+            :key="idx"
+            class="array-item"
+          >
+            <el-row :gutter="16">
 ${items}
-      </el-row>
-      <div class="array-item-footer">
-        <el-button type="danger" plain size="small" @click="${removeFn}(idx)">删除此行</el-button>
-      </div>
-    </div>
-    <el-button class="add-btn" size="small" @click="${addFn}">新增一行</el-button>`
+            </el-row>
+            <div class="array-item-footer">
+              <el-button type="danger" plain size="small" @click="${removeFn}(idx)">删除此行</el-button>
+            </div>
+          </div>
+          <el-button class="add-btn" size="small" @click="${addFn}">新增一行</el-button>
+        </el-col>`
 }
 
 // ==================== 组装最终代码 ====================
 
 /** 生成 reactive form 对象的初始值片段 */
 function buildModel(fields: FieldNode[]): string {
-  return fields
-    .map((f) => {
-      if (!f.isArrayBlock) return `  ${f.path}: ${defaultVal(f)}`
-      // 数组块：首行默认值
-      const row = (f.children || []).map((c) => `      ${c.path}: ${defaultVal(c)}`).join(',\n')
-      return `  ${f.key}: [\n    {\n${row}\n    }\n  ]`
-    })
-    .join(',\n')
+  return fields.map((f) => {
+            if (!f.isArrayBlock) return `  ${f.path}: ${defaultVal(f)}`
+            // 数组块：首行默认值
+            const row = (f.children || []).map((c) => `      ${c.path}: ${defaultVal(c)}`).join(',\n')
+            return `  ${f.key}: [\n    {\n${row}\n    }\n  ]`
+          }).join(',\n')
 }
 
 /** 生成全局 rules 对象
@@ -740,78 +759,72 @@ function buildModel(fields: FieldNode[]): string {
  * 数组子项的行内 rules 已在 renderItemPure 里处理，这里只处理顶层叶子字段
  */
 function buildRules(fields: FieldNode[]): string {
-  const ruleLines = fields
-    .filter((f) => !f.isArrayBlock && f.required)
-    .map((f) => {
-      if (f.useCustomValidator && f.validatorCode.trim()) {
-        // 自定义 validator：把用户写的代码体包进 validator 函数
-        // callback() 由用户在代码里手动调用，生成器不自动加
-        const body = f.validatorCode.trim().split('\n').map((l) => `    ${l}`).join('\n')
-        return `  ${f.path}: [{ required: true, validator: (rule, value, callback) => {\n${body}\n  } }]`
-      }
-      return `  ${f.path}: [{ required: true, message: '${messageOf(f)}', trigger: '${triggerOf(f)}' }]`
-    })
-    .join(',\n')
+  const ruleLines = fields.filter((f) => !f.isArrayBlock && f.required).map((f) => {
+            if (f.useCustomValidator && f.validatorCode.trim()) {
+              // 自定义 validator：把用户写的代码体包进 validator 函数
+              // callback() 由用户在代码里手动调用，生成器不自动加
+              const body = f.validatorCode.trim().split('\n').map((l) => `    ${l}`).join('\n')
+              return `  ${f.path}: [{ required: true, validator: (rule, value, callback) => {\n${body}\n  } }]`
+            }
+            return `  ${f.path}: [{ required: true, message: '${messageOf(f)}', trigger: '${triggerOf(f)}' }]`
+          })
+          .join(',\n')
   return ruleLines ? `{\n${ruleLines}\n}` : '{}'
 }
 
 /** 生成选择控件的 Options 常量（如 const statusOptions = ["ENABLE","DISABLE"]） */
 function buildOptionsConsts(fields: FieldNode[]): string {
   return collectLeaves(fields)
-    .filter((f) => isSelectWidget(f.widget))
-    .map((f) => `const ${f.key}Options = ${JSON.stringify(optionsOf(f))}`)
-    .join('\n')
+          .filter((f) => isSelectWidget(f.widget))
+          .map((f) => `const ${f.key}Options = ${JSON.stringify(optionsOf(f))}`)
+          .join('\n')
 }
 
 /** 生成数组块的 add/remove 函数 */
 function buildArrayFns(fields: FieldNode[]): string {
   return fields
-    .filter((f) => f.isArrayBlock)
-    .map((f) => {
-      const row = (f.children || []).map((c) => `${c.path}: ${defaultVal(c)}`).join(', ')
-      return `function add${cap(f.key)}Item() {
+          .filter((f) => f.isArrayBlock)
+          .map((f) => {
+            const row = (f.children || []).map((c) => `${c.path}: ${defaultVal(c)}`).join(', ')
+            return `function add${cap(f.key)}Item() {
   form.${f.key}.push({ ${row} })
 }
 function remove${cap(f.key)}Item(index) {
   form.${f.key}.splice(index, 1)
 }`
-    })
-    .join('\n')
+          })
+          .join('\n')
 }
 
-/** 右栏"生成 Form 代码"：把 FieldNode 树拼成完整 SFC 代码 */
+/** 右栏"生成 Form 代码"：把 FieldNode 树拼成完整 SFC 代码
+ *  模板按 fields.value 的**原始顺序**遍历，不再把叶子/数组块分组，
+ *  保证 template 顺序 = script model 顺序 = 用户表格配置顺序，三处一致。
+ */
 function generate(): void {
   if (!fields.value.length) {
     ElMessage.warning('请先解析字段')
     return
   }
 
-  // ① 顶层叶子字段 → el-col 包裹，数组块 → 独立卡片化
-  const topLeaves = fields.value.filter((f) => !f.isArrayBlock).map(renderItem).join('\n')
-  const arrayBlocks = fields.value.filter((f) => f.isArrayBlock).map(renderArrayBlock).join('\n')
+  // ① 按配置原始顺序逐个 render：叶子 → renderItem（el-col 包裹），数组块 → renderArrayBlock（span=24 独占一行）
+  const allItems = fields.value
+    .map((f) => f.isArrayBlock ? renderArrayBlock(f) : renderItem(f))
+    .join('\n')
 
-  // ② script 各段落
+  // ② script 各段落（本来就是按 fields 顺序，不用改）
   const model = buildModel(fields.value)
   const rules = buildRules(fields.value)
   const consts = buildOptionsConsts(fields.value)
   const arrayFns = buildArrayFns(fields.value)
 
-  // ③ 拼成完整 SFC：el-card + el-row 栅格 + 按钮区 + scoped style
+  // ③ 拼成完整 SFC：el-card + 统一 el-row 栅格 + 按钮区 + scoped style
   code.value = `<template>
   <div class="generated-form-page">
     <el-card class="generated-form-card" shadow="hover" header="表单">
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-width="110px"
-        label-position="right"
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="110px" label-position="right">
         <el-row :gutter="20">
-${topLeaves}
+          ${allItems}
         </el-row>
-
-${arrayBlocks ? `${arrayBlocks}\n` : ''}
         <el-form-item class="form-actions">
           <el-button @click="reset">重置</el-button>
           <el-button type="primary" @click="submit">提交</el-button>
@@ -826,9 +839,7 @@ import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 ${consts ? `${consts}\n` : ''}const formRef = ref(null)
 
-const form = reactive({
-${model}
-})
+const form = reactive({${model}})
 
 const rules = ${rules}
 
@@ -913,6 +924,9 @@ function reset() {
   margin-top: 10px;
   display: flex;
   gap: 8px;
+}
+.el-card {
+  flex: 1 1 0;
 }
 
 .code {
